@@ -1,0 +1,63 @@
+{
+  "colors": {
+    "primary-orange": { "value": "#d68307", "type": "color" },
+    "primary-teal": { "value": "#36728f", "type": "color" },
+    "white": { "value": "#ffffff", "type": "color" },
+    "light-teal": { "value": "#e7f1f4", "type": "color" },
+    "light-orange": { "value": "#f9e7c8", "type": "color" },
+    "dark-text": { "value": "#16323c", "type": "color" },
+    "muted-text": { "value": "#6b7c84", "type": "color" }
+  },
+  "typography": {
+    "fonts": {
+      "heading": { "value": "Sora", "type": "font" },
+      "body": { "value": "Inter", "type": "font" }
+    },
+    "h1": { "fontFamily": "Sora", "fontSize": "56px", "fontWeight": "700", "lineHeight": "64px", "letterSpacing": "0px" },
+    "h2": { "fontFamily": "Sora", "fontSize": "40px", "fontWeight": "700", "lineHeight": "48px", "letterSpacing": "0px" },
+    "h3": { "fontFamily": "Sora", "fontSize": "28px", "fontWeight": "600", "lineHeight": "36px", "letterSpacing": "0px" },
+    "body": { "fontFamily": "Inter", "fontSize": "16px", "fontWeight": "400", "lineHeight": "24px", "letterSpacing": "0px" },
+    "small": { "fontFamily": "Inter", "fontSize": "14px", "fontWeight": "400", "lineHeight": "20px", "letterSpacing": "0px" },
+    "micro": { "fontFamily": "Inter", "fontSize": "12px", "fontWeight": "400", "lineHeight": "16px", "letterSpacing": "0px" }
+  },
+  "spacing": {
+    "space-1": { "value": "8px", "type": "spacing" },
+    "space-2": { "value": "16px", "type": "spacing" },
+    "space-3": { "value": "24px", "type": "spacing" },
+    "space-4": { "value": "32px", "type": "spacing" },
+    "space-6": { "value": "48px", "type": "spacing" },
+    "space-8": { "value": "64px", "type": "spacing" },
+    "space-12": { "value": "96px", "type": "spacing" }
+  },
+  "radii": {
+    "radius-sm": { "value": "8px", "type": "radius" },
+    "radius-md": { "value": "12px", "type": "radius" },
+    "radius-lg": { "value": "16px", "type": "radius" },
+    "radius-pill": { "value": "999px", "type": "radius" }
+  },
+  "shadows": {
+    "shadow-1": { "value": "0 4px 12px rgba(22,50,60,0.06)", "type": "boxShadow" },
+    "shadow-2": { "value": "0 8px 24px rgba(22,50,60,0.08)", "type": "boxShadow" }
+  },
+  "components": {
+    "button-primary": {
+      "background": "#d68307",
+      "color": "#ffffff",
+      "padding": "14px 24px",
+      "radius": "12px"
+    },
+    "button-secondary": {
+      "background": "#36728f",
+      "color": "#ffffff",
+      "padding": "12px 20px",
+      "radius": "12px"
+    }
+  },
+  "breakpoints": {
+    "bp-xs": "360px",
+    "bp-sm": "480px",
+    "bp-md": "768px",
+    "bp-lg": "1024px",
+    "bp-xl": "1280px"
+  }
+}
