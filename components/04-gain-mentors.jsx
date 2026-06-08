@@ -53,24 +53,6 @@ function Gain() {
           </p>
         </div>
 
-        {/* Scroll-cue rail beside the stack */}
-        <div className="gain-cue" aria-hidden="true">
-          {cards.map((c, i) => {
-            const { raw } = fallState(c.startP, c.endP);
-            const done = raw >= 0.95;
-            return (
-              <div
-                key={c.num}
-                className={'gain-cue-step' + (done ? ' is-done' : (raw > 0 ? ' is-active' : ''))}
-              >
-                <span className="gain-cue-dot" />
-                <span className="gain-cue-num">{c.num}</span>
-                <span className="gain-cue-name">{c.title.replace('.','')}</span>
-              </div>
-            );
-          })}
-        </div>
-
         <div className="gain-stack">
           {cards.map((c, i) => {
             const { raw, eased, wobble } = fallState(c.startP, c.endP);

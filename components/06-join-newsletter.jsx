@@ -48,90 +48,98 @@ function JoinIn() {
   const wrapRef = useRef(null);
   const progress = useScrollProgress(wrapRef);
 
-  // Map scroll progress to active panel index (0, 1, 2)
-  // 0.00 - 0.33  → 0
-  // 0.33 - 0.66  → 1
-  // 0.66 - 1.00  → 2
   const PANEL_COUNT = JOIN_PANELS.length;
-  // Determine active and "intra-panel" sub-progress for crossfade
+  // t goes from 0 to 3
   const t = progress * PANEL_COUNT;
   const active = Math.min(PANEL_COUNT - 1, Math.floor(t));
-  const localT = t - active; // 0..1 within current panel
+
+  const fallState = (startT, endT) => {
+    const raw = Math.max(0, Math.min(1, (t - startT) / (endT - startT)));
+    const eased = 1 - Math.pow(1 - raw, 3); // cubic ease-out
+    const wobble = raw > 0.85 ? Math.sin((raw - 0.85) * Math.PI * 6.6) * (1 - raw) * 8 : 0;
+    return { raw, eased, wobble };
+  };
 
   return (
     <section id="join" className="join-sec" ref={wrapRef}>
       <div className="join-pin">
         <div className="join-stage">
-          {/* Active panel intro (left) */}
+          {/* Big background boards for right side + background color */}
           {JOIN_PANELS.map((p, i) => {
-            const isActive = i === active;
-            const isPrev = i < active;
-
-            // crossfade between adjacent
-            let opacity = 0;
-            let translateY = 40;
-            let scale = 0.96;
-            if (isActive) {
-              // fade in at start, slight fade out near end
-              const inFade = Math.min(1, localT / 0.18);
-              const outFade = i < PANEL_COUNT - 1 ? Math.max(0, 1 - Math.max(0, (localT - 0.78) / 0.22)) : 1;
-              opacity = inFade * outFade;
-              translateY = (1 - inFade) * 40;
-              scale = 0.96 + inFade * 0.04;
-            } else if (i === active + 1) {
-              // about to enter
-              const k = Math.max(0, (localT - 0.78) / 0.22);
-              opacity = k;
-              translateY = (1 - k) * 40;
-              scale = 0.96 + k * 0.04;
-            } else if (isPrev) {
-              opacity = 0;
-            }
+            // crossfade background between t = i and t = i+0.4
+            const startT = i;
+            // previous panel fades out, this one fades in
+            const fadeProgress = Math.max(0, Math.min(1, (t - startT) / 0.4));
+            // if we are past this panel, it fades out to next
+            const outProgress = i < PANEL_COUNT - 1 ? Math.max(0, Math.min(1, (t - (i + 1)) / 0.4)) : 0;
+            const opacity = fadeProgress * (1 - outProgress);
 
             return (
               <div
-                key={p.n}
-                className={'join-panel' + (isActive ? ' is-active' : '')}
+                key={'bg-' + p.n}
+                className="join-big-bg"
                 style={{
                   opacity,
-                  transform: `translateY(${translateY}px) scale(${scale})`,
-                  pointerEvents: isActive ? 'auto' : 'none',
                   background: p.bg,
-                  color: p.fg,
+                  pointerEvents: Math.round(opacity) === 1 ? 'auto' : 'none'
                 }}
-                aria-hidden={!isActive}
+                aria-hidden={opacity < 0.5}
               >
-                <div className="join-panel-grid">
-                  <div className="join-panel-left">
-                    <div className="join-panel-num">{p.n}</div>
-                    <div className="join-panel-tag">{p.tag}</div>
-                    <h3 className="join-panel-title">
-                      {p.title.split(p.titleEm)[0]}<em>{p.titleEm}</em>{p.title.split(p.titleEm)[1]}
-                    </h3>
-                    <p className="join-panel-body">{p.body}</p>
-                    <ul className="join-panel-bullets">
-                      {p.bullets.map((b) => (
-                        <li key={b}>
-                          <span className="join-panel-tick">
-                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none">
-                              <path d="M5 12l4 4L19 6" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                            </svg>
-                          </span>
-                          {b}
-                        </li>
-                      ))}
-                    </ul>
-                    <a className="join-panel-cta">
-                      {p.cta} <ArrowRight color="currentColor" size={16} />
-                    </a>
-                  </div>
-                  <div className="join-panel-right">
-                    <PhotoPlaceholder tone={p.photoTone} label={p.photoLabel} style={{ width: '100%', height: '100%' }} />
-                    {/* Decorative overlay shapes per panel */}
-                    <span className="join-panel-deco" />
-                  </div>
+                <div className="join-big-photo-wrap">
+                  <PhotoPlaceholder tone={p.photoTone} label={p.photoLabel} style={{ width: '100%', height: '100%' }} />
+                  <span className="join-panel-deco" />
                 </div>
               </div>
+            );
+          })}
+        </div>
+
+        {/* Left dropping cards stack */}
+        <div className="join-stack">
+          {JOIN_PANELS.map((p, i) => {
+            // Drop interval: each panel drops within the first 0.5 of its integer t
+            const startT = i;
+            const endT = i + 0.5;
+            const { raw, eased, wobble } = fallState(startT, endT);
+            
+            const fromY = -800;
+            const toY = i * 14; 
+            const y = fromY + eased * (toY - fromY);
+            
+            // Alternating rotation for a messy stack
+            const baseRot = i === 0 ? -1.5 : (i === 1 ? 2.5 : -2);
+            const r = eased * baseRot + wobble;
+            const op = raw > 0.02 ? 1 : 0;
+
+            return (
+              <article
+                key={p.n}
+                className="join-small-card"
+                style={{
+                  transform: `translateY(${y}px) rotate(${r}deg)`,
+                  opacity: op,
+                  zIndex: 10 + i,
+                  color: p.bg // link color
+                }}
+              >
+                <div className="join-panel-num-small">{p.n}</div>
+                <div className="join-panel-tag-small">{p.tag}</div>
+                <h3 className="join-panel-title-small">
+                  {p.title.split(p.titleEm)[0]}<em>{p.titleEm}</em>{p.title.split(p.titleEm)[1]}
+                </h3>
+                <p className="join-panel-body-small">{p.body}</p>
+                <ul className="join-panel-bullets-small">
+                  {p.bullets.map((b) => (
+                    <li key={b}>
+                      <span className="join-panel-tick-small">✓</span>
+                      {b}
+                    </li>
+                  ))}
+                </ul>
+                <a className="join-panel-cta-small" style={{ background: p.bg, color: '#fff' }}>
+                  {p.cta} <ArrowRight color="#fff" size={16} />
+                </a>
+              </article>
             );
           })}
         </div>

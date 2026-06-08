@@ -9,7 +9,7 @@
   position: relative;
   /* NOTE: do NOT set overflow:hidden here — it breaks the inner
      `position: sticky` pin in Chrome. The pin itself clips overflow. */
-  height: 240vh;
+  height: 480vh;
 }
 .gain-sec::before {
   content: '';
@@ -30,7 +30,7 @@
   padding: 80px var(--gutter) 80px;
   overflow: hidden;
   display: grid;
-  grid-template-columns: 1.1fr 80px 1fr;
+  grid-template-columns: 1.1fr 1fr;
   gap: 32px;
   align-items: start;
 }
@@ -60,62 +60,6 @@
   font: italic 400 19px/1.5 var(--font-serif);
   color: var(--c-teal-deep);
   max-width: 460px;
-}
-
-/* Scroll cue rail between head and stack */
-.gain-cue {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  align-self: center;
-  padding-top: 40px;
-  position: relative;
-  z-index: 2;
-}
-.gain-cue::before {
-  content: '';
-  position: absolute;
-  top: 16px; bottom: 16px;
-  left: 5px;
-  width: 2px;
-  background: repeating-linear-gradient(180deg, var(--c-ink) 0 4px, transparent 4px 10px);
-  opacity: 0.18;
-}
-.gain-cue-step {
-  display: grid;
-  grid-template-columns: 12px auto 1fr;
-  gap: 14px;
-  align-items: center;
-  opacity: 0.4;
-  transition: opacity 0.3s;
-}
-.gain-cue-step.is-active { opacity: 1; }
-.gain-cue-step.is-done { opacity: 1; }
-.gain-cue-dot {
-  width: 12px; height: 12px;
-  border-radius: 50%;
-  background: #fff;
-  border: 2px solid var(--c-ink);
-  transition: background 0.3s, box-shadow 0.3s;
-}
-.gain-cue-step.is-active .gain-cue-dot {
-  background: var(--c-orange);
-  border-color: var(--c-orange);
-  box-shadow: 0 0 0 5px rgba(214, 131, 7, 0.18);
-}
-.gain-cue-step.is-done .gain-cue-dot {
-  background: var(--c-orange);
-  border-color: var(--c-orange);
-}
-.gain-cue-num {
-  font: 700 11px var(--font-mono);
-  letter-spacing: 0.14em;
-  color: var(--c-orange);
-}
-.gain-cue-name {
-  font: 600 13px var(--font-display);
-  color: var(--c-ink);
-  letter-spacing: -0.005em;
 }
 
 /* Stack landing zone (right column, vertically centered) */
