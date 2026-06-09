@@ -278,11 +278,10 @@
 
 .footer-top {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.6fr 1fr 1fr 1.3fr;
   gap: 56px;
   padding-bottom: 56px;
   border-bottom: 1px dashed rgba(254, 249, 238, 0.15);
-  max-width: 720px;
 }
 .footer-brand h3 {
   font-family: var(--font-display);
@@ -381,10 +380,10 @@
   margin-top: 32px;
   padding-top: 24px;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   font: 500 12px var(--font-mono);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.1em;
   color: rgba(254, 249, 238, 0.5);
 }
 .footer-bottom-mid { text-align: center; color: var(--c-orange); }

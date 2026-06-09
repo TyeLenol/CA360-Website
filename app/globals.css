@@ -1,3 +1,12 @@
+@import '../styles/01-nav-hero.css';
+@import '../styles/02-mission-origin.css';
+@import '../styles/03-fields-programs.css';
+@import '../styles/04-gain-mentors.css';
+@import '../styles/05-impact-sessions.css';
+@import '../styles/06-join-newsletter.css';
+@import '../styles/07-faq-footer.css';
+@import '../styles/journal.css';
+
 /* ============================================================
    CAREER ARCADIA 360 — HOMEPAGE V2 (Frankenstein build)
    Base tokens + reset. White canvas. Manifesto dark slabs as
