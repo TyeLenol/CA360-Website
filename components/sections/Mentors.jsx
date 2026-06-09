@@ -137,11 +137,13 @@ export function Mentors() {
               <li
                 key={mm.id}
                 className={'mentors-rail-item' + (i === active ? ' is-active' : '')}
+                onClick={() => setActive(i)}
+                style={{ cursor: 'pointer' }}
               >
                 <button
                   className="mentors-avatar"
-                  onClick={() => setActive(i)}
                   aria-label={'Select ' + mm.name}
+                  tabIndex={-1}
                 >
                   <PhotoPlaceholder tone={mm.tone} label="" style={{ width: '100%', height: '100%' }}>
                     <Portrait seed={mm.seed} bg="transparent" tone="#d68307" />

@@ -4,14 +4,14 @@ import { useRef } from 'react';
 import { useScrollProgress, useInView, useCountUp } from '../../hooks/ui-hooks';
 
 const STATS = [
-  { v: '5',  p: '',  l: 'Sessions hosted',
-    p2: 'Each one a 90-minute deep-dive on admissions, study technique or life inside the field.',
+  { v: '5',  p: '',  l: 'Career sessions hosted',
+    p2: 'Each one a 90-minute live session with professionals sharing what their careers actually look like.',
     startP: 0.55, endP: 0.70 },
-  { v: '12', p: '',  l: 'Active mentors',
-    p2: 'Doctors, residents and alumni answering questions every week, year-round.',
+  { v: '9',  p: '/10', l: 'Average session rating',
+    p2: 'From post-session surveys across all cohorts — rated by students on clarity and usefulness.',
     startP: 0.65, endP: 0.80 },
-  { v: '98', p: '%', l: 'Would recommend',
-    p2: 'From post-session surveys across all five cohorts. The other 2% wanted more time.',
+  { v: '300', p: '+', l: 'Community members',
+    p2: 'Students, mentors and alumni who keep showing up — and keep sending others our way.',
     startP: 0.75, endP: 0.90 },
 ];
 
@@ -20,7 +20,7 @@ export function Impact() {
   const innerRef = useRef(null);
   const progress = useScrollProgress(wrapRef);
   const inView = useInView(wrapRef, { threshold: 0.05, once: true });
-  const count = useCountUp(300, inView, { duration: 1800 });
+  const count = useCountUp(2000, inView, { duration: 1800 });
 
   const numScale = 0.7 + Math.min(0.4, progress * 1) * 0.75;
   const numOpacity = Math.min(1, progress * 4);
@@ -67,8 +67,8 @@ export function Impact() {
             style={{ opacity: quoteOpacity, transform: `translateY(${quoteY}px) rotate(2deg)` }}
           >
             <span className="impact-quote-mark">&ldquo;</span>
-            Inspiring. Life-changing. I finally knew what to study for — and
-            what kind of doctor I wanted to be.
+            Inspiring. Life-changing. I finally knew what direction to go — and
+            what kind of professional I wanted to become.
             <small>— PARTICIPANT · SESSION 04 · WESLEY GIRLS&apos;</small>
           </div>
 

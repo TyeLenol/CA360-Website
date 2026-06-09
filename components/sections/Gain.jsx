@@ -42,8 +42,8 @@ export function Gain() {
             Three things you walk away with — <em>every time</em>.
           </h2>
           <p className="gain-sub" data-reveal data-reveal-delay="2">
-            Whether you came for medicine, or you came for the room, these are
-            the things you take home.
+            Whether you came for clarity, or you came for the community, these
+            are the things you take home.
           </p>
         </div>
 

@@ -3,22 +3,18 @@
 import { ArrowRight } from '../shared/Icons';
 
 const programs = [
-  { n: '01', side: 'left',  tag: 'CORE · MONTHLY',
-    title: 'Virtual sessions',
-    desc: 'Live cohort calls with doctors, students and admissions officers, every six weeks. Bring your questions, walk out with a plan.',
-    bullets: ['90-minute live calls', 'Open Q&A with mentors', 'Recordings stay free'] },
-  { n: '02', side: 'right', tag: 'CORE · ROLLING',
-    title: '1:1 mentorship matching',
-    desc: 'Paired with a mentor who walked your exact path two or three years before you — same school, same field, similar starting point.',
-    bullets: ['Hand-matched within 14 days', '3-month minimum', 'Voice notes, calls, WhatsApp'] },
-  { n: '03', side: 'left',  tag: 'IN PERSON',
-    title: 'School visits',
-    desc: 'In-person sessions inside SHS classrooms and university lecture halls — by invitation from a teacher, dean, or student rep.',
-    bullets: ['Half-day or full-day', 'Open to all forms', 'Free for partner schools'] },
-  { n: '04', side: 'right', tag: 'OPEN ACCESS',
-    title: 'Resource hub',
-    desc: "Guides, recorded sessions and reading lists that stay free forever. Built from every session we've ever run.",
-    bullets: ['Recorded session library', 'Field-specific reading lists', 'Application timelines'] },
+  { n: '01', side: 'left',  tag: 'VIRTUAL · CAREER-BASED',
+    title: 'Virtual programmes',
+    desc: 'Live career sessions with professionals, alumni and industry guests — every cohort, every six weeks. Bring your questions, walk out with a plan.',
+    bullets: ['90-minute live career sessions', 'Open Q&A with working professionals', 'Recordings shared with registered members'] },
+  { n: '02', side: 'right', tag: 'IN PERSON · SCHOOLS',
+    title: 'Schools outreach',
+    desc: 'In-person career talks at SHS classrooms and university halls — by invitation from teachers, deans and student reps across Ghana.',
+    bullets: ['Half-day and full-day formats', 'Open to all year groups', 'Free for partner institutions'] },
+  { n: '03', side: 'left',  tag: 'COMING SOON',
+    title: '1:1 mentorship',
+    desc: 'Personalised matching with a mentor who has walked a similar path — same field, similar background, a few years ahead of you.',
+    bullets: ['Hand-matched to your goals', 'Structured 3-month programme', 'Expressions of interest now open'] },
 ];
 
 export function Programs() {
@@ -27,7 +23,7 @@ export function Programs() {
       <div className="programs-head">
         <div className="sec-eyebrow" data-reveal>04 — What we do</div>
         <h2 className="programs-title" data-reveal data-reveal-delay="1">
-          Four ways mentorship<br /><em>actually</em> happens.
+          Three ways mentorship<br /><em>actually</em> happens.
         </h2>
       </div>
 

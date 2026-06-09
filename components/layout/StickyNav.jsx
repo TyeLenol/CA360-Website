@@ -75,7 +75,7 @@ export function StickyNav() {
         </span>
         <span className="nav-brand-text">
           Career Arcadia 360
-          <small>mentorship that shows up</small>
+          <small>Guiding futures, unlocking potential</small>
         </span>
       </a>
 

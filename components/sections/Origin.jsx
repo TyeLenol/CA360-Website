@@ -33,9 +33,10 @@ export function Origin() {
 
             <p className="origin-body" data-reveal data-reveal-delay="4">
               A young Ghanaian medical doctor started CA360 with a single
-              session for friends of friends. Five sessions later, with 300+
-              students in, the dream is the same: nobody should have to guess
-              what their career actually looks like before they walk into it.
+              session for friends of friends. Five sessions later, with 2,000+
+              students reached across Ghana, the dream is the same: nobody
+              should have to guess what their career actually looks like before
+              they walk into it.
             </p>
 
             <div className="origin-attr" data-reveal data-reveal-delay="5">

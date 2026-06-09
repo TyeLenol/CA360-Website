@@ -113,7 +113,7 @@ function JournalHero() {
           <div className="sec-eyebrow" data-reveal>The blog</div>
           <div className="jh-hero-side" data-reveal data-reveal-delay="1">
             A quarterly on mentorship,<br />
-            <em>medicine, and the life after SHS.</em>
+            <em>careers, and the life after SHS.</em>
           </div>
         </div>
 

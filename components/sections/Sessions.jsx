@@ -6,24 +6,24 @@ import { PhotoPlaceholder } from '../shared/Placeholders';
 import { useInView } from '../../hooks/ui-hooks';
 
 const SESSIONS = [
-  { id: 's5', num: '05', date: 'FEB 2026', cat: 'MEDICINE', tone: 'teal',
-    title: 'Inside the white coat: what the first clinical year actually feels like.',
-    body: 'Three house officers walked our cohort through their first 12 months on the ward — the wins, the burnout, the moments they almost quit.',
-    venue: 'University of Ghana Medical School · Korle Bu',
+  { id: 's5', num: '05', date: 'FEB 2026', cat: 'CAREER TALK', tone: 'teal',
+    title: 'What your career actually looks like — from people living it.',
+    body: 'Professionals across three fields broke down what their first year post-university really looked like — the unexpected parts, the things nobody tells you.',
+    venue: 'University of Ghana · Legon',
     duration: '90 min · live', attendees: 78 },
-  { id: 's4', num: '04', date: 'DEC 2025', cat: 'STUDY', tone: 'orange',
-    title: 'Study technique for SHS-3 science students.',
-    body: 'Active recall, spaced practice, and how to read a textbook without falling asleep in the WAEC home stretch.',
+  { id: 's4', num: '04', date: 'DEC 2025', cat: 'SCHOOLS OUTREACH', tone: 'orange',
+    title: 'Career conversations for SHS-3 students — before the pressure decides for you.',
+    body: 'An in-person career talk for final-year students navigating choices before WASSCE results. Real voices, no scripts.',
     venue: "Wesley Girls' SHS · Cape Coast",
     duration: '120 min · in person', attendees: 62 },
-  { id: 's3', num: '03', date: 'OCT 2025', cat: 'LIFE', tone: 'deep',
-    title: "Life outside medicine — yes, you're allowed.",
-    body: 'Doctors who write, run startups, and parent — on holding more than one identity at once.',
+  { id: 's3', num: '03', date: 'OCT 2025', cat: 'CAREER PATHS', tone: 'deep',
+    title: 'There is no one path — navigating multiple directions at once.',
+    body: 'Professionals who pivoted, combined fields, or carved their own routes — on building a career that fits you, not just a CV.',
     venue: 'KNUST · Kumasi',
     duration: '90 min · live', attendees: 54 },
   { id: 's2', num: '02', date: 'JUL 2025', cat: 'ADMISSIONS', tone: 'warm',
-    title: 'Cracking the med school application — every form, demystified.',
-    body: 'GMAC, UGMS, KNUST, UCC: deadlines, essays, interviews, and the mistakes that quietly cost places.',
+    title: 'Getting in — navigating tertiary applications across Ghana.',
+    body: 'KNUST, UG, UCC and beyond: deadlines, requirements, interviews and the decisions that quietly determine where you end up.',
     venue: 'Online · open cohort',
     duration: '60 min · live', attendees: 64 },
   { id: 's1', num: '01', date: 'APR 2025', cat: 'KICKOFF', tone: 'soft',
@@ -129,9 +129,7 @@ export function Sessions() {
               className={'sessions-dot' + (i === active ? ' is-active' : '')}
               onClick={() => setActive(i)}
               aria-label={'Go to session ' + s.num}
-            >
-              <span className="sessions-dot-label">№ {s.num}</span>
-            </button>
+            />
           ))}
         </div>
         <button className="sessions-arrow" onClick={next} aria-label="Next session">

@@ -1,45 +1,54 @@
 "use client";
 
-const fields = [
-  { id: 1, active: true,  name: 'Medicine',    stage: '● 2024 · LIVE NOW',  yr: 'COHORT 06 OPEN',
-    desc: 'SHS to med school. Admissions, study technique, life beyond the white coat.' },
-  { id: 2, active: false, name: 'Law',         stage: 'Q2 2026',            yr: 'COMING SOON',
-    desc: 'Pre-law preparation, faculty navigation, building a public voice.' },
-  { id: 3, active: false, name: 'Engineering', stage: 'Q4 2026',            yr: 'PLANNED',
-    desc: 'Choosing a track, the maths, internships and the first job.' },
-  { id: 4, active: false, name: 'Business',    stage: '2027',               yr: 'PLANNED',
-    desc: 'Founders, finance, consulting and the underrated paths between.' },
+import { ArrowRight } from '../shared/Icons';
+
+const bulletins = [
+  { id: 'b1', tag: 'COHORT 06 · OPEN NOW', date: 'JUN 2026',
+    headline: 'Virtual career sessions — registration now open for the next cohort.',
+    sub: 'Live 90-minute sessions with working professionals. Open to SHS and university students across Ghana.' },
+  { id: 'b2', tag: 'SCHOOLS OUTREACH', date: 'MAY 2026',
+    headline: 'Five new partner schools onboarded across Accra, Kumasi and Cape Coast.',
+    sub: 'In-person career talks are back in classrooms. Schools can apply to be a partner institution.' },
+  { id: 'b3', tag: '1:1 MENTORSHIP', date: 'APR 2026',
+    headline: '1:1 mentorship programme in development — expressions of interest now open.',
+    sub: 'Personalised mentoring matched to your field and goals. Coming soon to early applicants.' },
+  { id: 'b4', tag: 'COMMUNITY', date: 'MAR 2026',
+    headline: '300+ community members and growing — thank you for being part of this.',
+    sub: 'From our first session of 42 students to a community that keeps showing up and sending others our way.' },
 ];
 
 export function Fields() {
   return (
     <section id="fields" className="fields-sec">
       <div className="fields-head">
-        <div className="sec-eyebrow" data-reveal>03 — The roadmap</div>
+        <div className="sec-eyebrow" data-reveal>03 — What&apos;s happening</div>
         <h2 className="fields-title" data-reveal data-reveal-delay="1">
-          One field <em>live</em>.<br />Three on the runway.
+          Latest from <em>CA360</em>.
         </h2>
         <p className="fields-note" data-reveal data-reveal-delay="2">
-          We grow depth-first. A new field opens only when we have mentors who&apos;ve
-          actually lived it — never before.
+          Updates from our sessions, programmes and community — as they happen.
         </p>
       </div>
 
-      <div className="fields-grid">
-        {fields.map((f, i) => (
-          <div
-            key={f.id}
-            className={'fields-card' + (f.active ? ' is-active' : '')}
-            data-reveal
-            data-reveal-delay={i + 1}
+      <div className="fields-bulletin" data-reveal data-reveal-delay="3">
+        {bulletins.map((b) => (
+          <a
+            key={b.id}
+            href="#"
+            className="fields-bulletin-item"
           >
-            <div className="fields-stage">{f.stage}</div>
-            <h3 className="fields-name">
-              {f.active ? f.name : <em>{f.name}</em>}
-            </h3>
-            <p className="fields-desc">{f.desc}</p>
-            <div className="fields-yr">{f.yr}</div>
-          </div>
+            <div className="fields-bulletin-meta">
+              <span className="fields-bulletin-tag">{b.tag}</span>
+              <span className="fields-bulletin-date">{b.date}</span>
+            </div>
+            <div className="fields-bulletin-body">
+              <h3 className="fields-bulletin-headline">{b.headline}</h3>
+              <p className="fields-bulletin-sub">{b.sub}</p>
+            </div>
+            <span className="fields-bulletin-arrow">
+              <ArrowRight size={16} />
+            </span>
+          </a>
         ))}
       </div>
     </section>

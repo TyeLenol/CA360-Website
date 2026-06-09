@@ -9,9 +9,9 @@ export function Hero() {
       <div className="hero-ticker" aria-hidden="true">
         <div className="hero-ticker-track">
           {Array.from({ length: 3 }).flatMap((_, i) => [
-            <span key={i + '-a'}><Star size={10} color="#d68307" /> NOW ENROLLING · MEDICINE COHORT 06</span>,
-            <span key={i + '-b'}><Star size={10} color="#d68307" /> 5 SESSIONS · 300+ STUDENTS REACHED</span>,
-            <span key={i + '-c'}><Star size={10} color="#d68307" /> NEXT TRACKS · LAW · ENGINEERING · BUSINESS</span>,
+            <span key={i + '-a'}><Star size={10} color="#d68307" /> NOW ENROLLING · COHORT 06 OPEN</span>,
+            <span key={i + '-b'}><Star size={10} color="#d68307" /> 2000+ STUDENTS REACHED ACROSS GHANA</span>,
+            <span key={i + '-c'}><Star size={10} color="#d68307" /> 300+ COMMUNITY MEMBERS · 9/10 AVG RATING</span>,
           ])}
         </div>
       </div>
@@ -43,7 +43,7 @@ export function Hero() {
           <div className="hero-foot-left">
             <p>
               Real guidance. Real mentors. Real clarity — for students stepping
-              into medicine, law, engineering and business with nobody to ask.
+              into their careers with nobody to show them the way.
             </p>
             <div className="hero-cta">
               <a className="btn btn-primary">

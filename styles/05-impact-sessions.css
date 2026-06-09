@@ -217,8 +217,8 @@
 
 .sessions-carousel {
   position: relative;
-  height: 620px;
-  margin: 0 auto 60px;
+  height: 500px;
+  margin: 0 auto 22px;
   perspective: 1400px;
 }
 .sessions-card {
@@ -328,7 +328,7 @@
   justify-content: center;
   align-items: center;
   gap: 32px;
-  margin-top: 32px;
+  margin-top: 0;
 }
 .sessions-arrow {
   width: 56px; height: 56px;
@@ -363,15 +363,3 @@
   background: var(--c-orange);
   border-radius: 999px;
 }
-.sessions-dot-label {
-  position: absolute;
-  bottom: -22px; left: 50%;
-  transform: translateX(-50%);
-  font: 700 10px var(--font-mono);
-  letter-spacing: 0.1em;
-  color: var(--c-muted);
-  opacity: 0;
-  transition: opacity 0.3s;
-  white-space: nowrap;
-}
-.sessions-dot.is-active .sessions-dot-label { opacity: 1; color: var(--c-orange); }

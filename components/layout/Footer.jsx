@@ -7,7 +7,7 @@ export function Footer() {
   const wrapRef = useRef(null);
   const inView = useInView(wrapRef, { threshold: 0.1, once: false });
   // Word-by-word reveal for the mega line
-  const phrase = ['From', 'SHS,', 'to','somewhere', 'real.'];
+  const phrase = ['Guiding', 'futures,', 'unlocking', 'potentials.'];
 
   return (
     <footer className="footer-sec" ref={wrapRef}>
@@ -15,7 +15,7 @@ export function Footer() {
         {phrase.map((w, i) => (
           <span
             key={i}
-            className={'footer-mega-word' + (w === 'somewhere' ? ' is-em' : '')}
+            className={'footer-mega-word' + (w === 'potentials.' ? ' is-em' : '')}
             style={{ transitionDelay: (i * 110) + 'ms' }}
           >
             {w}
