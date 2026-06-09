@@ -383,22 +383,15 @@
 /* === SCROLL CUE (140vh — text-based, teal bleeds in only at the very end) === */
 .jscrollcue {
   position: relative;
-  height: 140vh;
-  min-height: 800px;
-  /* Teal bleed delayed to 75%+ so the text is fully visible before contrast degrades */
-  background: linear-gradient(to bottom,
-    var(--c-paper) 0%,
-    var(--c-paper) 74%,
-    rgba(13, 43, 56, 0.14) 84%,
-    rgba(13, 43, 56, 0.52) 92%,
-    var(--c-teal-deep) 100%);
-  overflow: hidden;
+  height: 160vh;
+  min-height: 900px;
+  background: var(--c-paper);
   pointer-events: none;
 }
-.jscrollcue-sticky {
-  position: sticky;
-  top: 80px;
-  height: calc(100vh - 80px);
+.jscrollcue-panel {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -406,6 +399,7 @@
   gap: 16px;
   padding: 0 var(--gutter);
   text-align: center;
+  pointer-events: none;
 }
 .jscrollcue-part1 {
   font: 400 italic clamp(26px, 3.6vw, 50px)/1.2 var(--font-serif);
@@ -423,8 +417,10 @@
   margin: 0;
 }
 
-/* === GRID SECTION (dark teal, continuous with bridge bottom) === */
+/* === GRID SECTION — z-index 2 so it physically slides over the fixed scroll cue text === */
 .jgrid-sec {
+  position: relative;
+  z-index: 2;
   background: var(--c-teal-deep);
   color: var(--c-cream);
 }
@@ -631,18 +627,23 @@
   border-color: var(--c-cream);
 }
 
-/* === DRIFT BAND (240vh — long letters + airplane animation) === */
+/* === DRIFT LEAD — breathing room between articles and drift === */
+.jdrift-lead {
+  height: 180px;
+  background: var(--c-teal-deep);
+}
+
+/* === DRIFT BAND (letters + airplane animation) === */
 .jdrift {
   position: relative;
-  height: 240vh;
-  min-height: 1100px;
+  height: 320vh;
+  min-height: 1500px;
   background: linear-gradient(to bottom,
     var(--c-teal-deep) 0%,
-    var(--c-teal-deep) 30%,
-    #5a2a05 62%,
-    #8b3e08 78%,
+    var(--c-teal-deep) 60%,
+    var(--c-orange) 67%,
     var(--c-orange) 100%);
-  overflow: hidden;
+  overflow: clip;
   pointer-events: none;
 }
 .jdrift-sticky {
@@ -654,6 +655,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.jdrift-orange-flood {
+  position: absolute;
+  inset: 0;
+  background: var(--c-orange);
+  pointer-events: none;
+  z-index: 10;
 }
 .jdrift-stripe {
   position: absolute;
@@ -721,16 +729,16 @@
   will-change: transform, opacity;
 }
 
-/* === NEWSLETTER (200vh, longer gradient hand-off to footer) === */
+/* === NEWSLETTER (160vh — tighter, dark stays late so text stays readable) === */
 .jnews-sec {
   position: relative;
-  height: 200vh;
-  min-height: 1400px;
+  height: 160vh;
+  min-height: 1100px;
   background: linear-gradient(to bottom,
     var(--c-orange) 0%,
-    var(--c-orange) 48%,
-    #7a3606 72%,
-    #3a1a06 88%,
+    var(--c-orange) 58%,
+    #7a3606 80%,
+    #3a1a06 92%,
     var(--c-ink) 100%);
   padding: 0;
 }
@@ -743,6 +751,7 @@
   align-items: center;
   justify-content: center;
   padding: 0 var(--gutter);
+  background: var(--c-orange);
 }
 .jnews-inset {
   background: transparent;

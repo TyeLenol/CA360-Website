@@ -269,30 +269,40 @@ function JournalFeatured({ article }) {
 function JournalScrollCue() {
   const ref = useRef(null);
   const prog = useScrollProgress(ref);
+  const [coverAlpha, setCoverAlpha] = useState(1);
 
-  // Part 1 fades out, then part 2 arrives very late so the grid follows immediately after
-  const p1      = Math.max(0, Math.min(1, (prog - 0.05) / 0.34));
-  const p1fade  = 1 - Math.max(0, Math.min(1, (prog - 0.46) / 0.18));
-  const p2      = Math.max(0, Math.min(1, (prog - 0.68) / 0.22));
+  useEffect(() => {
+    const update = () => {
+      const el = ref.current;
+      if (!el) return;
+      // Grid covers text center when grid top reaches viewport center.
+      // rect.bottom is section bottom in viewport coords → add scrollY = section doc bottom.
+      // Subtract half viewport to get the scroll position where grid top = screen center.
+      const rect = el.getBoundingClientRect();
+      const coverAt = window.scrollY + rect.bottom - window.innerHeight * 0.5;
+      const alpha = 1 - Math.max(0, Math.min(1, (window.scrollY - coverAt) / (window.innerHeight * 0.35)));
+      setCoverAlpha(alpha);
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, []);
+
+  const p1 = Math.max(0, Math.min(1, (prog - 0.03) / 0.14));
+  const p2 = Math.max(0, Math.min(1, (prog - 0.20) / 0.14));
 
   return (
     <section className="jscrollcue" ref={ref}>
-      <div className="jscrollcue-sticky">
+      <div className="jscrollcue-panel" style={{ opacity: coverAlpha }}>
         <p
           className="jscrollcue-part1"
-          style={{
-            opacity: p1 * p1fade,
-            transform: `translateY(${((1 - p1) * 32).toFixed(1)}px)`,
-          }}
+          style={{ opacity: p1, transform: `translateY(${((1 - p1) * 32).toFixed(1)}px)` }}
         >
           Keep scrolling to see
         </p>
         <p
           className="jscrollcue-part2"
-          style={{
-            opacity: p2,
-            transform: `translateY(${((1 - p2) * 32).toFixed(1)}px)`,
-          }}
+          style={{ opacity: p2, transform: `translateY(${((1 - p2) * 32).toFixed(1)}px)` }}
         >
           ...the blog content.
         </p>
@@ -364,6 +374,7 @@ function JournalDrift() {
   const prog = useScrollProgress(ref);
   const pathRef = useRef(null);
   const [planePos, setPlanePos] = useState({ x: 0, y: 0, angle: 0, len: 1 });
+  const [approachP, setApproachP] = useState(0);
 
   useEffect(() => {
     if (pathRef.current) {
@@ -372,11 +383,22 @@ function JournalDrift() {
     }
   }, []);
 
+  // Tracks section_rect.top to animate letters during the approach phase (before pinning)
+  useEffect(() => {
+    const update = () => {
+      if (!ref.current) return;
+      const r = ref.current.getBoundingClientRect();
+      setApproachP(Math.max(0, Math.min(1, 1 - r.top / window.innerHeight)));
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, []);
+
   useEffect(() => {
     if (!pathRef.current) return;
     const len = pathRef.current.getTotalLength();
-    // Plane traces 8%→88% of the section — section is now 240vh so this is a long journey
-    const t = Math.max(0, Math.min(1, (prog - 0.08) / 0.80));
+    const t = Math.max(0, Math.min(1, prog / 0.53));
     const pt = pathRef.current.getPointAtLength(t * len);
     const ptAhead = pathRef.current.getPointAtLength(Math.min(len, t * len + 6));
     const angle = Math.atan2(ptAhead.y - pt.y, ptAhead.x - pt.x) * 180 / Math.PI;
@@ -384,16 +406,18 @@ function JournalDrift() {
   }, [prog]);
 
   const dashLen = planePos.len;
-  const trail = Math.max(0, Math.min(1, (prog - 0.08) / 0.80)) * dashLen;
-  const titleP = Math.max(0, Math.min(1, (prog - 0.08) / 0.32));
-  const subP   = Math.max(0, Math.min(1, (prog - 0.46) / 0.30));
-  const titleY = (1 - titleP) * 40;
-  const subY   = (1 - subP) * 30;
+  const trail    = Math.max(0, Math.min(1, prog / 0.53)) * dashLen;
+  const titleP   = approachP;
+  const subP     = Math.max(0, Math.min(1, (prog - 0.65) / 0.07));
+  const exitFade = 1 - Math.max(0, Math.min(1, (prog - 0.65) / 0.25));
+  const titleY   = (1 - titleP) * 40;
+  const subY     = (1 - subP) * 30;
 
   return (
     <section className="jdrift" ref={ref} aria-hidden="true">
       <div className="jdrift-sticky">
-        <div className="jdrift-stripe">
+        <div className="jdrift-orange-flood" style={{ opacity: 1 - exitFade }} />
+        <div className="jdrift-stripe" style={{ opacity: exitFade }}>
           <span className="jdrift-mark">—— STAY IN THE LOOP ——</span>
         </div>
 
@@ -402,11 +426,10 @@ function JournalDrift() {
             ref={pathRef}
             className="jdrift-flight-path"
             d="M -40 480 C 200 460, 280 200, 480 250 S 800 460, 980 280 S 1200 80, 1280 60"
-            fill="none" stroke="#d68307" strokeWidth="1.8" strokeLinecap="round"
+            fill="none" stroke="#fef9ee" strokeWidth="1.8" strokeLinecap="round"
             strokeDasharray="4 8"
             style={{ strokeDashoffset: (dashLen - trail).toFixed(1) }}
           />
-          {/* Only render once path length is known — avoids flash at SVG origin */}
           {planePos.len > 1 && (
             <g
               className="jdrift-plane"
@@ -446,6 +469,18 @@ function JournalNewsletter() {
   const prog = useScrollProgress(ref);
   const [email, setEmail] = useState('');
   const [done, setDone] = useState(false);
+  const [approachP, setApproachP] = useState(0);
+
+  useEffect(() => {
+    const update = () => {
+      if (!ref.current) return;
+      const r = ref.current.getBoundingClientRect();
+      setApproachP(Math.max(0, Math.min(1, 1 - r.top / window.innerHeight)));
+    };
+    update();
+    window.addEventListener('scroll', update, { passive: true });
+    return () => window.removeEventListener('scroll', update);
+  }, []);
 
   const submit = (e) => {
     e.preventDefault();
@@ -457,11 +492,11 @@ function JournalNewsletter() {
   };
 
   const reveal = (lo, hi) => Math.max(0, Math.min(1, (prog - lo) / (hi - lo)));
-  const tagP   = reveal(0.08, 0.26);
-  const titleP = reveal(0.22, 0.44);
-  const subP   = reveal(0.38, 0.58);
-  const formP  = reveal(0.52, 0.70);
-  const sideP  = reveal(0.60, 0.78);
+  const tagP   = approachP;
+  const titleP = Math.max(0, Math.min(1, (approachP - 0.35) / 0.65));
+  const subP   = reveal(0.05, 0.20);
+  const formP  = reveal(0.18, 0.35);
+  const sideP  = reveal(0.30, 0.50);
 
   const arrive = (p) => ({
     opacity: p,
@@ -540,6 +575,7 @@ export function JournalPage() {
         </div>
       </section>
 
+      <div className="jdrift-lead" aria-hidden="true" />
       <JournalDrift />
       <JournalNewsletter />
     </main>
