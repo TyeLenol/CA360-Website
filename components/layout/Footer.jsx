@@ -7,7 +7,7 @@ export function Footer() {
   const wrapRef = useRef(null);
   const inView = useInView(wrapRef, { threshold: 0.1, once: false });
   // Word-by-word reveal for the mega line
-  const phrase = ['From', 'SHS,', 'somewhere', 'real.'];
+  const phrase = ['From', 'SHS,', 'to','somewhere', 'real.'];
 
   return (
     <footer className="footer-sec" ref={wrapRef}>

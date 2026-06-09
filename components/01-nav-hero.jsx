@@ -97,21 +97,9 @@ function Hero() {
   return (
     <section id="home" className="hero">
       {/* Top ticker — borrowed from Manifesto for credibility band */}
-      <div className="hero-ticker" aria-hidden="true">
-        <div className="hero-ticker-track">
-          {Array.from({ length: 3 }).flatMap((_, i) => [
-            <span key={i + '-a'}><Star size={10} color="#d68307" /> NOW ENROLLING · MEDICINE COHORT 06</span>,
-            <span key={i + '-b'}><Star size={10} color="#d68307" /> 5 SESSIONS · 300+ STUDENTS REACHED</span>,
-            <span key={i + '-c'}><Star size={10} color="#d68307" /> NEXT TRACKS · LAW · ENGINEERING · BUSINESS</span>,
-          ])}
-        </div>
-      </div>
+     
 
       <div className="hero-stage">
-        <div className="hero-eyebrow" data-reveal>
-          <Star size={10} color="#d68307" />
-          A mentorship NGO for SHS graduates
-        </div>
 
         <h1 className="hero-headline">
           <span data-reveal>From SHS</span>

@@ -1,0 +1,1068 @@
+/* ============================================================
+   THE GALLERY — styles
+   BBBS human-connection content × Ahadi Foundation numbered
+   album structure. Dark hero, white filmstrip, dark grid,
+   full-bleed featured quote, light story cards, teal CTA.
+   ============================================================ */
+
+.gallery-page {
+  padding-top: 80px;
+  background: var(--c-paper);
+}
+
+/* data-reveal base inside gallery */
+.gallery-page [data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.65s ease, transform 0.65s ease;
+}
+.gallery-page [data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── HERO (150vh, pinned) ────────────────────────────────── */
+.gh-hero {
+  position: relative;
+  height: 150vh;
+  min-height: 900px;
+}
+
+.gh-hero-sticky {
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 80px);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 var(--gutter) 56px;
+}
+
+/* 3×3 mosaic of placeholder tiles — the "gallery wall" behind the title */
+.gh-hero-bgrid {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 3px;
+  transform-origin: center center;
+}
+.gh-bgtile { width: 100%; height: 100%; }
+.gh-bgtile--0 { background: linear-gradient(135deg, #1f4a5e 0%, #36728f 100%); }
+.gh-bgtile--1 { background: linear-gradient(135deg, #d68307 0%, #b86d04 100%); }
+.gh-bgtile--2 { background: linear-gradient(135deg, #36728f 0%, #c6e0e8 100%); }
+.gh-bgtile--3 { background: linear-gradient(135deg, #0a1f29 0%, #1f4a5e 100%); }
+.gh-bgtile--4 { background: linear-gradient(135deg, #b86d04 0%, #d68307 100%); }
+.gh-bgtile--5 { background: linear-gradient(135deg, #7aa3b4 0%, #36728f 100%); }
+.gh-bgtile--6 { background: linear-gradient(135deg, #1f4a5e 0%, #0a1f29 100%); }
+.gh-bgtile--7 { background: linear-gradient(135deg, #c6e0e8 0%, #7aa3b4 100%); }
+.gh-bgtile--8 { background: linear-gradient(135deg, #d68307 0%, #f9e7c8 100%); }
+
+/* dark veil so text is always readable */
+.gh-hero-veil {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 31, 41, 0.55) 0%,
+    rgba(10, 31, 41, 0.25) 45%,
+    rgba(10, 31, 41, 0.80) 100%
+  );
+}
+
+.gh-hero-inner {
+  position: relative;
+  z-index: 2;
+  margin-bottom: 20px;
+}
+
+.gh-hero-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: var(--c-orange);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.gh-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(64px, min(18vw, 22vh), 240px);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--c-paper);
+  margin: 0;
+  animation: gh-title-in 0.95s cubic-bezier(0.16, 1, 0.3, 1) 0.05s both;
+}
+
+@keyframes gh-title-in {
+  from { opacity: 0; transform: translateY(50px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.gh-hero-sub {
+  font-family: var(--font-ui);
+  font-size: clamp(15px, 1.5vw, 20px);
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+  margin-top: 20px;
+  letter-spacing: 0.01em;
+}
+
+/* animated scroll cue */
+.gh-hero-cue {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.75);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.gh-cue-track {
+  width: 52px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.30);
+  border-radius: 1px;
+  overflow: hidden;
+}
+
+.gh-cue-thumb {
+  width: 40%;
+  height: 100%;
+  background: var(--c-orange);
+  border-radius: 1px;
+  animation: gh-cue-bounce 2.2s ease-in-out infinite alternate;
+}
+
+@keyframes gh-cue-bounce {
+  from { transform: translateX(0); }
+  to   { transform: translateX(150%); }
+}
+
+/* ── FILMSTRIP (280vh, pinned) ───────────────────────────── */
+/* Ahadi-style numbered album carousel × BBBS named-pairs content */
+
+.gstrip-wrap {
+  height: 280vh;
+  min-height: 1400px;
+}
+
+.gstrip-sticky {
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 80px);
+  background: var(--c-paper);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-top: 36px;
+  border-bottom: 1px solid var(--c-rule);
+}
+
+.gstrip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--gutter) 24px;
+  flex-shrink: 0;
+}
+
+.gstrip-section-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--c-muted);
+  text-transform: uppercase;
+}
+
+/* Ahadi-style numbered counter — the signature element */
+.gstrip-counter {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--c-teal);
+  letter-spacing: 0.04em;
+}
+
+.gstrip-counter-active {
+  color: var(--c-ink);
+}
+
+.gstrip-counter-sep {
+  color: var(--c-muted);
+  font-weight: 400;
+}
+
+/* viewport: clips horizontal overflow, fills remaining height */
+.gstrip-viewport {
+  flex: 1;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.gstrip-rail {
+  display: flex;
+  gap: 24px;
+  height: 100%;
+  padding-left: var(--gutter);
+  padding-bottom: 20px;
+  align-items: stretch;
+  will-change: transform;
+}
+
+/* each tile: Ahadi's clean structure, BBBS's human labeling */
+.gstrip-tile {
+  flex-shrink: 0;
+  width: clamp(280px, calc(100vw - 144px), 1020px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.gstrip-tile-photo {
+  flex: 1;
+  min-height: 0;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 24px rgba(22, 50, 60, 0.06);
+}
+
+/* active tile breathes forward — cinematic focus */
+.gstrip-tile.is-active .gstrip-tile-photo {
+  transform: scale(1.018);
+  box-shadow: 0 12px 48px rgba(22, 50, 60, 0.14);
+}
+
+.gstrip-tile-photo .ph {
+  width: 100%;
+  height: 100%;
+}
+
+/* large ghost number stamped on each tile — Ahadi influence */
+.gstrip-tile-num {
+  position: absolute;
+  bottom: 20px;
+  left: 24px;
+  font-family: var(--font-display);
+  font-size: clamp(64px, 9vw, 120px);
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.14);
+  line-height: 1;
+  letter-spacing: -0.05em;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* tile footer: BBBS named-pair labeling */
+.gstrip-tile-foot {
+  flex-shrink: 0;
+  padding-bottom: 4px;
+}
+
+.gstrip-tile-albumname {
+  font-family: var(--font-display);
+  font-size: clamp(17px, 1.6vw, 22px);
+  font-weight: 700;
+  color: var(--c-ink);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.gstrip-tile-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.gstrip-tile-desc {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--c-muted);
+  text-transform: uppercase;
+}
+
+.gstrip-tile-dot {
+  width: 3px;
+  height: 3px;
+  background: var(--c-muted);
+  border-radius: 50%;
+  opacity: 0.5;
+}
+
+.gstrip-tile-pair {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--c-teal);
+  font-weight: 500;
+}
+
+/* Ahadi-style progress bar at the bottom */
+.gstrip-progress-bar {
+  height: 2px;
+  background: var(--c-rule);
+  margin: 0 var(--gutter);
+  border-radius: 1px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.gstrip-progress-fill {
+  height: 100%;
+  background: var(--c-orange);
+  border-radius: 1px;
+  transition: width 0.18s ease;
+}
+
+/* ── GRID (auto, dark, filter + staggered data-reveal) ──── */
+/* BBBS card grid × Ahadi white-space breathing rhythm */
+
+.ggrid-section {
+  background: var(--c-teal-darker);
+  padding-bottom: 88px;
+}
+
+/* sticky dark filter bar — unified with grid */
+.ggrid-filter-bar {
+  position: sticky;
+  top: 80px;
+  z-index: 10;
+  background: var(--c-teal-darker);
+  padding: 20px var(--gutter);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.ggrid-filter-btn {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 8px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  color: rgba(255, 255, 255, 0.5);
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.ggrid-filter-btn:hover {
+  border-color: var(--c-orange);
+  color: var(--c-orange);
+}
+
+.ggrid-filter-btn.is-active {
+  background: var(--c-orange);
+  border-color: var(--c-orange);
+  color: #fff;
+}
+
+/* 3-col mosaic — mix of tall and regular tiles (BBBS card grid) */
+.ggrid-mosaic {
+  padding: 36px var(--gutter) 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.ggrid-tile {
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* photo area */
+.ggrid-tile-photo {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
+}
+
+.ggrid-tile.is-tall .ggrid-tile-photo {
+  aspect-ratio: 3 / 4;
+}
+
+.ggrid-tile-photo .ph {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* hover: zoom + overlay slides up — BBBS style human info reveal */
+.ggrid-tile:hover .ggrid-tile-photo .ph {
+  transform: scale(1.05);
+}
+
+.ggrid-tile-hover {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 31, 41, 0.88) 0%, transparent 55%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 16px;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.ggrid-tile:hover .ggrid-tile-hover {
+  opacity: 1;
+  transform: none;
+}
+
+.ggrid-hover-name {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+.ggrid-hover-field {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--c-orange);
+  text-transform: uppercase;
+  margin-top: 3px;
+}
+
+/* tile footer: minimal label below photo */
+.ggrid-tile-foot {
+  padding: 8px 0 0;
+}
+
+.ggrid-tile-desc {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.35);
+  text-transform: uppercase;
+}
+
+/* stagger reveal per column — tiles arrive row by row */
+.ggrid-tile[data-reveal] {
+  opacity: 0;
+  transform: translateY(22px);
+  transition: opacity 0.55s ease, transform 0.55s ease;
+}
+.ggrid-tile[data-reveal].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── FEATURED (130vh, pinned) ────────────────────────────── */
+/* BBBS quote-over-image storytelling — full bleed, cinematic */
+
+.gfeat-wrap {
+  height: 130vh;
+  min-height: 800px;
+}
+
+.gfeat-sticky {
+  position: sticky;
+  top: 80px;
+  height: calc(100vh - 80px);
+  overflow: hidden;
+}
+
+/* the photo: scales toward camera on scroll */
+.gfeat-photo {
+  width: 100%;
+  height: 100%;
+  transform-origin: center center;
+  position: relative;
+}
+
+.gfeat-photo .ph {
+  width: 100%;
+  height: 100%;
+}
+
+/* progressive dark overlay */
+.gfeat-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 31, 41, 0.1) 0%,
+    rgba(10, 31, 41, 0.65) 60%,
+    rgba(10, 31, 41, 0.85) 100%
+  );
+}
+
+/* BBBS named-pair quote block */
+.gfeat-quote-block {
+  position: absolute;
+  bottom: 0;
+  left: var(--gutter);
+  right: var(--gutter);
+  padding-bottom: 56px;
+}
+
+.gfeat-quote {
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 4.5vw, 64px);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--c-paper);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  margin: 0 0 20px 0;
+  max-width: 780px;
+}
+
+.gfeat-attrib {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--c-orange);
+  text-transform: uppercase;
+}
+
+/* ── STORIES (auto) ──────────────────────────────────────── */
+/* Ahadi-style stacked story cards — image + tag + caption */
+
+.gstories-section {
+  background: var(--c-paper);
+  padding: 96px var(--gutter);
+}
+
+.gstories-header {
+  margin-bottom: 52px;
+}
+
+.gstories-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--c-orange);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.gstories-title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 800;
+  color: var(--c-ink);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+
+/* Ahadi 3-column stacked card layout */
+.gstories-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.gstory-card {
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--c-teal-tint);
+}
+
+.gstory-img {
+  aspect-ratio: 4 / 3;
+  position: relative;
+}
+
+.gstory-img .ph {
+  width: 100%;
+  height: 100%;
+}
+
+/* when used without PhotoPlaceholder — fallback coloring per tone */
+.gstory-card--teal .gstory-img   { background: linear-gradient(135deg, var(--c-teal-deep) 0%, var(--c-teal) 100%); }
+.gstory-card--orange .gstory-img { background: linear-gradient(135deg, var(--c-orange-deep) 0%, var(--c-orange) 100%); }
+.gstory-card--deep .gstory-img   { background: linear-gradient(135deg, var(--c-teal-darker) 0%, var(--c-teal-deep) 100%); }
+
+.gstory-body {
+  padding: 20px 20px 24px;
+}
+
+.gstory-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--c-teal);
+  background: var(--c-teal-tint);
+  border: 1px solid var(--c-teal-soft);
+  border-radius: 999px;
+  padding: 4px 10px;
+  margin-bottom: 12px;
+}
+
+.gstory-caption {
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--c-body);
+  font-weight: 400;
+}
+
+/* ── CTA (auto) ──────────────────────────────────────────── */
+
+.gcta-section {
+  background: var(--c-teal-deep);
+  padding: 96px var(--gutter);
+  text-align: center;
+}
+
+.gcta-inner {
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.gcta-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+
+.gcta-title {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 60px);
+  font-weight: 800;
+  color: var(--c-paper);
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  margin-bottom: 16px;
+}
+
+.gcta-sub {
+  font-family: var(--font-ui);
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-bottom: 36px;
+  line-height: 1.6;
+}
+
+.gcta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--c-orange);
+  color: #fff;
+  padding: 14px 32px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.gcta-btn:hover {
+  background: var(--c-orange-deep);
+  transform: translateY(-2px);
+}
+
+/* ── ALBUM OVERLAY ───────────────────────────────────────── */
+
+.galb-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+}
+
+.galb-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 31, 41, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* clips open from top — like a page being pulled down over the screen */
+.galb-panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.galb-panel.is-open {
+  clip-path: inset(0 0 0% 0);
+}
+
+/* ─ dark editorial header ─ */
+.galb-header {
+  flex-shrink: 0;
+  background: var(--c-teal-darker);
+  padding: 44px var(--gutter) 40px;
+  position: relative;
+  min-height: clamp(220px, 38vh, 360px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.galb-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--c-orange);
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+/* enormous left-bled title — intentionally editorial */
+.galb-title {
+  font-family: var(--font-display);
+  font-size: clamp(44px, 7.5vw, 112px);
+  font-weight: 800;
+  color: var(--c-paper);
+  letter-spacing: -0.04em;
+  line-height: 0.92;
+  margin: 0 0 22px 0;
+}
+
+/* Fraunces italic — literary, not a label */
+.galb-context {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(15px, 1.5vw, 20px);
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.65;
+  max-width: 620px;
+  font-weight: 400;
+  margin: 0;
+}
+
+/* Fraunces italic × — typographic close, not a button widget */
+.galb-close {
+  position: absolute;
+  top: 32px;
+  right: var(--gutter);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 52px;
+  font-weight: 400;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.5);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.3s ease;
+}
+
+.galb-close:hover {
+  color: var(--c-paper);
+  transform: rotate(90deg);
+}
+
+/* ─ photo grid: paper white, scrollable ─ */
+.galb-grid-wrap {
+  flex: 1;
+  overflow-y: auto;
+  background: var(--c-paper);
+  opacity: 0;
+  transition: opacity 0.4s ease 0.3s;
+}
+
+.galb-panel.is-open .galb-grid-wrap {
+  opacity: 1;
+}
+
+.galb-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  padding: 32px var(--gutter) 56px;
+}
+
+.galb-photo-tile {
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+  aspect-ratio: 4 / 3;
+}
+
+.galb-photo-tile .ph {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.galb-photo-tile:hover .ph {
+  transform: scale(1.05);
+}
+
+.galb-photo-hover {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 31, 41, 0.82) 0%, transparent 55%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 14px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
+}
+
+.galb-photo-tile:hover .galb-photo-hover {
+  opacity: 1;
+  transform: none;
+}
+
+.galb-photo-name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.galb-photo-caption {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--c-orange);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* ── LIGHTBOX ────────────────────────────────────────────── */
+
+.glbx-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  background: rgba(5, 14, 20, 0.96);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: glbx-in 0.25s ease;
+}
+
+@keyframes glbx-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.glbx-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 72px 80px 96px;
+}
+
+/* photo area — animates on each new photo */
+.glbx-photo-wrap {
+  flex: 1;
+  width: 100%;
+  max-width: 880px;
+  min-height: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  animation: glbx-photo-in 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes glbx-photo-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+.glbx-photo-wrap .ph {
+  width: 100%;
+  height: 100%;
+}
+
+/* Fraunces italic caption below the photo */
+.glbx-caption {
+  flex-shrink: 0;
+  padding-top: 18px;
+  text-align: center;
+  max-width: 600px;
+}
+
+.glbx-caption-name {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--c-paper);
+  margin-bottom: 4px;
+}
+
+.glbx-caption-field {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--c-orange);
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.glbx-caption-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 15px;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 1.65;
+}
+
+/* top bar: counter left, × right */
+.glbx-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 22px 32px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.glbx-counter {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.glbx-close {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 44px;
+  font-weight: 400;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.45);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.3s ease;
+}
+
+.glbx-close:hover {
+  color: var(--c-paper);
+  transform: rotate(90deg);
+}
+
+/* prev / next arrows */
+.glbx-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  transition: background 0.2s, border-color 0.2s;
+  padding: 0;
+}
+
+.glbx-arrow:hover {
+  background: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.26);
+}
+
+.glbx-arrow--prev { left: 24px; }
+.glbx-arrow--next { right: 24px; }
+
+/* ── MOBILE ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .gstrip-tile {
+    width: calc(100vw - 80px);
+  }
+
+  .ggrid-mosaic {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 24px 24px 0;
+  }
+
+  .gstories-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gstories-section {
+    padding: 64px 24px;
+  }
+
+  .gcta-section {
+    padding: 64px 24px;
+  }
+
+  .gstrip-header,
+  .ggrid-filter-bar,
+  .gstrip-progress-bar {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .gstrip-rail {
+    padding-left: 24px;
+  }
+
+  .gh-hero-sticky {
+    padding: 0 24px 44px;
+  }
+
+  .gfeat-quote-block {
+    left: 24px;
+    right: 24px;
+    padding-bottom: 40px;
+  }
+
+  .galb-header {
+    padding: 36px 24px 28px;
+    min-height: 200px;
+  }
+
+  .galb-close {
+    top: 20px;
+    right: 20px;
+    font-size: 40px;
+  }
+
+  .galb-grid {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 24px 20px 40px;
+  }
+
+  .glbx-stage {
+    padding: 64px 16px 80px;
+  }
+
+  .glbx-arrow--prev { left: 10px; }
+  .glbx-arrow--next { right: 10px; }
+}

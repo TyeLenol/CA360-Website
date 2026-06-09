@@ -8,7 +8,7 @@ const NAV_SECTIONS = [
   { id: 'blog',       label: 'Blog',        href: '/journal' },
   { id: 'about',      label: 'About',       href: '#mission' },
   { id: 'contact',    label: 'Contact Us',  href: '#contact' },
-  { id: 'gallery',    label: 'Gallery',     href: '#gallery' },
+  { id: 'gallery',    label: 'Gallery',     href: '/gallery' },
   { id: 'mentorship', label: 'Mentorship',  href: '#join' },
 ];
 
@@ -23,6 +23,7 @@ export function StickyNav() {
     const path = window.location.pathname;
     setIsHome(path === '/');
     if (path === '/journal') setActive('blog');
+    if (path === '/gallery') setActive('gallery');
   }, []);
 
   useEffect(() => {

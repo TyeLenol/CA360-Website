@@ -37,10 +37,6 @@ function FAQ() {
         <h2 className="faq-title" data-reveal data-reveal-delay="1">
           Anything you wanted to <em>ask</em>.
         </h2>
-        <p className="faq-sub" data-reveal data-reveal-delay="2">
-          The questions students and mentors actually send us. Pick one on the
-          left — the answer slides in on the right.
-        </p>
       </div>
 
       <div className="faq-stage" data-reveal>
@@ -104,7 +100,7 @@ function Footer() {
   const wrapRef = useRef(null);
   const inView = useInView(wrapRef, { threshold: 0.1, once: false });
   // Word-by-word reveal for the mega line
-  const phrase = ['From', 'SHS,', 'somewhere', 'real.'];
+  const phrase = ['From', 'SHS,', 'to','somewhere', 'real.'];
 
   return (
     <footer className="footer-sec" ref={wrapRef}>

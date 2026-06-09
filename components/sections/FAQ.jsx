@@ -38,10 +38,7 @@ export function FAQ() {
         <h2 className="faq-title" data-reveal data-reveal-delay="1">
           Anything you wanted to <em>ask</em>.
         </h2>
-        <p className="faq-sub" data-reveal data-reveal-delay="2">
-          The questions students and mentors actually send us. Pick one on the
-          left — the answer slides in on the right.
-        </p>
+        
       </div>
 
       <div className="faq-stage" data-reveal>

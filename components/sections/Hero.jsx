@@ -17,10 +17,6 @@ export function Hero() {
       </div>
 
       <div className="hero-stage">
-        <div className="hero-eyebrow" data-reveal>
-          <Star size={10} color="#d68307" />
-          A mentorship NGO for SHS graduates
-        </div>
 
         <h1 className="hero-headline">
           <span data-reveal>From SHS</span>
@@ -55,12 +51,6 @@ export function Hero() {
               </a>
               <a className="btn btn-secondary">Become a mentor</a>
             </div>
-          </div>
-          <div className="hero-foot-right">
-            <div className="hero-foot-num">
-              5<span className="dot">·</span>300<span className="plus">+</span>
-            </div>
-            <div className="hero-foot-lab">SESSIONS · STUDENTS REACHED</div>
           </div>
         </div>
 
