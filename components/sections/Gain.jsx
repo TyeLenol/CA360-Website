@@ -1,13 +1,13 @@
 "use client";
 
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { ArrowRight } from '../shared/Icons';
 import { useScrollProgress } from '../../hooks/ui-hooks';
 
 const cards = [
   { num: '01',
     title: 'Academic guidance.',
-    desc: 'Course-by-course advice from people who passed the same papers, two or three years before you. No theory — only what worked.',
+    desc: 'Course-by-course advice from people who passed the same papers, two or more years before you. No theory — only what worked.',
     tape: 'rgba(54, 114, 143, 0.55)',
     x:  -120, rot: -3.5, startP: 0.08, endP: 0.34 },
   { num: '02',
@@ -24,7 +24,15 @@ const cards = [
 
 export function Gain() {
   const wrapRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
   const progress = useScrollProgress(wrapRef);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 1024);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const fallState = (startP, endP) => {
     const raw = Math.max(0, Math.min(1, (progress - startP) / (endP - startP)));
@@ -34,10 +42,10 @@ export function Gain() {
   };
 
   return (
-    <section id="gain" className="gain-sec" ref={wrapRef}>
+    <section id="gain" className={'gain-sec' + (isMobile ? ' gain-sec--mobile' : '')} ref={wrapRef}>
       <div className="gain-pin">
         <div className="gain-head">
-          <div className="sec-eyebrow" data-reveal>05 — What you gain</div>
+          <div className="sec-eyebrow" data-reveal>What you gain</div>
           <h2 className="gain-title" data-reveal data-reveal-delay="1">
             Three things you walk away with — <em>every time</em>.
           </h2>
@@ -49,6 +57,24 @@ export function Gain() {
 
         <div className="gain-stack">
           {cards.map((c, i) => {
+            if (isMobile) {
+              return (
+                <article
+                  key={c.num}
+                  className={'gain-card gain-card-' + (i + 1)}
+                  style={{ '--tape': c.tape }}
+                  data-reveal
+                  data-reveal-delay={String(i + 1)}
+                >
+                  <span className="gain-tape" />
+                  <div className="gain-num">{c.num}</div>
+                  <h3>{c.title}</h3>
+                  <p>{c.desc}</p>
+                  <a className="gain-link">Learn more <ArrowRight size={14} color="#d68307" /></a>
+                </article>
+              );
+            }
+
             const { raw, eased, wobble } = fallState(c.startP, c.endP);
             const fromY = -640;
             const toY = i * 14;

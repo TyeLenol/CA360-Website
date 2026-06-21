@@ -19,7 +19,7 @@ export function Hero() {
       <div className="hero-stage">
 
         <h1 className="hero-headline">
-          <span data-reveal>From SHS</span>
+          <span data-reveal>From school</span>
           <span data-reveal data-reveal-delay="1">
             to <span className="hero-stamp">the career</span>
           </span>

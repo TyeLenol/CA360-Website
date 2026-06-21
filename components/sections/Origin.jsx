@@ -6,7 +6,7 @@ export function Origin() {
   return (
     <section id="origin" className="origin">
       <div className="origin-inner">
-        <div className="sec-eyebrow" data-reveal>02 — Origin</div>
+        <div className="sec-eyebrow" data-reveal>Origin</div>
 
         <div className="origin-grid">
           <div className="origin-photo-wrap" data-reveal data-reveal-delay="1">
@@ -26,17 +26,17 @@ export function Origin() {
             </h3>
 
             <div className="origin-pull" data-reveal data-reveal-delay="3">
-              &ldquo;Right after SHS, I didn&apos;t know what medicine actually
-              looked like — only what people told me to chase. CA360 is the older
-              sister I needed in that moment.&rdquo;
+              &ldquo;I got into medical school and realised I had no idea what
+              I&apos;d actually signed up for. The students who did? They all had
+              someone in the field. CA360 is that someone — for everyone else.&rdquo;
             </div>
 
             <p className="origin-body" data-reveal data-reveal-delay="4">
-              A young Ghanaian medical doctor started CA360 with a single
-              session for friends of friends. Five sessions later, with 2,000+
-              students reached across Ghana, the dream is the same: nobody
-              should have to guess what their career actually looks like before
-              they walk into it.
+              Too many students pick careers based on pressure, popularity, or
+              a vague idea of what the job looks like. CA360 was built to change
+              that — one honest conversation at a time. Started in 2024, we&apos;ve
+              now reached 2,000+ students across Ghana with real talk from people
+              already living the careers they&apos;re curious about.
             </p>
 
             <div className="origin-attr" data-reveal data-reveal-delay="5">

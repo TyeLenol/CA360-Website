@@ -38,59 +38,65 @@ const ARTICLES = [
   { id: 'a1', featured: true, cat: 'mentor', catLabel: 'MENTOR STORY',
     title: 'The white coat, unmasked: a year inside the ward.',
     excerpt: 'Three house officers walked our biggest cohort yet through their first 12 months on the ward — the wins, the burnout, and the moments they almost quit. Plus the seven questions that broke the room.',
-    author: 'Dr. A. Asare', authorSeed: 1, date: 'FEB 28, 2026', readTime: '8 min read',
+    author: 'Dr. A. Asare', authorSeed: 1, authorRole: 'Founder · CA360', date: 'FEB 28, 2026', readTime: '8 min read',
     venue: 'University of Ghana Medical School · Korle Bu', tone: 'teal', label: 'INTERVIEW · KORLE BU' },
-  { id: 'a2', cat: 'essay', catLabel: 'FOUNDER ESSAY',
+  { id: 'a2', cat: 'mentor', catLabel: 'FOUNDER ESSAY',
     title: 'A letter to the SHS-3 girl I was.',
-    excerpt: "On picking medicine by elimination, the older sister I didn't have, and the kind of advice I would have actually heard at 17.",
-    author: 'Dr. A. Asare', authorSeed: 1, date: 'FEB 14, 2026', readTime: '5 min',
+    excerpt: "On picking a career by elimination, the older sister I didn't have, and the kind of advice I would have actually heard at 17.",
+    author: 'Dr. A. Asare', authorSeed: 1, authorRole: 'Founder · CA360', date: 'FEB 14, 2026', readTime: '5 min',
     tone: 'warm', label: 'ESSAY' },
-  { id: 'a3', cat: 'news', catLabel: 'NEWS',
+  { id: 'a3', cat: 'news', catLabel: 'NEWS & UPDATES',
     title: 'Why we delayed the Law track — and what that taught us.',
     excerpt: "We almost shipped a Law cohort before we had the mentors to back it up. Here's why we pulled the plug, and the rule we made afterwards.",
-    author: 'CA360 Team', authorSeed: 7, date: 'JAN 30, 2026', readTime: '3 min',
+    author: 'CA360 Team', authorSeed: 7, authorRole: 'CA360 Editorial', date: 'JAN 30, 2026', readTime: '3 min',
     tone: 'orange', label: 'INTERNAL' },
   { id: 'a4', cat: 'student', catLabel: 'STUDENT STORY',
     title: 'How Akua got into UG Law without a debate coach.',
     excerpt: 'Six rejections, one acceptance, and a lot of YouTube debate replays. A first-person account from one of our SHS alumni.',
-    author: 'Akua Boateng', authorSeed: 3, date: 'JAN 18, 2026', readTime: '6 min',
+    author: 'Akua Boateng', authorSeed: 3, authorRole: 'CA360 Alumna', date: 'JAN 18, 2026', readTime: '6 min',
     tone: 'deep', label: 'CLASS OF 2025' },
   { id: 'a5', cat: 'guide', catLabel: 'CAREER GUIDE',
     title: 'The four books Dr. Mensah wishes someone gave him at 17.',
-    excerpt: 'Two on study, one on bedside manner, one that has nothing to do with medicine. With links and a one-paragraph reason.',
-    author: 'Dr. K. Mensah', authorSeed: 2, date: 'JAN 09, 2026', readTime: '4 min',
+    excerpt: 'Two on career navigation, one on self-awareness, one that has nothing to do with work. With links and a one-paragraph reason for each.',
+    author: 'Dr. K. Mensah', authorSeed: 2, authorRole: 'Surgery Resident · KATH', date: 'JAN 09, 2026', readTime: '4 min',
     tone: 'cream', label: 'READING LIST' },
-  { id: 'a6', cat: 'spotlight', catLabel: 'FIELD SPOTLIGHT',
+  { id: 'a6', cat: 'guide', catLabel: 'CAREER GUIDE',
     title: 'Medicine, by the numbers: who actually gets in?',
     excerpt: "A look at admissions data across UGMS, KNUST and UCC over the last five intake cycles — and what it means for next year's applicants.",
-    author: 'CA360 Research', authorSeed: 4, date: 'DEC 21, 2025', readTime: '9 min',
+    author: 'CA360 Research', authorSeed: 4, authorRole: 'CA360 Research', date: 'DEC 21, 2025', readTime: '9 min',
     tone: 'teal', label: 'DATA · ANNUAL' },
   { id: 'a7', cat: 'mentor', catLabel: 'MENTOR STORY',
     title: "Three mentors on the rejection they almost didn't recover from.",
     excerpt: "A residency that almost wasn't. A law school no. A grad scheme that came down to one phone call. Three stories, three reframes.",
-    author: 'Esi Adjei', authorSeed: 6, date: 'DEC 12, 2025', readTime: '7 min',
+    author: 'Esi Adjei', authorSeed: 6, authorRole: 'Paediatrics House Officer', date: 'DEC 12, 2025', readTime: '7 min',
     tone: 'warm', label: 'INTERVIEWS · 03' },
   { id: 'a8', cat: 'guide', catLabel: 'CAREER GUIDE',
-    title: 'How to read a textbook without falling asleep.',
-    excerpt: 'Active recall, spaced practice, and the one technique that took my retention from 30% to 80% in a term. Tested, not theorised.',
-    author: 'Dr. A. Asare', authorSeed: 1, date: 'NOV 28, 2025', readTime: '6 min',
-    tone: 'orange', label: 'STUDY TECHNIQUE' },
+    title: 'Five questions to ask before you commit to a course.',
+    excerpt: 'The ones that would have saved a lot of people a lot of confusion — and the answers you should actually demand before signing anything.',
+    author: 'CA360 Team', authorSeed: 7, authorRole: 'CA360 Editorial', date: 'NOV 28, 2025', readTime: '5 min',
+    tone: 'orange', label: 'CAREER PREP' },
 ];
 
 const CATEGORIES = [
-  { id: 'all',       label: 'All articles' },
-  { id: 'student',   label: 'Student stories' },
-  { id: 'mentor',    label: 'Mentor stories' },
-  { id: 'guide',     label: 'Career guides' },
-  { id: 'spotlight', label: 'Field spotlights' },
-  { id: 'essay',     label: 'Founder essays' },
-  { id: 'news',      label: 'News' },
+  { id: 'all',     label: 'All articles' },
+  { id: 'student', label: 'Student stories' },
+  { id: 'mentor',  label: 'Mentor stories' },
+  { id: 'guide',   label: 'Career guides' },
+  { id: 'news',    label: 'News & updates' },
 ];
 
 /* ===== JOURNAL HERO ===== */
 function JournalHero() {
   const ref = useRef(null);
   const prog = useScrollProgress(ref);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 767);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const jump = (e) => {
     e.preventDefault();
@@ -98,6 +104,7 @@ function JournalHero() {
   };
 
   const arrive = (lo, hi, dy = 44) => {
+    if (isMobile) return {};
     const p = Math.max(0, Math.min(1, (prog - lo) / (hi - lo)));
     return {
       opacity: p,
@@ -112,7 +119,7 @@ function JournalHero() {
         <div className="jh-hero-top">
           <div className="sec-eyebrow" data-reveal>The blog</div>
           <div className="jh-hero-side" data-reveal data-reveal-delay="1">
-            A quarterly on mentorship,<br />
+            A journal on mentorship,<br />
             <em>careers, and the life after SHS.</em>
           </div>
         </div>
@@ -120,11 +127,16 @@ function JournalHero() {
         {/* Title visible immediately on load — CSS animation, not scroll-gated */}
         <div className="jh-hero-title-wrap">
           <h1 className="jh-hero-title">
-            The <em>Blog</em>.
+            The <em className="jh-hero-em">
+              Blog
+              <svg className="jh-hero-scribble" viewBox="0 0 160 14" preserveAspectRatio="none" aria-hidden="true">
+                <path d="M2 10 C 30 4, 70 13, 110 7 S 148 12, 158 8" stroke="#d68307" strokeWidth="4" fill="none" strokeLinecap="round" />
+              </svg>
+            </em>
           </h1>
         </div>
 
-        {/* Metric + statement in one pinned block — they can never overlap each other or the title */}
+        {/* Metric + statement — scroll-animated on desktop, always visible on mobile */}
         <div className="jh-hero-lower">
           <div className="jh-hero-metric" style={arrive(0.30, 0.64, 60)}>
             <div className="jh-hero-metric-label">PUBLISHED</div>
@@ -134,9 +146,8 @@ function JournalHero() {
 
           <div className="jh-hero-statement-row" style={arrive(0.66, 0.90, 36)}>
             <p className="jh-hero-statement">
-              At the core of Career Arcadia 360 lies an unwavering commitment to
-              <em> honest mentorship</em>, lived experience, and the questions
-              nobody answered for us.
+              Real stories. Real careers. Real talk — from people who have
+              already walked the path <em>you&apos;re looking at</em>.
             </p>
             <a className="jh-hero-anchor" href="#journal-grid" onClick={jump}>
               <span>READ ARTICLES</span>
@@ -149,49 +160,25 @@ function JournalHero() {
   );
 }
 
-/* ===== FEATURED SIGNPOST — editorial chapter opener ===== */
-function JournalSignpost() {
-  const ref = useRef(null);
-  const prog = useScrollProgress(ref);
-
-  const arrive = (lo, hi, dy = 52) => {
-    const p = Math.max(0, Math.min(1, (prog - lo) / (hi - lo)));
-    return {
-      opacity: p,
-      transform: `translate3d(0, ${((1 - p) * dy).toFixed(1)}px, 0)`,
-      willChange: 'opacity, transform',
-    };
-  };
-
-  return (
-    <section className="jfsign" ref={ref}>
-      <div className="jfsign-sticky">
-        <div className="jfsign-eyebrow" data-reveal>
-          01 — UP NEXT
-        </div>
-        <div className="jfsign-line1" style={arrive(0.10, 0.34, 62)}>
-          SEE OUR
-        </div>
-        <div className="jfsign-line2" style={arrive(0.30, 0.56, 72)}>
-          Featured
-        </div>
-        <div className="jfsign-line3" style={arrive(0.52, 0.76, 64)}>
-          Article.
-          <span className="jfsign-arrow" aria-hidden="true">↓</span>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /* ===== FEATURED ARTICLE ===== */
 function JournalFeatured({ article }) {
   const secRef = useRef(null);
   const prog = useScrollProgress(secRef);
   const scroll = useElementScroll(secRef);
-  const imgY = scroll * -70;
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 767);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  const imgY = isMobile ? 0 : scroll * -70;
 
   const arrive = (lo, hi, dy = 40) => {
+    if (isMobile) return {};
     const p = Math.max(0, Math.min(1, (prog - lo) / (hi - lo)));
     return { opacity: p, transform: `translate3d(0, ${((1 - p) * dy).toFixed(1)}px, 0)`, willChange: 'opacity, transform' };
   };
@@ -250,7 +237,7 @@ function JournalFeatured({ article }) {
                 </div>
                 <div>
                   <div className="jf-author-name">{article.author}</div>
-                  <div className="jf-author-role">Founder · Medicine</div>
+                  <div className="jf-author-role">{article.authorRole}</div>
                 </div>
               </div>
               <a className="jf-cta">
@@ -298,13 +285,13 @@ function JournalScrollCue() {
           className="jscrollcue-part1"
           style={{ opacity: p1, transform: `translateY(${((1 - p1) * 32).toFixed(1)}px)` }}
         >
-          Keep scrolling to see
+          Stories. Guides. Honest takes.
         </p>
         <p
           className="jscrollcue-part2"
           style={{ opacity: p2, transform: `translateY(${((1 - p2) * 32).toFixed(1)}px)` }}
         >
-          ...the blog content.
+          All of it, below.
         </p>
       </div>
     </section>
@@ -340,6 +327,7 @@ function ArticleCard({ article, index }) {
         <div className="jcard-body">
           <div className="jcard-label">{article.catLabel}</div>
           <h3 className="jcard-title">{article.title}</h3>
+          <p className="jcard-excerpt">{article.excerpt}</p>
           <div className="jcard-foot">
             <span className="jcard-read">READ ARTICLE</span>
             <span className="jcard-meta">
@@ -470,6 +458,14 @@ function JournalNewsletter() {
   const [email, setEmail] = useState('');
   const [done, setDone] = useState(false);
   const [approachP, setApproachP] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth <= 767);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const update = () => {
@@ -498,7 +494,7 @@ function JournalNewsletter() {
   const formP  = reveal(0.18, 0.35);
   const sideP  = reveal(0.30, 0.50);
 
-  const arrive = (p) => ({
+  const arrive = (p) => isMobile ? {} : ({
     opacity: p,
     transform: `translate3d(0, ${((1 - p) * 28).toFixed(1)}px, 0)`,
   });
@@ -513,12 +509,12 @@ function JournalNewsletter() {
               One letter, <em>once a month</em>.
             </h3>
             <p className="jnews-inset-sub" style={arrive(subP)}>
-              Recaps, essays, and new fields the moment they open. No spam, ever.
+              Recaps, essays, and career talks — the moment they go live. No spam, ever.
             </p>
             <form className="jnews-inset-form" onSubmit={submit} style={arrive(formP)}>
               <input
                 type="email"
-                placeholder="you@university.edu.gh"
+                placeholder="your@email.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -547,7 +543,6 @@ export function JournalPage() {
   return (
     <main className="journal-page">
       <JournalHero />
-      <JournalSignpost />
       <JournalFeatured article={featured} />
       <JournalScrollCue />
       <JournalGrid articles={sorted} filter={filter} onFilter={setFilter} />

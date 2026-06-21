@@ -229,6 +229,14 @@ function GalleryHero() {
   const ref    = useRef(null);
   const prog   = useScrollProgress(ref);
   const arrive = makeArrive(prog);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth <= 767);
+    check();
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
 
   const bgScale    = 1 + prog * 0.07;
   const cueOpacity = 1 - Math.max(0, Math.min(1, (prog - 0.60) / 0.20));
@@ -244,11 +252,11 @@ function GalleryHero() {
         <div className="gh-hero-veil" />
 
         <div className="gh-hero-inner">
-          <div className="gh-hero-eyebrow" style={arrive(0.0, 0.22, 20)}>
+          <div className="gh-hero-eyebrow" style={isMobile ? {} : arrive(0.0, 0.22, 20)}>
             Gallery — Career Arcadia 360
           </div>
           <h1 className="gh-hero-title">The Moments.</h1>
-          <p className="gh-hero-sub" style={arrive(0.08, 0.30, 32)}>
+          <p className="gh-hero-sub" style={isMobile ? {} : arrive(0.08, 0.30, 32)}>
             Real sessions. Real people. Real change.
           </p>
         </div>
@@ -424,7 +432,7 @@ function GalleryStories() {
   return (
     <section className="gstories-section">
       <div className="gstories-header" data-reveal>
-        <div className="gstories-eyebrow">02 — STORIES</div>
+        <div className="gstories-eyebrow">STORIES</div>
         <h2 className="gstories-title">Moments in context.</h2>
       </div>
       <div className="gstories-grid">

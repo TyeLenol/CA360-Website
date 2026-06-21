@@ -3,17 +3,17 @@
 import { ArrowRight } from '../shared/Icons';
 
 const bulletins = [
-  { id: 'b1', tag: 'COHORT 06 · OPEN NOW', date: 'JUN 2026',
-    headline: 'Virtual career sessions — registration now open for the next cohort.',
-    sub: 'Live 90-minute sessions with working professionals. Open to SHS and university students across Ghana.' },
-  { id: 'b2', tag: 'SCHOOLS OUTREACH', date: 'MAY 2026',
-    headline: 'Five new partner schools onboarded across Accra, Kumasi and Cape Coast.',
-    sub: 'In-person career talks are back in classrooms. Schools can apply to be a partner institution.' },
+  { id: 'b1', tag: 'CAREER TALK', date: 'JUN 2026',
+    headline: 'Beyond the Classroom — Inside Tech Careers.',
+    sub: 'A live career session with professionals sharing what working in tech and beyond actually looks like, day to day.' },
+  { id: 'b2', tag: 'SCHOOLS OUTREACH', date: 'JUN 2026',
+    headline: 'School outreach to Eguafo SHS, Holy Child SHS and St Augustine\'s SHS.',
+    sub: 'In-person career talks brought directly to students across three secondary schools in Ghana.' },
   { id: 'b3', tag: '1:1 MENTORSHIP', date: 'APR 2026',
-    headline: '1:1 mentorship programme in development — expressions of interest now open.',
-    sub: 'Personalised mentoring matched to your field and goals. Coming soon to early applicants.' },
-  { id: 'b4', tag: 'COMMUNITY', date: 'MAR 2026',
-    headline: '300+ community members and growing — thank you for being part of this.',
+    headline: '1:1 mentorship programme — currently under development.',
+    sub: 'Personalised mentoring matched to your field and goals. Launching soon.' },
+  { id: 'b4', tag: 'COMMUNITY', date: 'MAR 2024',
+    headline: '400+ community members and growing — thank you for being part of this.',
     sub: 'From our first session of 42 students to a community that keeps showing up and sending others our way.' },
 ];
 
@@ -21,7 +21,7 @@ export function Fields() {
   return (
     <section id="fields" className="fields-sec">
       <div className="fields-head">
-        <div className="sec-eyebrow" data-reveal>03 — What&apos;s happening</div>
+        <div className="sec-eyebrow" data-reveal>What&apos;s happening</div>
         <h2 className="fields-title" data-reveal data-reveal-delay="1">
           Latest from <em>CA360</em>.
         </h2>

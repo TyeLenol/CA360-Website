@@ -34,7 +34,7 @@ export function FAQ() {
   return (
     <section id="faq" className="faq-sec">
       <div className="faq-head">
-        <div className="sec-eyebrow" data-reveal>11 — Common questions</div>
+        <div className="sec-eyebrow" data-reveal>Common questions</div>
         <h2 className="faq-title" data-reveal data-reveal-delay="1">
           Anything you wanted to <em>ask</em>.
         </h2>

@@ -8,9 +8,9 @@ import { useInView } from '../../hooks/ui-hooks';
 const MENTORS = [
   { id: 'm1', name: 'Dr. A. Asare',  field: 'Medicine',    tone: 'warm',
     role: 'Founder & Lead Mentor',
-    bio: 'House officer at Korle Bu Teaching Hospital. UGMS alum, class of 2022. Started CA360 in 2024 after one too many SHS-3 students asked her, "what does med school actually feel like?"',
-    quote: 'Ask the hard questions early. The wrong question is the one you swallow.',
-    stats: [['Years', '4+'], ['Mentees', '47'], ['Sessions led', '5']],
+    bio: 'Founded CA360 in 2024 after entering medical school and realising how different the reality was from what she had imagined — and how unfair it was that only students with family in the field got to know the truth in advance. Built this to close that gap for everyone.',
+    quote: 'No one should have to figure it out blindly. That\'s not ambition — that\'s luck. And luck isn\'t a strategy.',
+    stats: [['Since', '2024'], ['Students reached', '2K+'], ['Sessions led', '5']],
     tag: 'LEAD MENTOR', seed: 1 },
   { id: 'm2', name: 'Dr. K. Mensah', field: 'Medicine',    tone: 'teal',
     role: 'Surgery Resident · KATH',
@@ -65,7 +65,7 @@ export function Mentors() {
       onMouseLeave={() => setPaused(false)}
     >
       <div className="mentors-head">
-        <div className="sec-eyebrow" data-reveal>06 — The people behind the guidance</div>
+        <div className="sec-eyebrow" data-reveal>The people behind the guidance</div>
         <h2 className="mentors-title" data-reveal data-reveal-delay="1">
           Mentors who&apos;ve<br />walked your <em>exact</em> path.
         </h2>

@@ -5,23 +5,23 @@ import { ArrowRight } from '../shared/Icons';
 const programs = [
   { n: '01', side: 'left',  tag: 'VIRTUAL · CAREER-BASED',
     title: 'Virtual programmes',
-    desc: 'Live career sessions with professionals, alumni and industry guests — every cohort, every six weeks. Bring your questions, walk out with a plan.',
+    desc: 'Live career sessions with professionals, alumni and industry guests. Bring your questions, walk out with a plan.',
     bullets: ['90-minute live career sessions', 'Open Q&A with working professionals', 'Recordings shared with registered members'] },
   { n: '02', side: 'right', tag: 'IN PERSON · SCHOOLS',
     title: 'Schools outreach',
-    desc: 'In-person career talks at SHS classrooms and university halls — by invitation from teachers, deans and student reps across Ghana.',
-    bullets: ['Half-day and full-day formats', 'Open to all year groups', 'Free for partner institutions'] },
+    desc: 'In-person career talks in various high schools — by invitation from head teachers and school counsellors.',
+    bullets: ['Open to all year groups', 'Free for partner institutions'] },
   { n: '03', side: 'left',  tag: 'COMING SOON',
     title: '1:1 mentorship',
     desc: 'Personalised matching with a mentor who has walked a similar path — same field, similar background, a few years ahead of you.',
-    bullets: ['Hand-matched to your goals', 'Structured 3-month programme', 'Expressions of interest now open'] },
+    bullets: ['Hand-matched to your goals', 'Structured 3-month programme', 'Currently under development'] },
 ];
 
 export function Programs() {
   return (
     <section id="programs" className="programs-sec">
       <div className="programs-head">
-        <div className="sec-eyebrow" data-reveal>04 — What we do</div>
+        <div className="sec-eyebrow" data-reveal>What we do</div>
         <h2 className="programs-title" data-reveal data-reveal-delay="1">
           Three ways mentorship<br /><em>actually</em> happens.
         </h2>

@@ -143,7 +143,7 @@ export function JoinIn() {
         </div>
 
         <div className="join-overlay-head">
-          <div className="sec-eyebrow" style={{ color: '#fff' }}>09 — Get involved</div>
+          <div className="sec-eyebrow" style={{ color: '#fff' }}>Get involved</div>
           <h2 className="join-overlay-title">
             Three ways to <em>show up</em>.
           </h2>
