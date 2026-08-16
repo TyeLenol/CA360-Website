@@ -6,6 +6,7 @@
 @import '../styles/06-join-newsletter.css';
 @import '../styles/07-faq-footer.css';
 @import '../styles/journal.css';
+@import '../styles/about.css';
 @import '../styles/gallery.css';
 @import '../styles/responsive.css';
 
@@ -24,6 +25,7 @@
   --c-teal-tint:     #e7f1f4;
   --c-teal-soft:     #c6e0e8;
   --c-teal-deep:     #1f4a5e;
+  --c-teal-grid:     #0c2c39;
   --c-teal-darker:   #0a1f29;
   --c-ink:           #0a1f29;
   --c-body:          #16323c;
@@ -60,6 +62,17 @@ button { font: inherit; border: 0; background: 0; cursor: pointer; color: inheri
 input, textarea { font: inherit; }
 
 ::selection { background: var(--c-orange); color: #fff; }
+
+/* Visually hidden but available to assistive tech (e.g. live regions) */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 /* Generic photo placeholder utility */
 .ph {

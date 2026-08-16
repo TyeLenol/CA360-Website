@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, ArrowDown, PinIcon } from '../shared/Icons';
 import { PhotoPlaceholder, Portrait } from '../shared/Placeholders';
-import { useScrollProgress } from '../../hooks/ui-hooks';
+import { useScrollProgress, useInView, usePrefersReducedMotion } from '../../hooks/ui-hooks';
 
 /* ===== LOCAL HOOK — element-relative scroll progress ===== */
 function useElementScroll(ref) {
@@ -89,6 +89,7 @@ const CATEGORIES = [
 function JournalHero() {
   const ref = useRef(null);
   const prog = useScrollProgress(ref);
+  const reduced = usePrefersReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -104,7 +105,7 @@ function JournalHero() {
   };
 
   const arrive = (lo, hi, dy = 44) => {
-    if (isMobile) return {};
+    if (isMobile || reduced) return {};
     const p = Math.max(0, Math.min(1, (prog - lo) / (hi - lo)));
     return {
       opacity: p,
@@ -138,13 +139,13 @@ function JournalHero() {
 
         {/* Metric + statement — scroll-animated on desktop, always visible on mobile */}
         <div className="jh-hero-lower">
-          <div className="jh-hero-metric" style={arrive(0.30, 0.64, 60)}>
+          <div className="jh-hero-metric" style={arrive(0.08, 0.30, 60)}>
             <div className="jh-hero-metric-label">PUBLISHED</div>
             <div className="jh-hero-metric-num">{ARTICLES.length}</div>
             <div className="jh-hero-metric-suf">articles</div>
           </div>
 
-          <div className="jh-hero-statement-row" style={arrive(0.66, 0.90, 36)}>
+          <div className="jh-hero-statement-row" style={arrive(0.28, 0.52, 36)}>
             <p className="jh-hero-statement">
               Real stories. Real careers. Real talk — from people who have
               already walked the path <em>you&apos;re looking at</em>.
@@ -166,6 +167,7 @@ function JournalFeatured({ article }) {
   const secRef = useRef(null);
   const prog = useScrollProgress(secRef);
   const scroll = useElementScroll(secRef);
+  const reduced = usePrefersReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -175,10 +177,10 @@ function JournalFeatured({ article }) {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  const imgY = isMobile ? 0 : scroll * -70;
+  const imgY = (isMobile || reduced) ? 0 : scroll * -40;
 
   const arrive = (lo, hi, dy = 40) => {
-    if (isMobile) return {};
+    if (isMobile || reduced) return {};
     const p = Math.max(0, Math.min(1, (prog - lo) / (hi - lo)));
     return { opacity: p, transform: `translate3d(0, ${((1 - p) * dy).toFixed(1)}px, 0)`, willChange: 'opacity, transform' };
   };
@@ -193,7 +195,7 @@ function JournalFeatured({ article }) {
         </div>
         <article className="jf-card">
           {/* Image arrives first */}
-          <div className="jf-img" style={arrive(0.04, 0.26, 70)}>
+          <div className="jf-img" style={arrive(0.02, 0.16, 70)}>
             <div className="jf-img-inner" style={{ transform: `translate3d(0, ${imgY.toFixed(1)}px, 0)` }}>
               <PhotoPlaceholder tone={article.tone} label={article.label} style={{ width: '100%', height: '100%' }} />
             </div>
@@ -211,24 +213,24 @@ function JournalFeatured({ article }) {
 
           {/* Text body — meta + title then blurb then rest */}
           <div className="jf-body">
-            <div className="jf-meta" style={arrive(0.26, 0.44, 28)}>
+            <div className="jf-meta" style={arrive(0.10, 0.22, 28)}>
               <span>{article.date}</span>
               <span className="dot" />
               <span>{article.readTime}</span>
               <span className="dot" />
               <span>{article.author.toUpperCase()}</span>
             </div>
-            <h2 className="jf-title" style={arrive(0.38, 0.58, 44)}>{article.title}</h2>
-            <p className="jf-excerpt" style={arrive(0.54, 0.72, 32)}>{article.excerpt}</p>
+            <h2 className="jf-title" style={arrive(0.16, 0.30, 44)}>{article.title}</h2>
+            <p className="jf-excerpt" style={arrive(0.24, 0.38, 32)}>{article.excerpt}</p>
 
             {article.venue && (
-              <div className="jf-venue" style={arrive(0.64, 0.80, 24)}>
+              <div className="jf-venue" style={arrive(0.32, 0.44, 24)}>
                 <PinIcon size={14} color="#d68307" />
                 Hosted at <span>{article.venue}</span>
               </div>
             )}
 
-            <div className="jf-foot" style={arrive(0.74, 0.90, 22)}>
+            <div className="jf-foot" style={arrive(0.40, 0.52, 22)}>
               <div className="jf-author">
                 <div className="jf-author-avatar">
                   <PhotoPlaceholder tone="warm" label="" style={{ width: '100%', height: '100%' }}>
@@ -252,35 +254,40 @@ function JournalFeatured({ article }) {
   );
 }
 
-/* ===== SCROLL CUE — text-based transition to blog grid ===== */
+/* ===== SCROLL CUE — text the article grid slides up and covers as it reveals ===== */
 function JournalScrollCue() {
   const ref = useRef(null);
   const prog = useScrollProgress(ref);
+  const reduced = usePrefersReducedMotion();
   const [coverAlpha, setCoverAlpha] = useState(1);
 
   useEffect(() => {
+    if (reduced) return;
+    let raf = 0;
     const update = () => {
-      const el = ref.current;
-      if (!el) return;
-      // Grid covers text center when grid top reaches viewport center.
-      // rect.bottom is section bottom in viewport coords → add scrollY = section doc bottom.
-      // Subtract half viewport to get the scroll position where grid top = screen center.
-      const rect = el.getBoundingClientRect();
-      const coverAt = window.scrollY + rect.bottom - window.innerHeight * 0.5;
-      const alpha = 1 - Math.max(0, Math.min(1, (window.scrollY - coverAt) / (window.innerHeight * 0.35)));
-      setCoverAlpha(alpha);
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const el = ref.current;
+        if (!el) return;
+        // Fade the fixed panel out as the grid (z-index:2) slides up over it:
+        // coverAt = scroll position where the grid top reaches screen centre.
+        const rect = el.getBoundingClientRect();
+        const coverAt = window.scrollY + rect.bottom - window.innerHeight * 0.5;
+        const alpha = 1 - Math.max(0, Math.min(1, (window.scrollY - coverAt) / (window.innerHeight * 0.35)));
+        setCoverAlpha(alpha);
+      });
     };
     update();
     window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
-  }, []);
+    return () => { window.removeEventListener('scroll', update); cancelAnimationFrame(raf); };
+  }, [reduced]);
 
-  const p1 = Math.max(0, Math.min(1, (prog - 0.03) / 0.14));
-  const p2 = Math.max(0, Math.min(1, (prog - 0.20) / 0.14));
+  const p1 = reduced ? 1 : Math.max(0, Math.min(1, (prog - 0.03) / 0.14));
+  const p2 = reduced ? 1 : Math.max(0, Math.min(1, (prog - 0.20) / 0.14));
 
   return (
     <section className="jscrollcue" ref={ref}>
-      <div className="jscrollcue-panel" style={{ opacity: coverAlpha }}>
+      <div className="jscrollcue-panel" style={{ opacity: reduced ? 1 : coverAlpha }}>
         <p
           className="jscrollcue-part1"
           style={{ opacity: p1, transform: `translateY(${((1 - p1) * 32).toFixed(1)}px)` }}
@@ -301,13 +308,14 @@ function JournalScrollCue() {
 /* ===== FILTER BAR (integrated into grid header) ===== */
 function JournalFilter({ filter, onFilter }) {
   return (
-    <div className="jfilter-bar">
+    <div className="jfilter-bar" role="tablist" aria-label="Filter articles by category">
       {CATEGORIES.map((c) => (
         <button
           key={c.id}
           className={'jfilter-tab' + (filter === c.id ? ' is-active' : '')}
           onClick={() => onFilter(c.id)}
           role="tab"
+          aria-selected={filter === c.id}
         >
           {c.label}
         </button>
@@ -349,134 +357,22 @@ function JournalGrid({ articles, filter, onFilter }) {
       <div className="jgrid-header">
         <JournalFilter filter={filter} onFilter={onFilter} />
       </div>
-      <div className="jgrid">
+      <p className="sr-only" role="status" aria-live="polite">
+        {`Showing ${articles.length} ${articles.length === 1 ? 'article' : 'articles'}`}
+      </p>
+      <div className="jgrid" role="tabpanel">
         {articles.map((a, i) => <ArticleCard key={a.id} article={a} index={i} />)}
       </div>
     </section>
   );
 }
 
-/* ===== DRIFT BAND ===== */
-function JournalDrift() {
-  const ref = useRef(null);
-  const prog = useScrollProgress(ref);
-  const pathRef = useRef(null);
-  const [planePos, setPlanePos] = useState({ x: 0, y: 0, angle: 0, len: 1 });
-  const [approachP, setApproachP] = useState(0);
-
-  useEffect(() => {
-    if (pathRef.current) {
-      const len = pathRef.current.getTotalLength();
-      setPlanePos((p) => ({ ...p, len }));
-    }
-  }, []);
-
-  // Tracks section_rect.top to animate letters during the approach phase (before pinning)
-  useEffect(() => {
-    const update = () => {
-      if (!ref.current) return;
-      const r = ref.current.getBoundingClientRect();
-      setApproachP(Math.max(0, Math.min(1, 1 - r.top / window.innerHeight)));
-    };
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
-  }, []);
-
-  useEffect(() => {
-    if (!pathRef.current) return;
-    const len = pathRef.current.getTotalLength();
-    const t = Math.max(0, Math.min(1, prog / 0.53));
-    const pt = pathRef.current.getPointAtLength(t * len);
-    const ptAhead = pathRef.current.getPointAtLength(Math.min(len, t * len + 6));
-    const angle = Math.atan2(ptAhead.y - pt.y, ptAhead.x - pt.x) * 180 / Math.PI;
-    setPlanePos({ x: pt.x, y: pt.y, angle, len });
-  }, [prog]);
-
-  const dashLen = planePos.len;
-  const trail    = Math.max(0, Math.min(1, prog / 0.53)) * dashLen;
-  const titleP   = approachP;
-  const subP     = Math.max(0, Math.min(1, (prog - 0.65) / 0.07));
-  const exitFade = 1 - Math.max(0, Math.min(1, (prog - 0.65) / 0.25));
-  const titleY   = (1 - titleP) * 40;
-  const subY     = (1 - subP) * 30;
-
-  return (
-    <section className="jdrift" ref={ref} aria-hidden="true">
-      <div className="jdrift-sticky">
-        <div className="jdrift-orange-flood" style={{ opacity: 1 - exitFade }} />
-        <div className="jdrift-stripe" style={{ opacity: exitFade }}>
-          <span className="jdrift-mark">—— STAY IN THE LOOP ——</span>
-        </div>
-
-        <svg className="jdrift-flight" viewBox="0 0 1200 600" preserveAspectRatio="none">
-          <path
-            ref={pathRef}
-            className="jdrift-flight-path"
-            d="M -40 480 C 200 460, 280 200, 480 250 S 800 460, 980 280 S 1200 80, 1280 60"
-            fill="none" stroke="#fef9ee" strokeWidth="1.8" strokeLinecap="round"
-            strokeDasharray="4 8"
-            style={{ strokeDashoffset: (dashLen - trail).toFixed(1) }}
-          />
-          {planePos.len > 1 && (
-            <g
-              className="jdrift-plane"
-              transform={`translate(${planePos.x.toFixed(1)} ${planePos.y.toFixed(1)}) rotate(${planePos.angle.toFixed(1)})`}
-            >
-              <path d="M -16 -10 L 22 0 L -16 10 L -8 0 Z"
-                    fill="#fef9ee" stroke="#0a1f29" strokeWidth="1.2" strokeLinejoin="round" />
-              <path d="M -16 -10 L -8 0 L -16 10"
-                    fill="none" stroke="#0a1f29" strokeWidth="1.2" strokeLinejoin="round" />
-              <line x1="-8" y1="0" x2="22" y2="0" stroke="#0a1f29" strokeWidth="0.9" opacity="0.6" />
-            </g>
-          )}
-        </svg>
-
-        <div className="jdrift-titles">
-          <div
-            className="jdrift-title"
-            style={{ transform: `translate3d(0, ${titleY.toFixed(1)}px, 0)`, opacity: titleP }}
-          >
-            <em>Letters.</em>
-          </div>
-          <div
-            className="jdrift-sub"
-            style={{ transform: `translate3d(0, ${subY.toFixed(1)}px, 0)`, opacity: subP }}
-          >
-            Don&apos;t miss a single one.
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ===== NEWSLETTER ===== */
+/* ===== NEWSLETTER — cohesive dark close (continues the grid's deep-teal world) ===== */
 function JournalNewsletter() {
-  const ref = useRef(null);
-  const prog = useScrollProgress(ref);
   const [email, setEmail] = useState('');
   const [done, setDone] = useState(false);
-  const [approachP, setApproachP] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 767);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  useEffect(() => {
-    const update = () => {
-      if (!ref.current) return;
-      const r = ref.current.getBoundingClientRect();
-      setApproachP(Math.max(0, Math.min(1, 1 - r.top / window.innerHeight)));
-    };
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
-  }, []);
+  const titleRef = useRef(null);
+  const titleIn = useInView(titleRef, { threshold: 0.5 });
 
   const submit = (e) => {
     e.preventDefault();
@@ -487,48 +383,36 @@ function JournalNewsletter() {
     }
   };
 
-  const reveal = (lo, hi) => Math.max(0, Math.min(1, (prog - lo) / (hi - lo)));
-  const tagP   = approachP;
-  const titleP = Math.max(0, Math.min(1, (approachP - 0.35) / 0.65));
-  const subP   = reveal(0.05, 0.20);
-  const formP  = reveal(0.18, 0.35);
-  const sideP  = reveal(0.30, 0.50);
-
-  const arrive = (p) => isMobile ? {} : ({
-    opacity: p,
-    transform: `translate3d(0, ${((1 - p) * 28).toFixed(1)}px, 0)`,
-  });
-
   return (
-    <section className="jnews-sec" ref={ref}>
-      <div className="jnews-sticky">
-        <article className="jnews-inset">
-          <div className="jnews-inset-body">
-            <div className="jnews-inset-tag" style={arrive(tagP)}>DON&apos;T MISS AN ISSUE</div>
-            <h3 className="jnews-inset-title" style={arrive(titleP)}>
-              One letter, <em>once a month</em>.
-            </h3>
-            <p className="jnews-inset-sub" style={arrive(subP)}>
-              Recaps, essays, and career talks — the moment they go live. No spam, ever.
-            </p>
-            <form className="jnews-inset-form" onSubmit={submit} style={arrive(formP)}>
-              <input
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <button type="submit">
-                {done ? '✓ SUBSCRIBED' : <><span>SUBSCRIBE</span> <ArrowRight color="#0a1f29" size={14} /></>}
-              </button>
-            </form>
-          </div>
-          <div className="jnews-inset-side" aria-hidden="true" style={arrive(sideP)}>
-            Letters from the field, written by the people who&apos;ve walked it.
-          </div>
-        </article>
-      </div>
+    <section className="jnews-sec">
+      <article className="jnews-inset">
+        <div className="jnews-inset-body">
+          <div className="jnews-inset-tag" data-reveal>DON&apos;T MISS AN ISSUE</div>
+          <h3 ref={titleRef} className={'jnews-inset-title' + (titleIn ? ' is-wiped' : '')}>
+            One letter, <em>once a month</em>.
+          </h3>
+          <p className="jnews-inset-sub" data-reveal data-reveal-delay="2">
+            Recaps, essays, and career talks — the moment they go live. No spam, ever.
+          </p>
+          <form className="jnews-inset-form" onSubmit={submit} data-reveal data-reveal-delay="3">
+            <input
+              type="email"
+              placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <button type="submit">
+              {done
+                ? <span className="jnews-done">✓ SUBSCRIBED</span>
+                : <><span>SUBSCRIBE</span> <ArrowRight color="#fef9ee" size={14} /></>}
+            </button>
+          </form>
+        </div>
+        <div className="jnews-inset-side" aria-hidden="true" data-reveal data-reveal-delay="2">
+          Letters from the field, written by the people who&apos;ve walked it.
+        </div>
+      </article>
     </section>
   );
 }
@@ -565,13 +449,11 @@ export function JournalPage() {
           <span>
             {filter === 'all'
               ? `ALL ${ARTICLES.length} ARTICLES`
-              : `${sorted.length + 1} OF ${ARTICLES.length} ARTICLES`}
+              : `${sorted.length + (featured.cat === filter ? 1 : 0)} OF ${ARTICLES.length} ARTICLES`}
           </span>
         </div>
       </section>
 
-      <div className="jdrift-lead" aria-hidden="true" />
-      <JournalDrift />
       <JournalNewsletter />
     </main>
   );

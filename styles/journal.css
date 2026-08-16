@@ -9,11 +9,11 @@
   background: var(--c-paper);
 }
 
-/* === HERO (scroll-pinned, 200vh) === */
+/* === HERO (scroll-pinned) === */
 .jh-hero {
   position: relative;
-  height: 200vh;
-  min-height: 1200px;
+  height: 140vh;
+  min-height: 820px;
   background: var(--c-paper);
   border-bottom: 1px solid var(--c-rule);
 }
@@ -172,68 +172,11 @@
   display: inline-flex; align-items: center; justify-content: center;
 }
 
-/* === FEATURED SIGNPOST (120vh — editorial chapter opener) === */
-.jfsign {
-  position: relative;
-  height: 120vh;
-  min-height: 700px;
-  background: var(--c-paper);
-  border-top: 1px solid var(--c-rule);
-}
-.jfsign-sticky {
-  position: sticky;
-  top: 80px;
-  height: calc(100vh - 80px);
-  padding: 0 var(--gutter);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow: hidden;
-}
-.jfsign-eyebrow {
-  font: 700 12px var(--font-mono);
-  letter-spacing: 0.24em;
-  text-transform: uppercase;
-  color: var(--c-orange);
-  margin-bottom: 28px;
-}
-.jfsign-line1 {
-  font: 800 clamp(46px, 7.2vw, 106px)/1 var(--font-display);
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  color: var(--c-muted);
-  margin-bottom: 0;
-}
-.jfsign-line2 {
-  font: 400 italic clamp(96px, 16.5vw, 252px)/0.9 var(--font-serif);
-  letter-spacing: -0.04em;
-  color: var(--c-orange);
-}
-.jfsign-line3 {
-  font: 400 clamp(96px, 16.5vw, 252px)/0.9 var(--font-serif);
-  letter-spacing: -0.04em;
-  color: var(--c-ink);
-  display: flex;
-  align-items: center;
-  gap: 26px;
-}
-.jfsign-arrow {
-  font-size: 0.4em;
-  color: var(--c-orange);
-  animation: bounce-y 1.9s ease-in-out infinite;
-  display: inline-block;
-  line-height: 1;
-}
-@keyframes bounce-y {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(14px); }
-}
-
-/* === FEATURED ARTICLE (scroll-pinned, 170vh) === */
+/* === FEATURED ARTICLE (scroll-pinned) === */
 .jf-sec {
   position: relative;
-  height: 170vh;
-  min-height: 1050px;
+  height: 130vh;
+  min-height: 780px;
   background: var(--c-paper);
 }
 .jf-sticky {
@@ -393,11 +336,11 @@
   display: flex; align-items: center; justify-content: center;
 }
 
-/* === SCROLL CUE (140vh — text-based, teal bleeds in only at the very end) === */
+/* === SCROLL CUE — text the grid slides up and covers as it reveals === */
 .jscrollcue {
   position: relative;
-  height: 160vh;
-  min-height: 900px;
+  height: 110vh;
+  min-height: 620px;
   background: var(--c-paper);
   pointer-events: none;
 }
@@ -430,11 +373,11 @@
   margin: 0;
 }
 
-/* === GRID SECTION — z-index 2 so it physically slides over the fixed scroll cue text === */
+/* === GRID SECTION — z-index 2 so it physically slides over the fixed scroll cue === */
 .jgrid-sec {
   position: relative;
   z-index: 2;
-  background: var(--c-teal-deep);
+  background: var(--c-teal-grid);
   color: var(--c-cream);
 }
 .jgrid-header {
@@ -454,7 +397,7 @@
   padding: 10px 4px;
   font: 500 15px var(--font-ui);
   letter-spacing: -0.005em;
-  color: rgba(254, 249, 238, 0.48);
+  color: rgba(254, 249, 238, 0.68);
   background: transparent;
   border: 0;
   border-radius: 0;
@@ -552,7 +495,7 @@
 
 .jcard-excerpt {
   font: 400 14px/1.6 var(--font-ui);
-  color: rgba(254, 249, 238, 0.6);
+  color: rgba(254, 249, 238, 0.74);
   margin-bottom: 20px;
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -585,7 +528,7 @@
   font: 500 11px var(--font-mono);
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: rgba(254, 249, 238, 0.4);
+  color: rgba(254, 249, 238, 0.62);
 }
 .jcard-meta-sep { color: var(--c-orange); margin: 0 6px; }
 
@@ -596,7 +539,7 @@
   flex-direction: column;
   align-items: center;
   gap: 18px;
-  background: var(--c-teal-deep);
+  background: var(--c-teal-grid);
   color: var(--c-cream);
 }
 .jload {
@@ -631,7 +574,7 @@
 .jgrid-empty {
   padding: 80px var(--gutter);
   text-align: center;
-  background: var(--c-teal-deep);
+  background: var(--c-teal-grid);
   color: var(--c-cream);
   border-top: 1px dashed rgba(254, 249, 238, 0.18);
 }
@@ -649,144 +592,29 @@
   border-color: var(--c-cream);
 }
 
-/* === DRIFT LEAD — breathing room between articles and drift === */
-.jdrift-lead {
-  height: 180px;
-  background: var(--c-teal-deep);
-}
-
-/* === DRIFT BAND (letters + airplane animation) === */
-.jdrift {
-  position: relative;
-  height: 320vh;
-  min-height: 1500px;
-  background: linear-gradient(to bottom,
-    var(--c-teal-deep) 0%,
-    var(--c-teal-deep) 60%,
-    var(--c-orange) 67%,
-    var(--c-orange) 100%);
-  overflow: clip;
-  pointer-events: none;
-}
-.jdrift-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-.jdrift-orange-flood {
-  position: absolute;
-  inset: 0;
-  background: var(--c-orange);
-  pointer-events: none;
-  z-index: 10;
-}
-.jdrift-stripe {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  padding: 32px var(--gutter);
-  display: flex;
-  justify-content: center;
-  font: 700 11px var(--font-mono);
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
-  color: var(--c-cream);
-}
-.jdrift-mark::before,
-.jdrift-mark::after {
-  content: '';
-  display: inline-block;
-  width: 36px;
-  height: 1px;
-  background: var(--c-cream);
-  vertical-align: middle;
-  margin: 0 14px;
-  opacity: 0.55;
-}
-.jdrift-flight {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-.jdrift-flight-path {
-  will-change: stroke-dashoffset;
-}
-.jdrift-plane {
-  filter: drop-shadow(0 4px 10px rgba(10, 31, 41, 0.3));
-  will-change: transform;
-}
-.jdrift-titles {
-  position: relative;
-  z-index: 2;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
-  text-align: center;
-  padding: 0 var(--gutter);
-}
-.jdrift-title {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-size: clamp(120px, 18vw, 240px);
-  line-height: 0.9;
-  letter-spacing: -0.04em;
-  color: var(--c-cream);
-  will-change: transform, opacity;
-}
-.jdrift-title em { font-style: italic; }
-.jdrift-sub {
-  font-family: var(--font-serif);
-  font-style: italic;
-  font-weight: 400;
-  font-size: clamp(20px, 2.4vw, 32px);
-  letter-spacing: -0.005em;
-  color: rgba(254, 249, 238, 0.85);
-  will-change: transform, opacity;
-}
-
-/* === NEWSLETTER (160vh — tighter, dark stays late so text stays readable) === */
+/* === NEWSLETTER — cohesive dark close ===
+   Continues the article grid's deep-teal world, darkening to a quiet
+   bottom edge before the light footer. Orange is an accent only. */
 .jnews-sec {
   position: relative;
-  height: 160vh;
-  min-height: 1100px;
+  padding: 104px var(--gutter) 120px;
   background: linear-gradient(to bottom,
-    var(--c-orange) 0%,
-    var(--c-orange) 58%,
-    #7a3606 80%,
-    #3a1a06 92%,
-    var(--c-ink) 100%);
-  padding: 0;
-}
-.jnews-sticky {
-  position: sticky;
-  top: 0;
-  height: 100vh;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 var(--gutter);
-  background: var(--c-orange);
+    var(--c-teal-grid) 0%,
+    var(--c-teal-grid) 55%,
+    var(--c-teal-darker) 100%);
+  border-top: 1px solid rgba(254, 249, 238, 0.14);
+  color: var(--c-cream);
 }
 .jnews-inset {
-  background: transparent;
-  color: var(--c-ink);
   width: 100%;
-  max-width: 1200px;
+  max-width: var(--max-w);
+  margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  min-height: 320px;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 56px;
+  align-items: center;
 }
-.jnews-stripe { display: none; }
 .jnews-inset-body {
-  padding: 56px 56px 48px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -794,78 +622,107 @@
 .jnews-inset-tag {
   font: 700 11px var(--font-mono);
   letter-spacing: 0.22em;
-  color: var(--c-ink);
+  color: var(--c-orange);
   margin-bottom: 24px;
-  will-change: transform, opacity;
 }
 .jnews-inset-title {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: 64px;
+  font-size: clamp(38px, 5vw, 64px);
   line-height: 1;
   letter-spacing: -0.02em;
   text-transform: uppercase;
   margin-bottom: 18px;
   max-width: 580px;
-  color: var(--c-ink);
-  will-change: transform, opacity;
+  color: var(--c-cream);
+  /* masked reveal — wipes in left→right when it enters view */
+  clip-path: inset(0 100% 0 0);
+  transition: clip-path 0.85s cubic-bezier(0.2, 0.6, 0.15, 1);
 }
+.jnews-inset-title.is-wiped { clip-path: inset(0 0 0 0); }
 .jnews-inset-title em {
   font-style: italic;
   font-family: var(--font-serif);
   font-weight: 400;
   text-transform: none;
-  color: var(--c-paper);
+  color: var(--c-orange);
+}
+@media (prefers-reduced-motion: reduce) {
+  .jnews-inset-title { clip-path: none; transition: none; }
+}
+
+/* submit success — small pop on the confirmation label */
+.jnews-done {
+  display: inline-block;
+  color: var(--c-orange);
+  animation: jnews-pop 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+@keyframes jnews-pop {
+  0%   { opacity: 0; transform: scale(0.8); }
+  60%  { opacity: 1; transform: scale(1.08); }
+  100% { transform: scale(1); }
 }
 .jnews-inset-sub {
   font: italic 400 18px/1.5 var(--font-serif);
-  color: rgba(10, 31, 41, 0.72);
+  color: rgba(254, 249, 238, 0.7);
   margin-bottom: 32px;
   max-width: 480px;
-  will-change: transform, opacity;
 }
 .jnews-inset-form {
+  position: relative;
   display: flex;
   align-items: center;
-  border-bottom: 2px solid var(--c-ink);
+  border-bottom: 2px solid rgba(254, 249, 238, 0.25);
   padding-bottom: 10px;
   max-width: 540px;
-  will-change: transform, opacity;
 }
+/* lowkey signature — the accent underline draws in from the left on reveal */
+.jnews-inset-form::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: -2px;
+  width: 100%; height: 2px;
+  background: var(--c-orange);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.7s cubic-bezier(0.2, 0.6, 0.15, 1) 0.15s;
+}
+.jnews-inset-form.is-in::after { transform: scaleX(1); }
 .jnews-inset-form input {
   flex: 1;
   background: transparent;
   border: 0; outline: 0;
   padding: 10px 0;
   font: 500 18px var(--font-ui);
-  color: var(--c-ink);
+  color: var(--c-cream);
 }
-.jnews-inset-form input::placeholder { color: rgba(10, 31, 41, 0.45); }
+.jnews-inset-form input::placeholder { color: rgba(254, 249, 238, 0.4); }
 .jnews-inset-form button {
   display: inline-flex;
   align-items: center;
   gap: 10px;
   font: 700 13px var(--font-mono);
   letter-spacing: 0.18em;
-  color: var(--c-ink);
+  color: var(--c-cream);
   padding: 10px 0;
+  transition: color 0.25s;
 }
+.jnews-inset-form button:hover { color: var(--c-orange); }
 .jnews-inset-side {
   position: relative;
-  border-left: 1px solid rgba(10, 31, 41, 0.22);
+  border-left: 1px solid rgba(254, 249, 238, 0.18);
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  padding: 56px 48px 48px;
+  padding: 12px 0 12px 48px;
   font: italic 400 22px/1.35 var(--font-serif);
-  color: rgba(10, 31, 41, 0.78);
+  color: rgba(254, 249, 238, 0.7);
   text-align: right;
-  will-change: transform, opacity;
 }
 .jnews-inset-side::after {
   content: '—';
   position: absolute;
-  top: 56px; right: 48px;
-  color: var(--c-ink);
+  top: 0; left: 48px;
+  color: var(--c-orange);
   font-size: 32px;
 }

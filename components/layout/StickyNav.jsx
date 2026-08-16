@@ -6,7 +6,7 @@ import { LogoMark, ArrowRight } from '../shared/Icons';
 const NAV_SECTIONS = [
   { id: 'home',       label: 'Home',        href: '#home' },
   { id: 'blog',       label: 'Blog',        href: '/journal' },
-  { id: 'about',      label: 'About',       href: '#mission' },
+  { id: 'about',      label: 'About',       href: '/about' },
   { id: 'contact',    label: 'Contact Us',  href: '#contact' },
   { id: 'gallery',    label: 'Gallery',     href: '/gallery' },
   { id: 'mentorship', label: 'Mentorship',  href: '#join' },
@@ -24,6 +24,7 @@ export function StickyNav() {
     setIsHome(path === '/');
     if (path === '/journal') setActive('blog');
     if (path === '/gallery') setActive('gallery');
+    if (path === '/about') setActive('about');
   }, []);
 
   useEffect(() => {

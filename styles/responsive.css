@@ -489,9 +489,8 @@
   .jf-img-corner { display: none; }
 }
 
-/* ── Scroll cue — static text block on mobile ─────────── */
+/* ── Scroll cue — static block on mobile (fixed panel jumps with iOS address bar) ── */
 @media (max-width: 767px) {
-  /* remove fixed panel — it jumps with iOS address bar */
   .jscrollcue { height: auto; min-height: 0; padding: 52px 0 56px; }
   .jscrollcue-panel {
     position: relative;
@@ -503,7 +502,6 @@
     align-items: flex-start;
     gap: 8px;
   }
-  /* text is always visible — no scroll gating */
   .jscrollcue-part1, .jscrollcue-part2 {
     opacity: 1 !important;
     transform: none !important;
@@ -526,7 +524,7 @@
     position: sticky;
     top: 68px;
     z-index: 10;
-    background: var(--c-teal-deep);
+    background: var(--c-teal-grid);
     padding: 0 var(--gutter);
     border-bottom: 1px solid rgba(254, 249, 238, 0.14);
   }
@@ -540,7 +538,8 @@
     scrollbar-width: none;
   }
   .jfilter-bar::-webkit-scrollbar { display: none; }
-  .jfilter-tab { font-size: 13px; padding: 6px 2px; white-space: nowrap; flex-shrink: 0; }
+  /* taller hit area — ~44px tap target */
+  .jfilter-tab { font-size: 13px; padding: 14px 2px; white-space: nowrap; flex-shrink: 0; }
   .jgrid { padding: 0 var(--gutter); }
   .jcard { padding: 24px 0; }
   /* image stacked above text */
@@ -566,51 +565,26 @@
   .jgrid-empty p { font-size: 22px; }
 }
 
-/* ── Drift band ───────────────────────────────────────── */
+/* ── Newsletter (cohesive dark close) ─────────────────── */
 @media (max-width: 767px) {
-  /* 200vh is enough for the airplane + flood transition */
-  .jdrift { height: 200vh; min-height: 520px; }
-  .jdrift-lead { height: 80px; }
-  .jdrift-titles { padding: 0 var(--gutter); gap: 10px; }
-  .jdrift-title { font-size: clamp(64px, 17vw, 110px); }
-  .jdrift-sub { font-size: clamp(15px, 3.5vw, 22px); }
-  .jdrift-stripe { padding: 16px var(--gutter); font-size: 9px; }
-}
-
-/* ── Newsletter ───────────────────────────────────────── */
-@media (max-width: 767px) {
-  .jnews-sec { height: auto; min-height: 0; }
-  .jnews-sticky {
-    position: relative;
-    top: auto;
-    height: auto;
-    padding: 52px var(--gutter) 56px;
-  }
-  .jnews-inset { grid-template-columns: 1fr; min-height: 0; }
-  .jnews-inset-body { padding: 0; }
-  /* override arrive() opacity/transform — section is static on mobile */
-  .jnews-inset-tag, .jnews-inset-title, .jnews-inset-sub,
-  .jnews-inset-form, .jnews-inset-side {
-    opacity: 1 !important;
-    transform: none !important;
-  }
+  .jnews-sec { padding: 56px var(--gutter) 64px; }
+  .jnews-inset { grid-template-columns: 1fr; gap: 28px; }
   .jnews-inset-title { font-size: 36px; max-width: 100%; margin-bottom: 12px; }
   .jnews-inset-sub { font-size: 15px; margin-bottom: 24px; }
   .jnews-inset-form { max-width: 100%; }
   .jnews-inset-form input { font-size: 16px; }
   .jnews-inset-side {
     border-left: none;
-    border-top: 1px solid rgba(10, 31, 41, 0.18);
+    border-top: 1px solid rgba(254, 249, 238, 0.18);
     padding: 28px 0 0;
     justify-content: flex-start;
     text-align: left;
     font-size: 15px;
   }
-  .jnews-inset-side::after { top: 28px; right: auto; left: 0; }
+  .jnews-inset-side::after { top: 28px; left: 0; }
 }
 @media (max-width: 480px) {
   .jnews-inset-title { font-size: 30px; }
-  .jdrift-title { font-size: 56px; }
 }
 
 /* ═══════════════════════════════════════════════════════════

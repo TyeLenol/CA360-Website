@@ -46,6 +46,21 @@ export function useGlobalRevealObserver() {
   }, []);
 }
 
+// True when the user has requested reduced motion. Used to disable
+// JS-driven scroll choreography (CSS keyframes/transitions are already
+// covered by the prefers-reduced-motion reset in globals.css).
+export function usePrefersReducedMotion() {
+  const [reduced, setReduced] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = () => setReduced(mq.matches);
+    update();
+    mq.addEventListener('change', update);
+    return () => mq.removeEventListener('change', update);
+  }, []);
+  return reduced;
+}
+
 // In-view boolean for a single ref
 export function useInView(ref, { threshold = 0.2, rootMargin = '0px', once = true } = {}) {
   const [inView, setInView] = useState(false);
