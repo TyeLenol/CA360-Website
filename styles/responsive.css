@@ -435,7 +435,7 @@
 @media (max-width: 767px) {
   .journal-page { padding-top: 68px; }
   /* A short opening keeps the choice rail within the first meaningful scroll. */
-  .jh-hero { height: 110vh; min-height: 590px; }
+  .jh-hero { height: 96vh; min-height: 600px; }
   .jh-hero-sticky { padding: 20px var(--gutter) 0; top: 68px; height: calc(100vh - 68px); }
   .jh-hero-top { margin-bottom: 10px; }
   .jh-hero-side { display: none; }
@@ -568,8 +568,8 @@
 
 /* ── Drift band ───────────────────────────────────────── */
 @media (max-width: 767px) {
-  /* 200vh is enough for the airplane + flood transition */
-  .jdrift { height: 200vh; min-height: 520px; }
+  /* A compact chapter keeps the airplane transition decorative, not obstructive. */
+  .jdrift { height: 120vh; min-height: 620px; }
   .jdrift-lead { height: 80px; }
   .jdrift-titles { padding: 0 var(--gutter); gap: 10px; }
   .jdrift-title { font-size: clamp(64px, 17vw, 110px); }

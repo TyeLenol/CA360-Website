@@ -88,34 +88,13 @@ const CATEGORIES = [
 
 /* ===== JOURNAL HERO ===== */
 function JournalHero() {
-  const ref = useRef(null);
-  const prog = useScrollProgress(ref);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth <= 767);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
-
   const jump = (e) => {
     e.preventDefault();
     document.getElementById('journal-start')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const arrive = (lo, hi, dy = 44) => {
-    if (isMobile) return {};
-    const p = Math.max(0, Math.min(1, (prog - lo) / (hi - lo)));
-    return {
-      opacity: p,
-      transform: `translate3d(0, ${((1 - p) * dy).toFixed(1)}px, 0)`,
-      willChange: 'opacity, transform',
-    };
-  };
-
   return (
-    <section className="jh-hero" id="journal-top" ref={ref}>
+    <section className="jh-hero" id="journal-top">
       <div className="jh-hero-sticky">
         <div className="jh-hero-top">
           <RouteMarker index="02" label="Journal" context="stories, guides, honest takes" />
@@ -140,7 +119,7 @@ function JournalHero() {
         {/* Metric + statement — scroll-animated on desktop, always visible on mobile */}
         <div className="jh-hero-lower">
           <div className="jh-hero-metric">
-            <div className="jh-hero-metric-label">PUBLISHED</div>
+            <div className="jh-hero-metric-label">ON THE SHELF</div>
             <div className="jh-hero-metric-num">{ARTICLES.length}</div>
             <div className="jh-hero-metric-suf">articles</div>
           </div>
@@ -174,8 +153,8 @@ const JOURNAL_PATHS = [
     id: 'stories',
     label: 'IF YOU WANT THE REAL VERSION',
     title: 'Show me the path.',
-    detail: 'Hear from students and mentors about the turns, doubts, and decisions behind the polished title.',
-    filter: 'student',
+    detail: 'Hear from mentors about the turns, doubts, and decisions behind the polished title.',
+    filter: 'mentor',
     target: 'journal-grid',
   },
   {
@@ -233,7 +212,6 @@ function JournalStart({ onChoose }) {
 /* ===== FEATURED ARTICLE ===== */
 function JournalFeatured({ article, onOpen }) {
   const secRef = useRef(null);
-  const prog = useScrollProgress(secRef);
   const scroll = useElementScroll(secRef);
   const [isMobile, setIsMobile] = useState(false);
 
@@ -246,12 +224,6 @@ function JournalFeatured({ article, onOpen }) {
 
   const imgY = isMobile ? 0 : scroll * -70;
 
-  const arrive = (lo, hi, dy = 40) => {
-    if (isMobile) return {};
-    const p = Math.max(0, Math.min(1, (prog - lo) / (hi - lo)));
-    return { opacity: p, transform: `translate3d(0, ${((1 - p) * dy).toFixed(1)}px, 0)`, willChange: 'opacity, transform' };
-  };
-
   return (
     <section className="jf-sec" id="journal-featured" ref={secRef}>
       <div className="jf-sticky">
@@ -262,7 +234,7 @@ function JournalFeatured({ article, onOpen }) {
         </div>
         <article className="jf-card">
           {/* Image arrives first */}
-          <div className="jf-img" style={arrive(0.04, 0.26, 70)}>
+          <div className="jf-img">
             <div className="jf-img-inner" style={{ transform: `translate3d(0, ${imgY.toFixed(1)}px, 0)` }}>
               <PhotoPlaceholder tone={article.tone} label={article.label} style={{ width: '100%', height: '100%' }} />
             </div>
@@ -280,24 +252,24 @@ function JournalFeatured({ article, onOpen }) {
 
           {/* Text body — meta + title then blurb then rest */}
           <div className="jf-body">
-            <div className="jf-meta" style={arrive(0.26, 0.44, 28)}>
+            <div className="jf-meta">
               <span>{article.date}</span>
               <span className="dot" />
               <span>{article.readTime}</span>
               <span className="dot" />
               <span>{article.author.toUpperCase()}</span>
             </div>
-            <h2 className="jf-title" style={arrive(0.38, 0.58, 44)}>{article.title}</h2>
-            <p className="jf-excerpt" style={arrive(0.54, 0.72, 32)}>{article.excerpt}</p>
+            <h2 className="jf-title">{article.title}</h2>
+            <p className="jf-excerpt">{article.excerpt}</p>
 
             {article.venue && (
-              <div className="jf-venue" style={arrive(0.64, 0.80, 24)}>
+              <div className="jf-venue">
                 <PinIcon size={14} color="#d68307" />
                 Hosted at <span>{article.venue}</span>
               </div>
             )}
 
-            <div className="jf-foot" style={arrive(0.74, 0.90, 22)}>
+            <div className="jf-foot">
               <div className="jf-author">
                 <div className="jf-author-avatar">
                   <PhotoPlaceholder tone="warm" label="" style={{ width: '100%', height: '100%' }}>
@@ -314,7 +286,7 @@ function JournalFeatured({ article, onOpen }) {
                 href={`/journal#${article.id}`}
                 onClick={(e) => { e.preventDefault(); onOpen(article); }}
               >
-                Read the featured story
+                Open story preview
                 <span className="jf-cta-arrow"><ArrowRight color="#fff" size={16} /></span>
               </a>
             </div>
@@ -325,47 +297,14 @@ function JournalFeatured({ article, onOpen }) {
   );
 }
 
-/* ===== SCROLL CUE — text-based transition to blog grid ===== */
+/* ===== ARCHIVE TRANSITION — a signpost, not a scroll gate ===== */
 function JournalScrollCue() {
-  const ref = useRef(null);
-  const prog = useScrollProgress(ref);
-  const [coverAlpha, setCoverAlpha] = useState(1);
-
-  useEffect(() => {
-    const update = () => {
-      const el = ref.current;
-      if (!el) return;
-      // Grid covers text center when grid top reaches viewport center.
-      // rect.bottom is section bottom in viewport coords → add scrollY = section doc bottom.
-      // Subtract half viewport to get the scroll position where grid top = screen center.
-      const rect = el.getBoundingClientRect();
-      const coverAt = window.scrollY + rect.bottom - window.innerHeight * 0.5;
-      const alpha = 1 - Math.max(0, Math.min(1, (window.scrollY - coverAt) / (window.innerHeight * 0.35)));
-      setCoverAlpha(alpha);
-    };
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
-  }, []);
-
-  const p1 = Math.max(0, Math.min(1, (prog - 0.03) / 0.14));
-  const p2 = Math.max(0, Math.min(1, (prog - 0.20) / 0.14));
-
   return (
-    <section className="jscrollcue" ref={ref}>
-      <div className="jscrollcue-panel" style={{ opacity: coverAlpha }}>
-        <p
-          className="jscrollcue-part1"
-          style={{ opacity: p1, transform: `translateY(${((1 - p1) * 32).toFixed(1)}px)` }}
-        >
-          Stories. Guides. Honest takes.
-        </p>
-        <p
-          className="jscrollcue-part2"
-          style={{ opacity: p2, transform: `translateY(${((1 - p2) * 32).toFixed(1)}px)` }}
-        >
-          All of it, below.
-        </p>
+    <section className="jscrollcue" aria-label="Journal archive transition">
+      <div className="jscrollcue-panel-static" data-reveal>
+        <span className="jscrollcue-kicker">THE ARCHIVE</span>
+        <p>Stories. Guides. Honest takes.</p>
+        <strong>All of it, below.</strong>
       </div>
     </section>
   );
@@ -373,18 +312,31 @@ function JournalScrollCue() {
 
 /* ===== FILTER BAR (integrated into grid header) ===== */
 function JournalFilter({ filter, onFilter }) {
-  return (
-          <div className="jfilter-bar" role="tablist" aria-label="Filter journal stories">
+  const tabRefs = useRef([]);
 
-      {CATEGORIES.map((c) => (
+  const moveTab = (event, index) => {
+    if (!['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].includes(event.key)) return;
+    event.preventDefault();
+    const delta = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : -1;
+    const next = (index + delta + CATEGORIES.length) % CATEGORIES.length;
+    tabRefs.current[next]?.focus();
+    onFilter(CATEGORIES[next].id);
+  };
+
+  return (
+    <div className="jfilter-bar" role="tablist" aria-label="Filter journal stories">
+      {CATEGORIES.map((c, index) => (
         <button
           key={c.id}
+          ref={(node) => { tabRefs.current[index] = node; }}
           id={`journal-filter-${c.id}`}
           className={'jfilter-tab' + (filter === c.id ? ' is-active' : '')}
           onClick={() => onFilter(c.id)}
+          onKeyDown={(event) => moveTab(event, index)}
           role="tab"
           aria-selected={filter === c.id}
           aria-controls="journal-grid-list"
+          tabIndex={filter === c.id ? 0 : -1}
         >
           {c.label}
         </button>
@@ -409,8 +361,11 @@ function ArticleCard({ article, index, onOpen }) {
           <div className="jcard-label">{article.catLabel}</div>
           <h3 className="jcard-title">{article.title}</h3>
           <p className="jcard-excerpt">{article.excerpt}</p>
-          <div className="jcard-foot">
-            <span className="jcard-read">READ ARTICLE</span>
+                      <div className="jcard-foot">
+              <span className="jcard-read">OPEN PREVIEW</span>
+
+
+
             <span className="jcard-meta">
               <span>{article.date}</span>
               <span className="jcard-meta-sep">·</span>
@@ -426,11 +381,24 @@ function ArticleCard({ article, index, onOpen }) {
 /* ===== READING ROOM ===== */
 function JournalReader({ article, onClose }) {
   const closeRef = useRef(null);
+  const panelRef = useRef(null);
 
   useEffect(() => {
     const previousFocus = document.activeElement;
     const onKeyDown = (event) => {
       if (event.key === 'Escape') onClose();
+      if (event.key !== 'Tab' || !panelRef.current) return;
+      const focusable = [...panelRef.current.querySelectorAll('a[href], button:not([disabled])')];
+      if (!focusable.length) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
     document.addEventListener('keydown', onKeyDown);
     const previousOverflow = document.body.style.overflow;
@@ -447,9 +415,9 @@ function JournalReader({ article, onClose }) {
   return (
     <div className="jreader" role="dialog" aria-modal="true" aria-labelledby="jreader-title">
       <button className="jreader-backdrop" aria-label="Close article" onClick={onClose} />
-      <article className="jreader-panel">
+      <article className="jreader-panel" ref={panelRef}>
         <div className="jreader-topline">
-          <span>READING ROOM · {article.catLabel}</span>
+          <span>STORY PREVIEW · {article.catLabel}</span>
           <button ref={closeRef} className="jreader-close" onClick={onClose} aria-label="Close article">
             CLOSE <span aria-hidden="true">×</span>
           </button>
@@ -464,8 +432,8 @@ function JournalReader({ article, onClose }) {
           <p className="jreader-excerpt">{article.excerpt}</p>
           <div className="jreader-next">
             <span className="jreader-next-label">KEEP GOING</span>
-            <strong>Turn the thought into a next step.</strong>
-            <p>See what is open at CA360, or get the next letter when another story goes live.</p>
+            <strong>One story should lead to another.</strong>
+            <p>Use this preview to find your next question, then keep exploring the Journal.</p>
             <div className="jreader-actions">
               <a className="btn btn-primary" href="/#opportunity" onClick={onClose}>
                 See what&apos;s open <ArrowRight color="#fff" size={14} />
@@ -483,14 +451,44 @@ function JournalReader({ article, onClose }) {
 
 /* ===== GRID ===== */
 function JournalGrid({ articles, filter, onFilter, onOpen }) {
+  const categoryLabel = CATEGORIES.find((c) => c.id === filter)?.label || 'All articles';
+  const visibleCount = filter === 'all' ? articles.length + 1 : articles.length;
+
   return (
-    <section className="jgrid-sec" id="journal-grid">
+    <section className="jgrid-sec" id="journal-grid" aria-labelledby="journal-grid-title">
       <div className="jgrid-header">
+        <div className="jgrid-header-copy">
+          <div>
+            <span className="jgrid-kicker">{filter === 'all' ? 'THE FULL SHELF' : 'FILTERED SHELF'}</span>
+            <h2 id="journal-grid-title">The archive, <em>in full.</em></h2>
+            <p>{filter === 'all' ? 'Browse every story, guide, and honest take.' : `Showing ${visibleCount} ${categoryLabel.toLowerCase()}.`}</p>
+          </div>
+          <strong className="jgrid-count"><span>{visibleCount}</span> {filter === 'all' ? 'stories' : categoryLabel.toLowerCase()}</strong>
+        </div>
         <JournalFilter filter={filter} onFilter={onFilter} />
       </div>
-      <div className="jgrid" id="journal-grid-list" role="tabpanel" aria-live="polite">
+      <div className="jgrid" id="journal-grid-list" role="tabpanel" aria-labelledby="journal-grid-title" aria-live="polite">
         {articles.map((a, i) => <ArticleCard key={a.id} article={a} index={i} onOpen={onOpen} />)}
       </div>
+    </section>
+  );
+}
+
+/* ===== CONTINUATION CHAPTER ===== */
+function JournalContinue({ article, onOpen }) {
+  return (
+    <section className="jcontinue-sec" id="journal-continue" aria-labelledby="journal-continue-title">
+      <div className="jcontinue-marker">KEEP READING</div>
+      <div className="jcontinue-copy">
+        <span className="jcontinue-kicker">A SOFT LANDING AFTER THE ARCHIVE</span>
+        <h2 id="journal-continue-title">One story should lead to <em>another.</em></h2>
+        <p>When a question stays with you, follow it into the next story instead of starting over.</p>
+      </div>
+      <a className="jcontinue-card" href={`/journal#${article.id}`} onClick={(e) => { e.preventDefault(); onOpen(article); }}>
+        <span>{article.catLabel}</span>
+        <strong>{article.title}</strong>
+        <small>{article.readTime} <ArrowRight color="#fff" size={14} /></small>
+      </a>
     </section>
   );
 }
@@ -709,6 +707,7 @@ export function JournalPage() {
 
   const [featured, ...rest] = ARTICLES;
   const sorted = rest.filter((a) => filter === 'all' || a.cat === filter);
+  const nextArticle = sorted[0] || rest[0];
 
   return (
     <main className="journal-page">
@@ -738,10 +737,12 @@ export function JournalPage() {
           <span>
             {filter === 'all'
               ? `ALL ${ARTICLES.length} ARTICLES`
-              : `${sorted.length + 1} OF ${ARTICLES.length} ARTICLES`}
+              : `${sorted.length} ${CATEGORIES.find((c) => c.id === filter)?.label.toUpperCase()}`}
           </span>
         </div>
       </section>
+
+      {nextArticle && <JournalContinue article={nextArticle} onOpen={openArticle} />}
 
       <div className="jdrift-lead" aria-hidden="true" />
       <JournalDrift />
