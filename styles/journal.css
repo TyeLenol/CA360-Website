@@ -1214,8 +1214,8 @@
 .jcontinue-card small svg { padding: 6px; width: 28px; height: 28px; border-radius: 50%; background: var(--c-orange); box-sizing: content-box; }
 
 .jdrift-lead { height: 100px; }
-.jdrift { height: 90vh; min-height: 680px; }
-.jnews-sec { height: 100vh; min-height: 760px; }
+.jdrift { height: 155vh; min-height: 880px; }
+.jnews-sec { height: 118vh; min-height: 760px; }
 
 @media (max-width: 900px) {
   .jscrollcue-panel-static { grid-template-columns: 0.5fr 1.3fr 0.8fr; gap: 18px; }
@@ -1242,24 +1242,11 @@
   .jcontinue-sec { margin: 0; padding: 76px var(--gutter) 84px; display: grid; grid-template-columns: 1fr; gap: 34px; }
   .jcontinue-marker { writing-mode: initial; transform: none; }
   .jcontinue-card { min-height: 185px; }
-  .jdrift { height: 90vh; min-height: 560px; }
+  .jdrift { height: 120vh; min-height: 620px; }
   .jdrift-lead { height: 56px; }
   .jnews-sec { height: auto; min-height: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .jcontinue-card { transition: none; }
-  .jdrift { height: 80vh; min-height: 560px; background: var(--c-teal-deep); }
-  .jdrift-orange-flood { opacity: 0 !important; }
-  .jdrift-flight-path { stroke-dashoffset: 0 !important; }
-  .jdrift-plane { display: none; }
-  .jdrift-title,
-  .jdrift-sub,
-  .jnews-inset-tag,
-  .jnews-inset-title,
-  .jnews-inset-sub,
-  .jnews-inset-form,
-  .jnews-inset-side { opacity: 1 !important; transform: none !important; }
-  .jnews-sec { height: auto; min-height: 0; background: var(--c-orange); }
-  .jnews-sticky { position: relative; top: auto; height: auto; min-height: 100vh; }
 }

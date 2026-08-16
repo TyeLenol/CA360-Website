@@ -568,8 +568,8 @@
 
 /* ── Drift band ───────────────────────────────────────── */
 @media (max-width: 767px) {
-  /* A short chapter keeps the airplane transition decorative, not obstructive. */
-  .jdrift { height: 90vh; min-height: 560px; }
+  /* A compact chapter keeps the airplane transition decorative, not obstructive. */
+  .jdrift { height: 120vh; min-height: 620px; }
   .jdrift-lead { height: 80px; }
   .jdrift-titles { padding: 0 var(--gutter); gap: 10px; }
   .jdrift-title { font-size: clamp(64px, 17vw, 110px); }
