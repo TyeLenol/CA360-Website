@@ -14,7 +14,7 @@ import { Newsletter } from '../components/sections/Newsletter';
 import { FAQ } from '../components/sections/FAQ';
 
 export const metadata = {
-  title: 'Career Arcadia 360 — Mentorship that shows up',
+  title: 'Mentorship that shows up',
   description: 'Real guidance. Real mentors. Real clarity — for SHS graduates stepping into medicine, law, engineering and business.',
 };
 

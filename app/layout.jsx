@@ -4,8 +4,16 @@ import { Footer } from '../components/layout/Footer';
 import { GlobalReveal } from '../components/GlobalReveal';
 
 export const metadata = {
-  title: 'Career Arcadia 360',
-  description: 'Mentorship that shows up',
+  title: {
+    default: 'Career Arcadia 360 — Mentorship that shows up',
+    template: '%s · Career Arcadia 360',
+  },
+  description: 'Career Arcadia 360 connects Ghanaian students with mentors, career conversations, and practical guidance for the path ahead.',
+  openGraph: {
+    title: 'Career Arcadia 360 — Mentorship that shows up',
+    description: 'Career conversations, mentors, and a clearer path for Ghanaian students and young professionals.',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({ children }) {

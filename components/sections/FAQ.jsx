@@ -31,6 +31,17 @@ export function FAQ() {
   const [active, setActive] = useState(0);
   const m = FAQS[active];
 
+  const handleTabKeyDown = (event, index) => {
+    const direction = event.key === 'ArrowDown' || event.key === 'ArrowRight' ? 1
+      : event.key === 'ArrowUp' || event.key === 'ArrowLeft' ? -1
+      : 0;
+    if (!direction) return;
+    event.preventDefault();
+    const nextIndex = (index + direction + FAQS.length) % FAQS.length;
+    setActive(nextIndex);
+    document.getElementById(`faq-tab-${FAQS[nextIndex].id}`)?.focus();
+  };
+
   return (
     <section id="faq" className="faq-sec">
       <div className="faq-head">
@@ -42,14 +53,22 @@ export function FAQ() {
       </div>
 
       <div className="faq-stage" data-reveal>
-        <ol className="faq-list" role="tablist">
+        <ol className="faq-list" role="tablist" aria-label="Frequently asked questions">
           {FAQS.map((f, i) => (
             <li
               key={f.id}
               className={'faq-item' + (i === active ? ' is-active' : '')}
-              role="tab"
+              role="presentation"
             >
-              <button onClick={() => setActive(i)}>
+              <button
+                id={`faq-tab-${f.id}`}
+                role="tab"
+                aria-selected={i === active}
+                aria-controls={`faq-answer-${f.id}`}
+                tabIndex={i === active ? 0 : -1}
+                onClick={() => setActive(i)}
+                onKeyDown={(event) => handleTabKeyDown(event, i)}
+              >
                 <span className="faq-item-n">0{i + 1}</span>
                 <span className="faq-item-q">
                   {f.q}
@@ -63,7 +82,13 @@ export function FAQ() {
           ))}
         </ol>
 
-        <div className="faq-answer">
+        <div
+          className="faq-answer"
+          id={`faq-answer-${m.id}`}
+          role="tabpanel"
+          aria-labelledby={`faq-tab-${m.id}`}
+          tabIndex={0}
+        >
           <div className="faq-answer-meta">
             <span className="faq-answer-n">0{active + 1} / 0{FAQS.length}</span>
             <span className="faq-answer-cat">{m.cat}</span>

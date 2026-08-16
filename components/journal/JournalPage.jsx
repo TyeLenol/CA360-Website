@@ -101,7 +101,7 @@ function JournalHero() {
 
   const jump = (e) => {
     e.preventDefault();
-    document.getElementById('journal-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('journal-start')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const arrive = (lo, hi, dy = 44) => {
@@ -129,7 +129,7 @@ function JournalHero() {
         <div className="jh-hero-title-wrap">
           <h1 className="jh-hero-title">
             The <em className="jh-hero-em">
-              Blog
+              Journal
               <svg className="jh-hero-scribble" viewBox="0 0 160 14" preserveAspectRatio="none" aria-hidden="true">
                 <path d="M2 10 C 30 4, 70 13, 110 7 S 148 12, 158 8" stroke="#d68307" strokeWidth="4" fill="none" strokeLinecap="round" />
               </svg>
@@ -139,19 +139,18 @@ function JournalHero() {
 
         {/* Metric + statement — scroll-animated on desktop, always visible on mobile */}
         <div className="jh-hero-lower">
-          <div className="jh-hero-metric" style={arrive(0.30, 0.64, 60)}>
+          <div className="jh-hero-metric">
             <div className="jh-hero-metric-label">PUBLISHED</div>
             <div className="jh-hero-metric-num">{ARTICLES.length}</div>
             <div className="jh-hero-metric-suf">articles</div>
           </div>
 
-          <div className="jh-hero-statement-row" style={arrive(0.66, 0.90, 36)}>
+          <div className="jh-hero-statement-row">
             <p className="jh-hero-statement">
-              Real stories. Real careers. Real talk — from people who have
-              already walked the path <em>you&apos;re looking at</em>.
+              Stories, guides, and honest takes for the path after <em>SHS</em> — from people who have already walked it.
             </p>
-            <a className="jh-hero-anchor" href="#journal-grid" onClick={jump}>
-              <span>READ ARTICLES</span>
+            <a className="jh-hero-anchor" href="#journal-start" onClick={jump}>
+              <span>CHOOSE YOUR WAY IN</span>
               <span className="jh-hero-anchor-arrow"><ArrowDown color="#fff" size={14} /></span>
             </a>
           </div>
@@ -161,6 +160,75 @@ function JournalHero() {
   );
 }
 
+
+const JOURNAL_PATHS = [
+  {
+    id: 'clarity',
+    label: 'IF YOU ARE CHOOSING',
+    title: 'I need career clarity.',
+    detail: 'Start with guides, admissions context, and the questions worth asking before you commit.',
+    filter: 'guide',
+    target: 'journal-grid',
+  },
+  {
+    id: 'stories',
+    label: 'IF YOU WANT THE REAL VERSION',
+    title: 'Show me the path.',
+    detail: 'Hear from students and mentors about the turns, doubts, and decisions behind the polished title.',
+    filter: 'student',
+    target: 'journal-grid',
+  },
+  {
+    id: 'wander',
+    label: 'IF YOU ARE JUST EXPLORING',
+    title: 'Start with what is new.',
+    detail: 'Begin with this month’s featured story, then keep wandering through the archive at your own pace.',
+    filter: 'all',
+    target: 'journal-featured',
+  },
+];
+
+function JournalStart({ onChoose }) {
+  return (
+    <section className="jstart-sec" id="journal-start" aria-labelledby="journal-start-title">
+      <div className="jstart-head">
+        <div className="jstart-marker" data-reveal>
+          <RouteMarker index="02" label="Start here" context="choose a way in" />
+        </div>
+        <div>
+          <p className="jstart-kicker" data-reveal>NO RIGHT ORDER REQUIRED</p>
+          <h2 id="journal-start-title" data-reveal data-reveal-delay="1">
+            Not sure where to begin?<br /><em>Start with the question.</em>
+          </h2>
+        </div>
+        <p className="jstart-intro" data-reveal data-reveal-delay="2">
+          The Journal is not a test. Pick the sentence that sounds most like you and we will take you to a good first story.
+        </p>
+      </div>
+      <div className="jstart-paths">
+        {JOURNAL_PATHS.map((path, index) => (
+          <button
+            type="button"
+            className={'jstart-path' + (index === 0 ? ' is-primary' : '')}
+            key={path.id}
+            onClick={() => onChoose(path.filter, path.target)}
+            data-reveal
+            data-reveal-delay={index + 1}
+          >
+            <span className="jstart-path-label">{path.label}</span>
+            <strong>{path.title}</strong>
+            <span className="jstart-path-detail">{path.detail}</span>
+            <span className="jstart-path-arrow"><ArrowRight color={index === 0 ? '#fff' : '#d68307'} size={15} /></span>
+          </button>
+        ))}
+      </div>
+      <div className="jstart-browse" data-reveal>
+        <span>Already know what you want?</span>
+        <a href="#journal-grid">Browse every story <ArrowRight color="#d68307" size={14} /></a>
+      </div>
+    </section>
+  );
+}
 
 /* ===== FEATURED ARTICLE ===== */
 function JournalFeatured({ article, onOpen }) {
@@ -185,11 +253,11 @@ function JournalFeatured({ article, onOpen }) {
   };
 
   return (
-    <section className="jf-sec" ref={secRef}>
+    <section className="jf-sec" id="journal-featured" ref={secRef}>
       <div className="jf-sticky">
         <div className="jf-eyebrow" data-reveal>
           <span className="jf-eyebrow-mark">★</span>
-          Featured · This issue
+          A good place to begin · Featured story
           <span className="jf-eyebrow-rule" />
         </div>
         <article className="jf-card">
@@ -246,7 +314,7 @@ function JournalFeatured({ article, onOpen }) {
                 href={`/journal#${article.id}`}
                 onClick={(e) => { e.preventDefault(); onOpen(article); }}
               >
-                Read this issue
+                Read the featured story
                 <span className="jf-cta-arrow"><ArrowRight color="#fff" size={16} /></span>
               </a>
             </div>
@@ -306,14 +374,17 @@ function JournalScrollCue() {
 /* ===== FILTER BAR (integrated into grid header) ===== */
 function JournalFilter({ filter, onFilter }) {
   return (
-    <div className="jfilter-bar" role="tablist" aria-label="Filter journal stories">
+          <div className="jfilter-bar" role="tablist" aria-label="Filter journal stories">
+
       {CATEGORIES.map((c) => (
         <button
           key={c.id}
+          id={`journal-filter-${c.id}`}
           className={'jfilter-tab' + (filter === c.id ? ' is-active' : '')}
           onClick={() => onFilter(c.id)}
           role="tab"
           aria-selected={filter === c.id}
+          aria-controls="journal-grid-list"
         >
           {c.label}
         </button>
@@ -354,16 +425,22 @@ function ArticleCard({ article, index, onOpen }) {
 
 /* ===== READING ROOM ===== */
 function JournalReader({ article, onClose }) {
+  const closeRef = useRef(null);
+
   useEffect(() => {
+    const previousFocus = document.activeElement;
     const onKeyDown = (event) => {
       if (event.key === 'Escape') onClose();
     };
     document.addEventListener('keydown', onKeyDown);
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
+    const focusFrame = window.requestAnimationFrame(() => closeRef.current?.focus());
     return () => {
       document.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = previousOverflow;
+      window.cancelAnimationFrame(focusFrame);
+      if (previousFocus instanceof HTMLElement) previousFocus.focus();
     };
   }, [onClose]);
 
@@ -373,7 +450,7 @@ function JournalReader({ article, onClose }) {
       <article className="jreader-panel">
         <div className="jreader-topline">
           <span>READING ROOM · {article.catLabel}</span>
-          <button className="jreader-close" onClick={onClose} aria-label="Close article">
+          <button ref={closeRef} className="jreader-close" onClick={onClose} aria-label="Close article">
             CLOSE <span aria-hidden="true">×</span>
           </button>
         </div>
@@ -411,7 +488,7 @@ function JournalGrid({ articles, filter, onFilter, onOpen }) {
       <div className="jgrid-header">
         <JournalFilter filter={filter} onFilter={onFilter} />
       </div>
-      <div className="jgrid">
+      <div className="jgrid" id="journal-grid-list" role="tabpanel" aria-live="polite">
         {articles.map((a, i) => <ArticleCard key={a.id} article={a} index={i} onOpen={onOpen} />)}
       </div>
     </section>
@@ -574,7 +651,9 @@ function JournalNewsletter() {
               Recaps, essays, and career talks — the moment they go live. No spam, ever.
             </p>
             <form className="jnews-inset-form" onSubmit={submit} style={arrive(formP)}>
+              <label className="sr-only" htmlFor="journal-letter-email">Email address</label>
               <input
+                id="journal-letter-email"
                 type="email"
                 placeholder="your@email.com"
                 value={email}
@@ -599,6 +678,13 @@ function JournalNewsletter() {
 export function JournalPage() {
   const [filter, setFilter] = useState('all');
   const [selectedArticle, setSelectedArticle] = useState(null);
+
+  const chooseJournalPath = (nextFilter, targetId) => {
+    setFilter(nextFilter);
+    window.requestAnimationFrame(() => {
+      document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
 
   const openArticle = (article) => {
     setSelectedArticle(article);
@@ -627,6 +713,7 @@ export function JournalPage() {
   return (
     <main className="journal-page">
       <JournalHero />
+      <JournalStart onChoose={chooseJournalPath} />
       <JournalFeatured article={featured} onOpen={openArticle} />
       <JournalScrollCue />
       <JournalGrid articles={sorted} filter={filter} onFilter={setFilter} onOpen={openArticle} />

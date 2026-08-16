@@ -1,7 +1,7 @@
 import { GalleryPage } from '../../components/gallery/GalleryPage';
 
 export const metadata = {
-  title: 'Gallery — Career Arcadia 360',
+  title: 'Gallery',
   description: 'Real sessions. Real people. Real change.',
 };
 

@@ -6,7 +6,7 @@ import { LogoMark, ArrowRight } from '../shared/Icons';
 const NAV_SECTIONS = [
   { id: 'home',       label: 'Home',        href: '#home' },
   { id: 'blog',       label: 'Journal',     href: '/journal' },
-  { id: 'about',      label: 'About',       href: '#mission' },
+  { id: 'about',      label: 'About',       href: '/about' },
   { id: 'contact',    label: 'Contact Us',  href: 'mailto:hello@careerarcadia360.org' },
   { id: 'gallery',    label: 'Gallery',     href: '/gallery' },
   { id: 'mentorship', label: 'Mentorship',  href: '#join' },
@@ -22,6 +22,7 @@ export function StickyNav() {
     const path = window.location.pathname;
     setIsHome(path === '/');
     if (path === '/journal') setActive('blog');
+    if (path === '/about') setActive('about');
     if (path === '/gallery') setActive('gallery');
   }, []);
 

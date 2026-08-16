@@ -38,7 +38,7 @@ export function Footer() {
           <h4>Sitemap</h4>
           <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/#mission">About</a></li>
+            <li><a href="/about">About</a></li>
             <li><a href="/#mentors">Mentors</a></li>
             <li><a href="/#join">Membership</a></li>
             <li><a href="/journal">Journal</a></li>
@@ -47,19 +47,6 @@ export function Footer() {
           </ul>
         </div>
 
-        <div className="footer-col footer-col-cta" data-reveal data-reveal-delay="2">
-          <h4>Keep going</h4>
-          <a className="footer-cta-card" href="/#opportunity">
-            <span className="footer-cta-tag">CURRENT</span>
-            <strong>See what&apos;s open</strong>
-            <ArrowRight color="#fff" size={16} />
-          </a>
-          <a className="footer-cta-card footer-cta-card-alt" href="/journal">
-            <span className="footer-cta-tag">READ</span>
-            <strong>Explore the journal</strong>
-            <ArrowRight color="#0a1f29" size={16} />
-          </a>
-        </div>
       </div>
 
       <div className="footer-follow-row">

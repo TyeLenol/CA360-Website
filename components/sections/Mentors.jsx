@@ -137,10 +137,9 @@ export function Mentors() {
               <li
                 key={mm.id}
                 className={'mentors-rail-item' + (i === active ? ' is-active' : '')}
-                onClick={() => setActive(i)}
-                style={{ cursor: 'pointer' }}
               >
                 <button
+                  type="button"
                   className="mentors-avatar"
                   aria-label={'Select ' + mm.name}
                   aria-pressed={i === active}

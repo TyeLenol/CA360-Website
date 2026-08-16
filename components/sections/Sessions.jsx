@@ -82,7 +82,10 @@ export function Sessions() {
           return (
             <article
               key={s.id}
+              id={`session-${s.id}`}
               className={'sessions-card' + (absOff === 0 ? ' is-center' : '')}
+              role="tabpanel"
+              aria-labelledby={`session-tab-${s.id}`}
               style={{
                 transform: `translate(-50%, 0) translateX(${tx}px) scale(${scale}) rotate(${rot}deg)`,
                 opacity, zIndex: z,
@@ -122,12 +125,17 @@ export function Sessions() {
         <button className="sessions-arrow" onClick={prev} aria-label="Previous session">
           <ArrowLeft size={18} />
         </button>
-        <div className="sessions-dots" role="tablist">
+        <div className="sessions-dots" role="tablist" aria-label="Choose a session">
           {SESSIONS.map((s, i) => (
             <button
               key={s.id}
+              id={`session-tab-${s.id}`}
               className={'sessions-dot' + (i === active ? ' is-active' : '')}
               onClick={() => setActive(i)}
+              role="tab"
+              aria-selected={i === active}
+              aria-controls={`session-${s.id}`}
+              tabIndex={i === active ? 0 : -1}
               aria-label={'Go to session ' + s.num}
             />
           ))}

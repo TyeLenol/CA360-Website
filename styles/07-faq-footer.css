@@ -339,48 +339,6 @@
   margin-left: 8px;
 }
 
-.footer-col-cta { display: flex; flex-direction: column; gap: 12px; }
-.footer-cta-card {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  grid-template-rows: auto auto;
-  gap: 4px 14px;
-  padding: 20px 22px;
-  background: var(--c-orange);
-  color: #fff;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  border: 1.5px solid var(--c-orange-deep);
-}
-.footer-cta-card:hover { transform: translate(-2px, -2px); box-shadow: 4px 4px 0 var(--c-orange-deep); }
-.footer-cta-card-alt {
-  background: var(--c-cream);
-  color: var(--c-ink);
-  border-color: var(--c-cream);
-}
-.footer-cta-card-alt:hover { box-shadow: 4px 4px 0 var(--c-orange); }
-.footer-cta-tag {
-  grid-column: 1; grid-row: 1;
-  font: 700 10px var(--font-mono);
-  letter-spacing: 0.16em;
-  opacity: 0.85;
-}
-.footer-cta-line {
-  grid-column: 1; grid-row: 2;
-  font: 700 18px/1.1 var(--font-display);
-  letter-spacing: -0.01em;
-}
-.footer-cta-arrow {
-  grid-column: 2; grid-row: 1 / span 2;
-  align-self: center;
-  width: 36px; height: 36px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.16);
-  display: flex; align-items: center; justify-content: center;
-}
-.footer-cta-card-alt .footer-cta-arrow { background: rgba(10, 31, 41, 0.1); }
-
 .footer-bottom {
   margin-top: 32px;
   padding-top: 24px;

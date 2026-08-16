@@ -106,27 +106,34 @@ function makeArrive(prog) {
    ══════════════════════════════════════════════════════════ */
 function Lightbox({ photos, startIndex, onClose }) {
   const [idx, setIdx] = useState(startIndex);
+  const closeRef = useRef(null);
   const photo = photos[idx];
 
   useEffect(() => {
+    const previousFocus = document.activeElement;
     const onKey = (e) => {
       if (e.key === 'Escape') onClose();
       if (e.key === 'ArrowLeft')  setIdx(i => Math.max(0, i - 1));
       if (e.key === 'ArrowRight') setIdx(i => Math.min(photos.length - 1, i + 1));
     };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    const focusFrame = window.requestAnimationFrame(() => closeRef.current?.focus());
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      window.cancelAnimationFrame(focusFrame);
+      if (previousFocus instanceof HTMLElement) previousFocus.focus();
+    };
   }, [photos.length, onClose]);
 
   return (
-    <div className="glbx-overlay" role="dialog" aria-modal="true" aria-label={`${photo.name} photo`}>
+    <div className="glbx-overlay" role="dialog" aria-modal="true" aria-labelledby="glbx-title">
       <div className="glbx-stage">
         {/* top bar */}
         <div className="glbx-header">
           <span className="glbx-counter">
             {String(idx + 1).padStart(2, '0')} / {String(photos.length).padStart(2, '0')}
           </span>
-          <button className="glbx-close" onClick={onClose} aria-label="Close">×</button>
+          <button ref={closeRef} className="glbx-close" onClick={onClose} aria-label="Close">×</button>
         </div>
 
         {/* photo — key re-mounts for animation on change */}
@@ -136,7 +143,7 @@ function Lightbox({ photos, startIndex, onClose }) {
 
         {/* Fraunces italic caption */}
         <div className="glbx-caption">
-          <div className="glbx-caption-name">{photo.name}</div>
+          <div className="glbx-caption-name" id="glbx-title">{photo.name}</div>
           <div className="glbx-caption-field">{photo.field}</div>
           {photo.caption && <p className="glbx-caption-text">{photo.caption}</p>}
         </div>
@@ -163,29 +170,37 @@ function Lightbox({ photos, startIndex, onClose }) {
    ══════════════════════════════════════════════════════════ */
 function AlbumOverlay({ album, onClose, onPhotoClick }) {
   const [isOpen, setIsOpen] = useState(false);
+  const closeRef = useRef(null);
+  const closingRef = useRef(false);
   const photos = ALBUM_PHOTOS[album.id] || [];
 
   // one-frame delay to trigger CSS clip-path transition
   useEffect(() => {
-    const id = requestAnimationFrame(() => setIsOpen(true));
-    return () => cancelAnimationFrame(id);
-  }, []);
-
-  useEffect(() => {
+    const previousFocus = document.activeElement;
+    const id = requestAnimationFrame(() => {
+      setIsOpen(true);
+      closeRef.current?.focus();
+    });
     const onKey = (e) => {
       if (e.key === 'Escape') handleClose();
     };
     window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
+    return () => {
+      cancelAnimationFrame(id);
+      window.removeEventListener('keydown', onKey);
+      if (previousFocus instanceof HTMLElement) previousFocus.focus();
+    };
   }, []);
 
   const handleClose = () => {
+    if (closingRef.current) return;
+    closingRef.current = true;
     setIsOpen(false);
     setTimeout(onClose, 560);
   };
 
   return (
-    <div className="galb-overlay">
+    <div className="galb-overlay" role="dialog" aria-modal="true" aria-labelledby={`galb-title-${album.id}`}>
       {/* blurred dim behind the panel */}
       <button type="button" className="galb-backdrop" onClick={handleClose} aria-label="Close album" />
 
@@ -194,9 +209,9 @@ function AlbumOverlay({ album, onClose, onPhotoClick }) {
         {/* ── dark editorial header ── */}
         <div className="galb-header">
           <div className="galb-meta">{album.desc} · {album.pair}</div>
-          <h2 className="galb-title">{album.label}</h2>
+          <h2 className="galb-title" id={`galb-title-${album.id}`}>{album.label}</h2>
           <p className="galb-context">{album.context}</p>
-          <button className="galb-close" onClick={handleClose} aria-label="Close">×</button>
+          <button ref={closeRef} className="galb-close" onClick={handleClose} aria-label="Close">×</button>
         </div>
 
         {/* ── photo grid ── */}
