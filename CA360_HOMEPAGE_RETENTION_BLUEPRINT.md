@@ -159,3 +159,11 @@ Production verification confirms the homepage still exposes the current-opportun
 
 
 The production gallery audit found five semantic album buttons, nine semantic mosaic tile buttons, zero destination-less links, and valid connected endings to `/#opportunity`, `/#news`, and `/journal`. Album photo buttons are rendered when an album is open and were verified interactively in the development route; the production closed state correctly reports zero open overlay photo buttons.
+
+
+## Mobile production QA
+
+At a 390px production viewport, the shared brand header and Apply action remain consistent across all three routes. The homepage preserves the intentional visual system and shows the current opportunity signal below the hero. The journal keeps the `02 Journal` orientation marker, readable article count, editorial statement, and `READ ARTICLES` CTA. The gallery keeps its cinematic grid, readable title/subtitle treatment, and scroll cue. The mobile captures show no horizontal clipping or broken route shell. Placeholder media and deferred content replacement were intentionally left untouched.
+
+
+Settled mobile captures with a 4-second virtual-time budget confirm that the homepage hero headline, CTA pair, journal `The Blog` title, article count, statement, and `READ ARTICLES` button all render correctly after hydration and entrance animations settle. The earlier blank/faded first-frame captures were timing artifacts, not layout failures.
