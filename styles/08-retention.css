@@ -258,6 +258,63 @@
 
 .opportunity-path-title { font: 700 18px/1.1 var(--font-display); letter-spacing: -0.03em; }
 
+.chapter-bridge {
+  display: grid;
+  grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.28fr);
+  gap: 28px;
+  align-items: center;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 34px var(--gutter) 40px;
+  color: var(--c-ink);
+  background: var(--c-cream);
+  border-top: 1px dashed rgba(10, 31, 41, 0.24);
+  border-bottom: 1px dashed rgba(10, 31, 41, 0.24);
+}
+
+.chapter-bridge-head { display: grid; gap: 10px; }
+.chapter-bridge-kicker {
+  color: var(--c-orange-deep);
+  font: 700 10px/1 var(--font-mono);
+  letter-spacing: 0.16em;
+}
+.chapter-bridge-head p {
+  max-width: 300px;
+  color: var(--c-muted);
+  font: italic 18px/1.25 var(--font-serif);
+}
+.chapter-bridge-links {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+.chapter-bridge-link {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px;
+  align-items: center;
+  min-height: 54px;
+  padding: 13px 14px;
+  color: var(--c-ink);
+  border: 1px solid rgba(10, 31, 41, 0.22);
+  border-radius: 9px;
+  font: 700 12px/1.1 var(--font-display);
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+.chapter-bridge-link:hover,
+.chapter-bridge-link:focus-visible {
+  color: #fff;
+  background: var(--c-teal-deep);
+  box-shadow: 4px 4px 0 var(--c-orange);
+  transform: translate(-2px, -2px);
+}
+.chapter-bridge-index {
+  color: var(--c-orange-deep);
+  font: 700 10px/1 var(--font-mono);
+}
+.chapter-bridge-link:hover .chapter-bridge-index,
+.chapter-bridge-link:focus-visible .chapter-bridge-index { color: var(--c-orange-soft); }
+
 @media (max-width: 900px) {
   .opportunity-sec { padding: 88px var(--gutter) 96px; }
   .opportunity-layout { grid-template-columns: 1fr; }
@@ -265,6 +322,15 @@
 }
 
 @media (max-width: 767px) {
+  .chapter-bridge {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 28px var(--gutter) 32px;
+  }
+  .chapter-bridge-head p { max-width: 100%; font-size: 17px; }
+  .chapter-bridge-links { grid-template-columns: 1fr; gap: 8px; }
+  .chapter-bridge-link { min-height: 48px; }
+
   .opportunity-sec { padding: 72px var(--gutter) 80px; }
   .opportunity-head { align-items: flex-start; gap: 18px; }
   .opportunity-stamp { font-size: 9px; }

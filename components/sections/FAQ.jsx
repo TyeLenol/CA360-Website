@@ -72,11 +72,11 @@ export function FAQ() {
           <p className="faq-answer-a" key={'a-' + m.id}>{m.a}</p>
 
           <div className="faq-answer-foot">
-            <a className="faq-answer-link">
+            <a className="faq-answer-link" href="mailto:hello@careerarcadia360.org?subject=CA360%20follow-up%20question">
               Ask a follow-up question <ArrowRight size={14} color="#d68307" />
             </a>
             <span className="faq-answer-hint">
-              Still stuck? <strong>hello@careerarcadia360.org</strong>
+              Still stuck? <strong><a href="mailto:hello@careerarcadia360.org">hello@careerarcadia360.org</a></strong>
             </span>
           </div>
 

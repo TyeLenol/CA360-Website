@@ -9,17 +9,21 @@ const cards = [
     title: 'Academic guidance.',
     desc: 'Course-by-course advice from people who passed the same papers, two or more years before you. No theory — only what worked.',
     tape: 'rgba(54, 114, 143, 0.55)',
+    href: '/journal#journal-grid',
     x:  -120, rot: -3.5, startP: 0.08, endP: 0.34 },
   { num: '02',
     title: 'Career clarity.',
     desc: 'A clear picture of what each profession actually looks like on a Tuesday morning — not just at graduation. The good and the boring.',
     tape: 'rgba(214, 131, 7, 0.55)',
+    href: '#sessions',
     x:    0, rot:  2.5, startP: 0.34, endP: 0.62 },
   { num: '03',
     title: 'Personal growth.',
     desc: "Leadership, stress management, work-life balance — and the permission to build an identity that isn't only your job title.",
-    tape: 'rgba(54, 114, 143, 0.55)',
-    x:  120, rot: -1.5, startP: 0.60, endP: 0.88 },
+        tape: 'rgba(54, 114, 143, 0.55)',
+    href: '#mentors',
+    x:    120, rot: -1.5, startP: 0.60, endP: 0.88 },
+
 ];
 
 export function Gain() {
@@ -70,7 +74,7 @@ export function Gain() {
                   <div className="gain-num">{c.num}</div>
                   <h3>{c.title}</h3>
                   <p>{c.desc}</p>
-                  <a className="gain-link">Learn more <ArrowRight size={14} color="#d68307" /></a>
+                  <a className="gain-link" href={c.href}>Learn more <ArrowRight size={14} color="#d68307" /></a>
                 </article>
               );
             }
@@ -97,7 +101,7 @@ export function Gain() {
                 <div className="gain-num">{c.num}</div>
                 <h3>{c.title}</h3>
                 <p>{c.desc}</p>
-                <a className="gain-link">Read more <ArrowRight size={14} color="#d68307" /></a>
+                <a className="gain-link" href={c.href}>Read more <ArrowRight size={14} color="#d68307" /></a>
               </article>
             );
           })}
