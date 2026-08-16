@@ -500,12 +500,21 @@ function JournalDrift() {
   const pathRef = useRef(null);
   const [planePos, setPlanePos] = useState({ x: 0, y: 0, angle: 0, len: 1 });
   const [approachP, setApproachP] = useState(0);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
     if (pathRef.current) {
       const len = pathRef.current.getTotalLength();
       setPlanePos((p) => ({ ...p, len }));
     }
+  }, []);
+
+  useEffect(() => {
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => setReducedMotion(query.matches);
+    sync();
+    query.addEventListener?.('change', sync);
+    return () => query.removeEventListener?.('change', sync);
   }, []);
 
   // Tracks section_rect.top to animate letters during the approach phase (before pinning)
@@ -531,22 +540,23 @@ function JournalDrift() {
   }, [prog]);
 
   const dashLen = planePos.len;
-  const trail    = Math.max(0, Math.min(1, prog / 0.53)) * dashLen;
-  const titleP   = approachP;
-  const subP     = Math.max(0, Math.min(1, (prog - 0.65) / 0.07));
-  const exitFade = 1 - Math.max(0, Math.min(1, (prog - 0.65) / 0.25));
+  const trail    = reducedMotion ? dashLen : Math.max(0, Math.min(1, prog / 0.53)) * dashLen;
+  const titleP   = reducedMotion ? 1 : approachP;
+  const subP     = reducedMotion ? 1 : Math.max(0, Math.min(1, (prog - 0.65) / 0.07));
+  const exitFade = reducedMotion ? 1 : 1 - Math.max(0, Math.min(1, (prog - 0.65) / 0.25));
   const titleY   = (1 - titleP) * 40;
   const subY     = (1 - subP) * 30;
 
   return (
-    <section className="jdrift" ref={ref} aria-hidden="true">
+    <section className="jdrift" ref={ref} aria-labelledby="jdrift-title" aria-describedby="jdrift-copy">
       <div className="jdrift-sticky">
         <div className="jdrift-orange-flood" style={{ opacity: 1 - exitFade }} />
         <div className="jdrift-stripe" style={{ opacity: exitFade }}>
           <span className="jdrift-mark">—— STAY IN THE LOOP ——</span>
         </div>
 
-        <svg className="jdrift-flight" viewBox="0 0 1200 600" preserveAspectRatio="none">
+                <svg className="jdrift-flight" viewBox="0 0 1200 600" preserveAspectRatio="none" aria-hidden="true">
+
           <path
             ref={pathRef}
             className="jdrift-flight-path"
@@ -570,18 +580,20 @@ function JournalDrift() {
         </svg>
 
         <div className="jdrift-titles">
-          <div
+          <h2
             className="jdrift-title"
+            id="jdrift-title"
             style={{ transform: `translate3d(0, ${titleY.toFixed(1)}px, 0)`, opacity: titleP }}
           >
             <em>Letters.</em>
-          </div>
-          <div
+          </h2>
+          <p
             className="jdrift-sub"
+            id="jdrift-copy"
             style={{ transform: `translate3d(0, ${subY.toFixed(1)}px, 0)`, opacity: subP }}
           >
-            Don&apos;t miss a single one.
-          </div>
+            A monthly note from the people walking the path.
+          </p>
         </div>
       </div>
     </section>
@@ -594,8 +606,8 @@ function JournalNewsletter() {
   const prog = useScrollProgress(ref);
   const [email, setEmail] = useState('');
   const [done, setDone] = useState(false);
-  const [approachP, setApproachP] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth <= 767);
@@ -605,14 +617,11 @@ function JournalNewsletter() {
   }, []);
 
   useEffect(() => {
-    const update = () => {
-      if (!ref.current) return;
-      const r = ref.current.getBoundingClientRect();
-      setApproachP(Math.max(0, Math.min(1, 1 - r.top / window.innerHeight)));
-    };
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => setReducedMotion(query.matches);
+    sync();
+    query.addEventListener?.('change', sync);
+    return () => query.removeEventListener?.('change', sync);
   }, []);
 
   const submit = (e) => {
@@ -625,13 +634,13 @@ function JournalNewsletter() {
   };
 
   const reveal = (lo, hi) => Math.max(0, Math.min(1, (prog - lo) / (hi - lo)));
-  const tagP   = approachP;
-  const titleP = Math.max(0, Math.min(1, (approachP - 0.35) / 0.65));
-  const subP   = reveal(0.05, 0.20);
-  const formP  = reveal(0.18, 0.35);
+  const tagP   = 1;
+  const titleP = 1;
+  const subP   = 1;
+  const formP  = 1;
   const sideP  = reveal(0.30, 0.50);
 
-  const arrive = (p) => isMobile ? {} : ({
+  const arrive = (p) => (isMobile || reducedMotion) ? {} : ({
     opacity: p,
     transform: `translate3d(0, ${((1 - p) * 28).toFixed(1)}px, 0)`,
   });
