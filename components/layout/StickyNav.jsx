@@ -5,7 +5,7 @@ import { LogoMark, ArrowRight } from '../shared/Icons';
 
 const NAV_SECTIONS = [
   { id: 'home',       label: 'Home',        href: '#home' },
-  { id: 'blog',       label: 'Blog',        href: '/journal' },
+  { id: 'blog',       label: 'Journal',     href: '/journal' },
   { id: 'about',      label: 'About',       href: '#mission' },
   { id: 'contact',    label: 'Contact Us',  href: 'mailto:hello@careerarcadia360.org' },
   { id: 'gallery',    label: 'Gallery',     href: '/gallery' },

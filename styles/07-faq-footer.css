@@ -278,11 +278,15 @@
 
 .footer-top {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 56px;
+  grid-template-columns: 1.25fr 0.9fr 0.9fr;
+  gap: 48px;
   padding-bottom: 56px;
   border-bottom: 1px dashed rgba(254, 249, 238, 0.15);
-  max-width: 720px;
+  max-width: 1180px;
+}
+.footer-follow-row {
+  max-width: 1180px;
+  padding-top: 28px;
 }
 .footer-brand h3 {
   font-family: var(--font-display);

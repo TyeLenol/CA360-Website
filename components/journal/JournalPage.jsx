@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, ArrowDown, PinIcon } from '../shared/Icons';
 import { PhotoPlaceholder, Portrait } from '../shared/Placeholders';
+import { RouteMarker } from '../shared/RouteMarker';
 import { useScrollProgress } from '../../hooks/ui-hooks';
 
 /* ===== LOCAL HOOK — element-relative scroll progress ===== */
@@ -117,7 +118,7 @@ function JournalHero() {
     <section className="jh-hero" id="journal-top" ref={ref}>
       <div className="jh-hero-sticky">
         <div className="jh-hero-top">
-          <div className="sec-eyebrow" data-reveal>The blog</div>
+          <RouteMarker index="02" label="Journal" context="stories, guides, honest takes" />
           <div className="jh-hero-side" data-reveal data-reveal-delay="1">
             A journal on mentorship,<br />
             <em>careers, and the life after SHS.</em>
@@ -162,7 +163,7 @@ function JournalHero() {
 
 
 /* ===== FEATURED ARTICLE ===== */
-function JournalFeatured({ article }) {
+function JournalFeatured({ article, onOpen }) {
   const secRef = useRef(null);
   const prog = useScrollProgress(secRef);
   const scroll = useElementScroll(secRef);
@@ -240,8 +241,12 @@ function JournalFeatured({ article }) {
                   <div className="jf-author-role">{article.authorRole}</div>
                 </div>
               </div>
-              <a className="jf-cta">
-                Read the recap
+              <a
+                className="jf-cta"
+                href={`/journal#${article.id}`}
+                onClick={(e) => { e.preventDefault(); onOpen(article); }}
+              >
+                Read this issue
                 <span className="jf-cta-arrow"><ArrowRight color="#fff" size={16} /></span>
               </a>
             </div>
@@ -301,13 +306,14 @@ function JournalScrollCue() {
 /* ===== FILTER BAR (integrated into grid header) ===== */
 function JournalFilter({ filter, onFilter }) {
   return (
-    <div className="jfilter-bar">
+    <div className="jfilter-bar" role="tablist" aria-label="Filter journal stories">
       {CATEGORIES.map((c) => (
         <button
           key={c.id}
           className={'jfilter-tab' + (filter === c.id ? ' is-active' : '')}
           onClick={() => onFilter(c.id)}
           role="tab"
+          aria-selected={filter === c.id}
         >
           {c.label}
         </button>
@@ -317,10 +323,14 @@ function JournalFilter({ filter, onFilter }) {
 }
 
 /* ===== ARTICLE CARD ===== */
-function ArticleCard({ article, index }) {
+function ArticleCard({ article, index, onOpen }) {
   return (
     <article className="jcard" data-reveal data-reveal-delay={index % 2}>
-      <a className="jcard-link">
+      <a
+        className="jcard-link"
+        href={`/journal#${article.id}`}
+        onClick={(e) => { e.preventDefault(); onOpen(article); }}
+      >
         <div className="jcard-img">
           <PhotoPlaceholder tone={article.tone} label={article.label} style={{ width: '100%', height: '100%' }} />
         </div>
@@ -342,15 +352,67 @@ function ArticleCard({ article, index }) {
   );
 }
 
+/* ===== READING ROOM ===== */
+function JournalReader({ article, onClose }) {
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [onClose]);
+
+  return (
+    <div className="jreader" role="dialog" aria-modal="true" aria-labelledby="jreader-title">
+      <button className="jreader-backdrop" aria-label="Close article" onClick={onClose} />
+      <article className="jreader-panel">
+        <div className="jreader-topline">
+          <span>READING ROOM · {article.catLabel}</span>
+          <button className="jreader-close" onClick={onClose} aria-label="Close article">
+            CLOSE <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div className="jreader-body">
+          <div className="jreader-kicker">{article.date} · {article.readTime}</div>
+          <h2 id="jreader-title">{article.title}</h2>
+          <div className="jreader-author">
+            <Portrait seed={article.authorSeed} bg="transparent" tone="#d68307" />
+            <span>{article.author} · {article.authorRole}</span>
+          </div>
+          <p className="jreader-excerpt">{article.excerpt}</p>
+          <div className="jreader-next">
+            <span className="jreader-next-label">KEEP GOING</span>
+            <strong>Turn the thought into a next step.</strong>
+            <p>See what is open at CA360, or get the next letter when another story goes live.</p>
+            <div className="jreader-actions">
+              <a className="btn btn-primary" href="/#opportunity" onClick={onClose}>
+                See what&apos;s open <ArrowRight color="#fff" size={14} />
+              </a>
+              <a className="jreader-secondary" href="#journal-letter" onClick={onClose}>
+                Get the monthly letter <ArrowRight color="#0a1f29" size={14} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  );
+}
+
 /* ===== GRID ===== */
-function JournalGrid({ articles, filter, onFilter }) {
+function JournalGrid({ articles, filter, onFilter, onOpen }) {
   return (
     <section className="jgrid-sec" id="journal-grid">
       <div className="jgrid-header">
         <JournalFilter filter={filter} onFilter={onFilter} />
       </div>
       <div className="jgrid">
-        {articles.map((a, i) => <ArticleCard key={a.id} article={a} index={i} />)}
+        {articles.map((a, i) => <ArticleCard key={a.id} article={a} index={i} onOpen={onOpen} />)}
       </div>
     </section>
   );
@@ -500,7 +562,7 @@ function JournalNewsletter() {
   });
 
   return (
-    <section className="jnews-sec" ref={ref}>
+    <section className="jnews-sec" id="journal-letter" ref={ref}>
       <div className="jnews-sticky">
         <article className="jnews-inset">
           <div className="jnews-inset-body">
@@ -536,6 +598,28 @@ function JournalNewsletter() {
 /* ===== PAGE ROOT ===== */
 export function JournalPage() {
   const [filter, setFilter] = useState('all');
+  const [selectedArticle, setSelectedArticle] = useState(null);
+
+  const openArticle = (article) => {
+    setSelectedArticle(article);
+    window.history.replaceState(null, '', `/journal#${article.id}`);
+  };
+
+  const closeArticle = () => {
+    setSelectedArticle(null);
+    window.history.replaceState(null, '', '/journal');
+  };
+
+  useEffect(() => {
+    const syncHash = () => {
+      const id = window.location.hash.slice(1);
+      const article = ARTICLES.find((item) => item.id === id);
+      if (article) setSelectedArticle(article);
+    };
+    syncHash();
+    window.addEventListener('hashchange', syncHash);
+    return () => window.removeEventListener('hashchange', syncHash);
+  }, []);
 
   const [featured, ...rest] = ARTICLES;
   const sorted = rest.filter((a) => filter === 'all' || a.cat === filter);
@@ -543,9 +627,9 @@ export function JournalPage() {
   return (
     <main className="journal-page">
       <JournalHero />
-      <JournalFeatured article={featured} />
+      <JournalFeatured article={featured} onOpen={openArticle} />
       <JournalScrollCue />
-      <JournalGrid articles={sorted} filter={filter} onFilter={setFilter} />
+      <JournalGrid articles={sorted} filter={filter} onFilter={setFilter} onOpen={openArticle} />
 
       {sorted.length === 0 && (
         <div className="jgrid-empty">
@@ -557,10 +641,12 @@ export function JournalPage() {
       )}
 
       <section className="jload-sec">
-        <button className="jload">
-          Load older articles
-          <span className="jload-arrow"><ArrowDown color="#fff" size={16} /></span>
-        </button>
+        <div className="jload" aria-live="polite">
+          You&apos;re caught up — more stories arrive once a month.
+          <a className="jload-link" href="#journal-letter">
+            Get the monthly letter <ArrowRight color="#fff" size={14} />
+          </a>
+        </div>
         <div className="jload-foot">
           <span>
             {filter === 'all'
@@ -573,6 +659,7 @@ export function JournalPage() {
       <div className="jdrift-lead" aria-hidden="true" />
       <JournalDrift />
       <JournalNewsletter />
+      {selectedArticle && <JournalReader article={selectedArticle} onClose={closeArticle} />}
     </main>
   );
 }

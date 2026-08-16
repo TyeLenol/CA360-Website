@@ -145,3 +145,17 @@ If the current site is judged only as a visual concept, it performs well. If it 
 Visitors will stay when the site gives them one of three things quickly: **a relevant opportunity, a useful story, or a clear way to participate**. The current homepage gives them the promise of all three, but it does not yet deliver enough of them in a concrete, operational way.
 
 Do not make the site less creative. Make the creative experience lead somewhere real.
+
+
+## Cross-page cohesion implementation notes
+
+The journal now uses the shared `02 Journal` route marker, the global navigation label `Journal`, semantic filter tabs with `aria-selected`, working article hash paths, and a reading-room dialog that opens from the featured issue and article cards. The dialog closes with Escape, locks page scrolling while open, and offers concrete next actions to the current homepage opportunity or the monthly letter. The caught-up state now links to the newsletter instead of presenting a non-functional load-more control.
+
+
+The gallery now uses the shared `03 Gallery` route marker, exposes an explicit “Scroll to browse · click an album to open” cue, converts filmstrip tiles, album photo tiles, and mosaic tiles into semantic buttons, adds focus-visible outlines, and keeps the album/lightbox keyboard paths intact. The live route showed accessible album buttons, a close-album control, lightbox photo buttons, and the shared “See how to get involved” ending.
+
+
+Production verification confirms the homepage still exposes the current-opportunity module and shared footer actions, while the journal production route reports the `Journal` navigation label, the `02 Journal` route marker, working article hash links, newsletter continuation, and the shared footer ending. The optimized build remains successful.
+
+
+The production gallery audit found five semantic album buttons, nine semantic mosaic tile buttons, zero destination-less links, and valid connected endings to `/#opportunity`, `/#news`, and `/journal`. Album photo buttons are rendered when an album is open and were verified interactively in the development route; the production closed state correctly reports zero open overlay photo buttons.

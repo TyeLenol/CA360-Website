@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useScrollProgress } from '../../hooks/ui-hooks';
 import { PhotoPlaceholder } from '../shared/Placeholders';
 import { ArrowLeft, ArrowRight } from '../shared/Icons';
+import { RouteMarker } from '../shared/RouteMarker';
 
 /* ── DATA ──────────────────────────────────────────────────*/
 
@@ -118,7 +119,7 @@ function Lightbox({ photos, startIndex, onClose }) {
   }, [photos.length, onClose]);
 
   return (
-    <div className="glbx-overlay">
+    <div className="glbx-overlay" role="dialog" aria-modal="true" aria-label={`${photo.name} photo`}>
       <div className="glbx-stage">
         {/* top bar */}
         <div className="glbx-header">
@@ -186,7 +187,7 @@ function AlbumOverlay({ album, onClose, onPhotoClick }) {
   return (
     <div className="galb-overlay">
       {/* blurred dim behind the panel */}
-      <div className="galb-backdrop" onClick={handleClose} />
+      <button type="button" className="galb-backdrop" onClick={handleClose} aria-label="Close album" />
 
       <div className={`galb-panel${isOpen ? ' is-open' : ''}`}>
 
@@ -202,17 +203,19 @@ function AlbumOverlay({ album, onClose, onPhotoClick }) {
         <div className="galb-grid-wrap">
           <div className="galb-grid">
             {photos.map((photo, i) => (
-              <div
+              <button
+                type="button"
                 key={photo.id}
                 className="galb-photo-tile"
                 onClick={() => onPhotoClick(photos, i)}
+                aria-label={`Open ${photo.name} in the lightbox`}
               >
                 <PhotoPlaceholder tone={photo.tone} label={photo.name} style={{ width: '100%', height: '100%' }} />
                 <div className="galb-photo-hover">
                   <div className="galb-photo-name">{photo.name}</div>
                   <div className="galb-photo-caption">{photo.field}</div>
                 </div>
-              </div>
+              </button>
             ))}
           </div>
         </div>
@@ -252,8 +255,8 @@ function GalleryHero() {
         <div className="gh-hero-veil" />
 
         <div className="gh-hero-inner">
-          <div className="gh-hero-eyebrow" style={isMobile ? {} : arrive(0.0, 0.22, 20)}>
-            Gallery — Career Arcadia 360
+          <div className="gh-hero-route-marker" style={isMobile ? {} : arrive(0.0, 0.22, 20)}>
+            <RouteMarker index="03" label="Gallery" context="real sessions, people, change" dark />
           </div>
           <h1 className="gh-hero-title">The Moments.</h1>
           <p className="gh-hero-sub" style={isMobile ? {} : arrive(0.08, 0.30, 32)}>
@@ -300,6 +303,7 @@ function GalleryFilmstrip({ onAlbumClick }) {
       <div className="gstrip-sticky">
         <div className="gstrip-header">
           <div className="gstrip-section-label" data-reveal>01 — THE ALBUMS</div>
+          <div className="gstrip-hint">Scroll to browse · click an album to open</div>
           <div className="gstrip-counter">
             <span className="gstrip-counter-active">{String(activeIdx + 1).padStart(2, '0')}</span>
             <span className="gstrip-counter-sep"> / </span>
@@ -312,12 +316,14 @@ function GalleryFilmstrip({ onAlbumClick }) {
             {ALBUMS.map((album, i) => {
               const isActive = i === activeIdx;
               return (
-                <div
+                <button
+                  type="button"
                   key={album.id}
                   ref={i === 0 ? tileRef : null}
                   className={`gstrip-tile${isActive ? ' is-active' : ''}`}
                   onClick={() => onAlbumClick(album)}
-                  style={{ cursor: 'pointer' }}
+                  aria-current={isActive ? 'true' : undefined}
+                  aria-label={`Open ${album.label} album`}
                 >
                   <div className="gstrip-tile-photo">
                     <PhotoPlaceholder tone={album.tone} label={album.label} style={{ width: '100%', height: '100%' }} />
@@ -331,7 +337,7 @@ function GalleryFilmstrip({ onAlbumClick }) {
                       <span className="gstrip-tile-pair">{album.pair}</span>
                     </div>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -361,6 +367,7 @@ function GalleryGrid({ onPhotoClick }) {
             key={f.key}
             className={`ggrid-filter-btn${filter === f.key ? ' is-active' : ''}`}
             onClick={() => setFilter(f.key)}
+            aria-pressed={filter === f.key}
           >
             {f.label}
           </button>
@@ -369,12 +376,14 @@ function GalleryGrid({ onPhotoClick }) {
 
       <div className="ggrid-mosaic">
         {shown.map((tile, i) => (
-          <div
+          <button
+            type="button"
             key={tile.id}
             className={`ggrid-tile${tile.tall ? ' is-tall' : ''}`}
             data-reveal
-            style={{ transitionDelay: `${(i % 3) * 80}ms`, cursor: 'pointer' }}
+            style={{ transitionDelay: `${(i % 3) * 80}ms` }}
             onClick={() => onPhotoClick(shown, i)}
+            aria-label={`Open ${tile.name} in the lightbox`}
           >
             <div className="ggrid-tile-photo">
               <PhotoPlaceholder tone={tile.tone} label={tile.name} style={{ width: '100%', height: '100%' }} />
@@ -386,7 +395,7 @@ function GalleryGrid({ onPhotoClick }) {
             <div className="ggrid-tile-foot">
               <span className="ggrid-tile-desc">{tile.desc}</span>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </section>
@@ -462,7 +471,7 @@ function GalleryCTA() {
         <div className="gcta-eyebrow">Join the story</div>
         <h2 className="gcta-title">Be in the next photo.</h2>
         <p className="gcta-sub">Attend a session. Become a mentor. Show up.</p>
-        <a className="gcta-btn" href="/#join">Apply Now</a>
+        <a className="gcta-btn" href="/#opportunity">See how to get involved</a>
       </div>
     </section>
   );
