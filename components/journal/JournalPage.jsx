@@ -176,11 +176,11 @@ function JournalStart({ onChoose }) {
         </div>
         <div>
           <p className="jstart-kicker" data-reveal>NO RIGHT ORDER REQUIRED</p>
-          <h2 id="journal-start-title" data-reveal data-reveal-delay="1">
+          <h2 id="journal-start-title" data-reveal>
             Not sure where to begin?<br /><em>Start with the question.</em>
           </h2>
         </div>
-        <p className="jstart-intro" data-reveal data-reveal-delay="2">
+        <p className="jstart-intro" data-reveal>
           The Journal is not a test. Pick the sentence that sounds most like you and we will take you to a good first story.
         </p>
       </div>
@@ -192,7 +192,6 @@ function JournalStart({ onChoose }) {
             key={path.id}
             onClick={() => onChoose(path.filter, path.target)}
             data-reveal
-            data-reveal-delay={index + 1}
           >
             <span className="jstart-path-label">{path.label}</span>
             <strong>{path.title}</strong>
@@ -222,7 +221,7 @@ function JournalFeatured({ article, onOpen }) {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-  const imgY = isMobile ? 0 : scroll * -70;
+  const imgY = isMobile ? 0 : scroll * -42;
 
   return (
     <section className="jf-sec" id="journal-featured" ref={secRef}>

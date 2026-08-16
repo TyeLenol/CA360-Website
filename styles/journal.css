@@ -885,7 +885,7 @@
 
 /* === JOURNAL START RAIL — explicit first decision for new readers === */
 .jstart-sec {
-  padding: 110px var(--gutter) 100px;
+  padding: 82px var(--gutter) 76px;
   color: var(--c-ink);
   background: var(--c-cream);
   border-top: 1px solid var(--c-rule);
@@ -930,11 +930,11 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
-  margin-top: 72px;
+  margin-top: 52px;
 }
 .jstart-path {
   position: relative;
-  min-height: 242px;
+  min-height: 214px;
   padding: 22px 22px 20px;
   display: flex;
   flex-direction: column;
@@ -964,7 +964,7 @@
 .jstart-path.is-primary .jstart-path-label { color: var(--c-orange-soft); }
 .jstart-path strong {
   max-width: 250px;
-  margin-top: 60px;
+  margin-top: 42px;
   font: 700 clamp(24px, 2.5vw, 35px)/1 var(--font-display);
   letter-spacing: -0.045em;
 }
@@ -1015,13 +1015,13 @@
 }
 
 @media (max-width: 767px) {
-  .jstart-sec { padding: 72px var(--gutter) 68px; }
+  .jstart-sec { padding: 58px var(--gutter) 56px; }
   .jstart-head { grid-template-columns: 1fr; gap: 34px; align-items: start; }
   .jstart-head h2 { font-size: clamp(40px, 12vw, 66px); }
   .jstart-intro { max-width: 420px; font-size: 17px; }
-  .jstart-paths { grid-template-columns: 1fr; margin-top: 44px; gap: 12px; }
-  .jstart-path { min-height: 190px; }
-  .jstart-path strong { margin-top: 38px; }
+  .jstart-paths { grid-template-columns: 1fr; margin-top: 34px; gap: 10px; }
+  .jstart-path { min-height: 174px; }
+  .jstart-path strong { margin-top: 30px; }
   .jstart-browse { align-items: flex-start; flex-direction: column; gap: 14px; margin-top: 24px; }
 }
 
@@ -1140,7 +1140,7 @@
 .jcontinue-sec {
   max-width: var(--max-w);
   margin: 0 auto;
-  padding: 104px var(--gutter) 116px;
+  padding: 76px var(--gutter) 84px;
   display: grid;
   grid-template-columns: 0.55fr 1.15fr 0.85fr;
   gap: clamp(30px, 6vw, 96px);
@@ -1188,7 +1188,7 @@
   font: italic 17px/1.4 var(--font-serif);
 }
 .jcontinue-card {
-  min-height: 220px;
+  min-height: 190px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -1209,7 +1209,7 @@
 }
 .jcontinue-card strong {
   max-width: 280px;
-  margin-top: 42px;
+  margin-top: 30px;
   font: 700 clamp(22px, 2.4vw, 32px)/1.02 var(--font-display);
   letter-spacing: -0.04em;
 }
@@ -1226,7 +1226,7 @@
 .jcontinue-card small svg { padding: 6px; width: 28px; height: 28px; border-radius: 50%; background: var(--c-orange); box-sizing: content-box; }
 
 .jdrift-lead { height: 100px; }
-.jdrift { height: 170vh; min-height: 1200px; pointer-events: auto; }
+.jdrift { height: 145vh; min-height: 1040px; pointer-events: auto; }
 
 @media (max-width: 900px) {
   .jscrollcue-panel-static { grid-template-columns: 0.5fr 1.3fr 0.8fr; gap: 18px; }
@@ -1253,13 +1253,13 @@
   .jcontinue-sec { margin: 0; padding: 76px var(--gutter) 84px; display: grid; grid-template-columns: 1fr; gap: 34px; }
   .jcontinue-marker { writing-mode: initial; transform: none; }
   .jcontinue-card { min-height: 185px; }
-  .jdrift { height: 120vh; min-height: 720px; }
+  .jdrift { height: 105vh; min-height: 640px; }
   .jdrift-lead { height: 56px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .jcontinue-card { transition: none; }
-  .jdrift { height: 100vh; min-height: 720px; }
+  .jdrift { height: 92vh; min-height: 620px; }
   .jdrift-flight-path,
   .jdrift-plane,
   .jdrift-stripe,
