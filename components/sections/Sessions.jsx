@@ -61,7 +61,7 @@ export function Sessions() {
         <h2 className="sessions-title" data-reveal data-reveal-delay="1">
           Recent <em>sessions</em>,<br />from the journal.
         </h2>
-        <a className="sessions-all" data-reveal data-reveal-delay="2">
+        <a className="sessions-all" href="/journal" data-reveal data-reveal-delay="2">
           The full journal <ArrowRight size={14} />
         </a>
       </div>
@@ -110,7 +110,7 @@ export function Sessions() {
                   Hosted at <span>{s.venue}</span>
                 </div>
                 <div className="sessions-card-cta">
-                  <a className="sessions-read">Read the recap <ArrowRight size={14} /></a>
+                  <a className="sessions-read" href="/journal#journal-grid">Explore the journal <ArrowRight size={14} /></a>
                 </div>
               </div>
             </article>

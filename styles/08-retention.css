@@ -1,0 +1,285 @@
+/* ============================================================
+   RETENTION BRIDGE — current opportunity + audience paths
+   Expressive enough for the homepage; operational enough to act on.
+   ============================================================ */
+
+.opportunity-sec {
+  position: relative;
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 112px var(--gutter) 120px;
+  background: var(--c-paper);
+  overflow: hidden;
+}
+
+.opportunity-grid-mark {
+  position: absolute;
+  width: 430px;
+  height: 430px;
+  right: -180px;
+  top: 30px;
+  border: 1px solid var(--c-teal-soft);
+  border-radius: 50%;
+  box-shadow: 0 0 0 24px rgba(198, 224, 232, 0.25), 0 0 0 48px rgba(198, 224, 232, 0.12);
+  pointer-events: none;
+}
+
+.opportunity-head {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.opportunity-stamp {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 13px;
+  color: #fff;
+  background: var(--c-orange);
+  border: 2px solid var(--c-ink);
+  border-radius: 3px;
+  box-shadow: 4px 4px 0 var(--c-ink);
+  font: 700 10px/1 var(--font-mono);
+  letter-spacing: 0.12em;
+  transform: rotate(2deg);
+}
+
+.opportunity-layout {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(250px, 0.65fr);
+  gap: 30px;
+  align-items: stretch;
+}
+
+.opportunity-main {
+  position: relative;
+  overflow: hidden;
+  padding: 48px 52px 50px;
+  color: var(--c-cream);
+  background: var(--c-teal-deep);
+  border: 2px solid var(--c-ink);
+  border-radius: 28px;
+  box-shadow: 10px 10px 0 var(--c-orange);
+}
+
+.opportunity-main::before {
+  content: '06';
+  position: absolute;
+  right: 34px;
+  bottom: -42px;
+  color: rgba(254, 249, 238, 0.08);
+  font: 800 220px/1 var(--font-display);
+  letter-spacing: -0.1em;
+  pointer-events: none;
+}
+
+.opportunity-kicker {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 26px;
+  color: var(--c-orange-soft);
+  font: 700 11px/1 var(--font-mono);
+  letter-spacing: 0.18em;
+}
+
+.opportunity-pulse,
+.opportunity-status-dot {
+  width: 8px;
+  height: 8px;
+  flex: 0 0 auto;
+  display: inline-block;
+  background: var(--c-orange);
+  border: 2px solid var(--c-orange-soft);
+  border-radius: 50%;
+  box-shadow: 0 0 0 5px rgba(214, 131, 7, 0.2);
+}
+
+.opportunity-main h2 {
+  position: relative;
+  z-index: 1;
+  max-width: 700px;
+  color: var(--c-cream);
+  font: 800 clamp(42px, 5.8vw, 82px)/0.96 var(--font-display);
+  letter-spacing: -0.055em;
+}
+
+.opportunity-main h2 em {
+  color: var(--c-orange);
+  font: 400 1.08em/0.9 var(--font-serif);
+}
+
+.opportunity-main p {
+  position: relative;
+  z-index: 1;
+  max-width: 590px;
+  margin-top: 24px;
+  color: rgba(254, 249, 238, 0.78);
+  font: italic 400 clamp(17px, 1.8vw, 23px)/1.42 var(--font-serif);
+}
+
+.opportunity-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin-top: 34px;
+}
+
+.opportunity-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--c-cream);
+  font: 700 11px/1 var(--font-mono);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 1px solid rgba(254, 249, 238, 0.5);
+  padding-bottom: 7px;
+  transition: color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.opportunity-link:hover {
+  color: var(--c-orange-soft);
+  border-color: var(--c-orange-soft);
+  transform: translateX(3px);
+}
+
+.opportunity-signpost {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 38px 40px;
+  background: var(--c-cream);
+  border: 2px solid var(--c-ink);
+  border-radius: 22px;
+  box-shadow: 8px 8px 0 var(--c-teal-soft);
+  transform: rotate(-1.5deg);
+}
+
+.opportunity-signpost-label,
+.opportunity-signpost-status,
+.opportunity-signpost-meta small {
+  font: 700 10px/1.2 var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.opportunity-signpost-label { color: var(--c-muted); }
+
+.opportunity-signpost-number {
+  margin: 14px 0 2px;
+  color: var(--c-ink);
+  font: 800 clamp(84px, 10vw, 150px)/0.85 var(--font-display);
+  letter-spacing: -0.08em;
+}
+
+.opportunity-signpost-status {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  color: var(--c-orange-deep);
+}
+
+.opportunity-status-dot { width: 7px; height: 7px; border-color: var(--c-orange); box-shadow: none; }
+
+.opportunity-signpost-rule {
+  width: 100%;
+  height: 1px;
+  margin: 24px 0 19px;
+  background: var(--c-ink);
+  opacity: 0.18;
+}
+
+.opportunity-signpost-meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 8px 0;
+  color: var(--c-ink);
+  border-bottom: 1px solid rgba(10, 31, 41, 0.12);
+}
+
+.opportunity-signpost-meta:last-child { border-bottom: 0; }
+.opportunity-signpost-meta span { font: 800 26px/1 var(--font-display); letter-spacing: -0.04em; }
+.opportunity-signpost-meta small { color: var(--c-muted); text-align: right; }
+
+.opportunity-paths {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.opportunity-path {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 14px;
+  align-items: center;
+  padding: 20px 22px;
+  color: var(--c-ink);
+  background: var(--c-paper);
+  border: 1px solid var(--c-ink);
+  border-radius: 14px;
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
+}
+
+.opportunity-path:hover,
+.opportunity-path:focus-visible {
+  color: #fff;
+  background: var(--c-ink);
+  box-shadow: 4px 4px 0 var(--c-orange);
+  transform: translate(-2px, -2px);
+}
+
+.opportunity-path-label {
+  grid-column: 1 / -1;
+  color: var(--c-orange-deep);
+  font: 700 10px/1 var(--font-mono);
+  letter-spacing: 0.16em;
+}
+
+.opportunity-path:hover .opportunity-path-label,
+.opportunity-path:focus-visible .opportunity-path-label { color: var(--c-orange-soft); }
+
+.opportunity-path-title { font: 700 18px/1.1 var(--font-display); letter-spacing: -0.03em; }
+
+@media (max-width: 900px) {
+  .opportunity-sec { padding: 88px var(--gutter) 96px; }
+  .opportunity-layout { grid-template-columns: 1fr; }
+  .opportunity-signpost { max-width: 520px; margin-left: auto; }
+}
+
+@media (max-width: 767px) {
+  .opportunity-sec { padding: 72px var(--gutter) 80px; }
+  .opportunity-head { align-items: flex-start; gap: 18px; }
+  .opportunity-stamp { font-size: 9px; }
+  .opportunity-main { padding: 34px 28px 36px; border-radius: 20px; box-shadow: 7px 7px 0 var(--c-orange); }
+  .opportunity-main::before { right: 12px; bottom: -25px; font-size: 150px; }
+  .opportunity-main h2 { font-size: clamp(42px, 12vw, 68px); }
+  .opportunity-main p { font-size: 18px; }
+  .opportunity-actions { align-items: flex-start; flex-direction: column; gap: 18px; }
+  .opportunity-signpost { padding: 30px 26px; transform: rotate(0); }
+  .opportunity-signpost-number { font-size: 92px; }
+  .opportunity-paths { grid-template-columns: 1fr; gap: 10px; }
+  .opportunity-path { padding: 17px 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .opportunity-link,
+  .opportunity-path { transition: none; }
+}

@@ -1,4 +1,5 @@
 import { Hero } from '../components/sections/Hero';
+import { CurrentOpportunity } from '../components/sections/CurrentOpportunity';
 import { Mission } from '../components/sections/Mission';
 import { Origin } from '../components/sections/Origin';
 import { Fields } from '../components/sections/Fields';
@@ -20,6 +21,7 @@ export default function HomePage() {
   return (
     <main>
       <Hero />
+      <CurrentOpportunity />
       <Mission />
       <Origin />
       <Fields />

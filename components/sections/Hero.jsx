@@ -46,10 +46,10 @@ export function Hero() {
               into their careers with nobody to show them the way.
             </p>
             <div className="hero-cta">
-              <a className="btn btn-primary">
-                Attend a session <ArrowRight color="#fff" size={14} />
+              <a className="btn btn-primary" href="#opportunity">
+                See what&apos;s open <ArrowRight color="#fff" size={14} />
               </a>
-              <a className="btn btn-secondary">Become a mentor</a>
+              <a className="btn btn-secondary" href="mailto:hello@careerarcadia360.org?subject=Mentor%20application">Become a mentor</a>
             </div>
           </div>
         </div>

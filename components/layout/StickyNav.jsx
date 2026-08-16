@@ -7,7 +7,7 @@ const NAV_SECTIONS = [
   { id: 'home',       label: 'Home',        href: '#home' },
   { id: 'blog',       label: 'Blog',        href: '/journal' },
   { id: 'about',      label: 'About',       href: '#mission' },
-  { id: 'contact',    label: 'Contact Us',  href: '#contact' },
+  { id: 'contact',    label: 'Contact Us',  href: 'mailto:hello@careerarcadia360.org' },
   { id: 'gallery',    label: 'Gallery',     href: '/gallery' },
   { id: 'mentorship', label: 'Mentorship',  href: '#join' },
 ];
@@ -15,7 +15,6 @@ const NAV_SECTIONS = [
 export function StickyNav() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState('home');
-  const [mode, setMode] = useState('light');
   const [isHome, setIsHome] = useState(true);
 
   // Detect current page on mount — sets active state and home flag
@@ -93,15 +92,6 @@ export function StickyNav() {
       </div>
 
       <div className="nav-actions">
-        <button
-          className="nav-mode"
-          onClick={() => setMode((m) => (m === 'light' ? 'dark' : 'light'))}
-          aria-label="Toggle mode (decorative)"
-          title="Mode toggle — decorative for now"
-        >
-          <span className={mode === 'light' ? 'on' : ''}>☀</span>
-          <span className={mode === 'dark' ? 'on' : ''}>☾</span>
-        </button>
         <a className="btn btn-primary nav-cta" href={applyHref}>
           Apply <ArrowRight color="#fff" size={14} />
         </a>

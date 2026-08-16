@@ -11,7 +11,7 @@ const JOIN_PANELS = [
     title: 'Attend a session.', titleEm: 'session',
     body: "Free, online or on your campus. Bring a friend, bring a question, leave with a plan that actually fits your life — not someone else's.",
     bullets: ['Free for all SHS and undergrad students', 'Online and in-person formats', 'Recordings stay free forever'],
-    cta: 'Reserve a seat',
+    cta: 'Get session updates',
     bg: 'rgba(214, 131, 7, 1)', fg: '#fff',
     photoTone: 'teal', photoLabel: 'STUDENTS · SESSION 04',
   },
@@ -91,6 +91,7 @@ export function JoinIn() {
 
             return (
               <article
+                id={i === 0 ? 'join-students' : i === 1 ? 'join-mentors' : 'join-partners'}
                 key={p.n}
                 className="join-small-card"
                 style={{
@@ -142,7 +143,7 @@ export function JoinIn() {
           </div>
         </div>
 
-        <div className="join-overlay-head">
+        <div className="join-overlay-head" id="join-paths">
           <div className="sec-eyebrow" style={{ color: '#fff' }}>Get involved</div>
           <h2 className="join-overlay-title">
             Three ways to <em>show up</em>.
