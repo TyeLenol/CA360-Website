@@ -1032,14 +1032,44 @@
 
 /* === JOURNAL VISUAL SHELL PASS — content stays data-pluggable === */
 .jh-hero {
-  height: 92vh;
-  min-height: 680px;
+  height: auto;
+  min-height: 0;
 }
-.jh-hero-sticky { padding-top: 30px; }
+.jh-hero-sticky {
+  position: relative;
+  top: auto;
+  height: calc(92vh - 80px);
+  min-height: 600px;
+  padding-top: 30px;
+  overflow: visible;
+}
 .jh-hero-title { font-size: clamp(60px, min(14vw, 18vh), 220px); }
 .jh-hero-lower { padding-bottom: 30px; gap: 18px; }
 .jh-hero-statement { max-width: 760px; font-size: clamp(20px, 2.7vw, 38px); }
 .jh-hero-anchor { padding: 14px 18px 14px 22px; }
+
+/* The opening now contains its own orientation rail. It should read as one invitation, not a second page. */
+.jstart-embedded {
+  padding: 38px var(--gutter) 42px;
+  border-top: 1px solid var(--c-rule);
+  border-bottom: 0;
+}
+.jstart-embedded .jstart-head {
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 32px;
+  align-items: center;
+}
+.jstart-embedded .jstart-paths { margin-top: 28px; gap: 10px; }
+.jstart-embedded .jstart-path {
+  min-height: 170px;
+  padding: 18px;
+  box-shadow: 4px 4px 0 var(--c-ink);
+}
+.jstart-embedded .jstart-path:hover,
+.jstart-embedded .jstart-path:focus-visible { box-shadow: 7px 7px 0 var(--c-ink); }
+.jstart-embedded .jstart-path strong { margin-top: 28px; font-size: clamp(22px, 2.1vw, 30px); }
+.jstart-embedded .jstart-path-detail { font-size: 13px; }
+.jstart-embedded .jstart-browse { margin-top: 16px; }
 
 .jf-sec {
   height: 106vh;
@@ -1234,8 +1264,16 @@
 }
 
 @media (max-width: 767px) {
-  .jh-hero { height: 96vh; min-height: 600px; }
-  .jh-hero-sticky { padding-top: 20px; }
+  .jh-hero-sticky {
+    height: calc(96vh - 80px);
+    min-height: 500px;
+    padding-top: 20px;
+  }
+  .jstart-embedded { padding: 30px var(--gutter) 34px; }
+  .jstart-embedded .jstart-head { grid-template-columns: 1fr; gap: 14px; }
+  .jstart-embedded .jstart-paths { grid-template-columns: 1fr; margin-top: 24px; gap: 8px; }
+  .jstart-embedded .jstart-path { min-height: 132px; padding: 16px; }
+  .jstart-embedded .jstart-path strong { margin-top: 22px; }
   .jh-hero-lower { padding-bottom: 24px; }
   .jh-hero-metric-label { max-width: 100px; }
   .jf-sec { height: auto; min-height: 0; }

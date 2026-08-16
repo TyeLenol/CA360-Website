@@ -87,7 +87,7 @@ const CATEGORIES = [
 ];
 
 /* ===== JOURNAL HERO ===== */
-function JournalHero() {
+function JournalHero({ onChoose }) {
   const jump = (e) => {
     e.preventDefault();
     document.getElementById('journal-start')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -135,6 +135,7 @@ function JournalHero() {
           </div>
         </div>
       </div>
+      <JournalStart onChoose={onChoose} />
     </section>
   );
 }
@@ -169,19 +170,13 @@ const JOURNAL_PATHS = [
 
 function JournalStart({ onChoose }) {
   return (
-    <section className="jstart-sec" id="journal-start" aria-labelledby="journal-start-title">
+    <section className="jstart-sec jstart-embedded" id="journal-start" aria-labelledby="journal-start-kicker">
       <div className="jstart-head">
-        <div className="jstart-marker" data-reveal>
-          <RouteMarker index="02" label="Start here" context="choose a way in" />
-        </div>
         <div>
-          <p className="jstart-kicker" data-reveal>NO RIGHT ORDER REQUIRED</p>
-          <h2 id="journal-start-title" data-reveal>
-            Not sure where to begin?<br /><em>Start with the question.</em>
-          </h2>
+          <p className="jstart-kicker" id="journal-start-kicker" data-reveal>START HERE · PICK A WAY IN</p>
         </div>
         <p className="jstart-intro" data-reveal>
-          The Journal is not a test. Pick the sentence that sounds most like you and we will take you to a good first story.
+          Pick a path and go straight to a good first story.
         </p>
       </div>
       <div className="jstart-paths">
@@ -291,19 +286,6 @@ function JournalFeatured({ article, onOpen }) {
             </div>
           </div>
         </article>
-      </div>
-    </section>
-  );
-}
-
-/* ===== ARCHIVE TRANSITION — a signpost, not a scroll gate ===== */
-function JournalScrollCue() {
-  return (
-    <section className="jscrollcue" aria-label="Journal archive transition">
-      <div className="jscrollcue-panel-static" data-reveal>
-        <span className="jscrollcue-kicker">THE ARCHIVE</span>
-        <p>Stories. Guides. Honest takes.</p>
-        <strong>All of it, below.</strong>
       </div>
     </section>
   );
@@ -473,25 +455,6 @@ function JournalGrid({ articles, filter, onFilter, onOpen }) {
   );
 }
 
-/* ===== CONTINUATION CHAPTER ===== */
-function JournalContinue({ article, onOpen }) {
-  return (
-    <section className="jcontinue-sec" id="journal-continue" aria-labelledby="journal-continue-title">
-      <div className="jcontinue-marker">KEEP READING</div>
-      <div className="jcontinue-copy">
-        <span className="jcontinue-kicker">A SOFT LANDING AFTER THE ARCHIVE</span>
-        <h2 id="journal-continue-title">One story should lead to <em>another.</em></h2>
-        <p>When a question stays with you, follow it into the next story instead of starting over.</p>
-      </div>
-      <a className="jcontinue-card" href={`/journal#${article.id}`} onClick={(e) => { e.preventDefault(); onOpen(article); }}>
-        <span>{article.catLabel}</span>
-        <strong>{article.title}</strong>
-        <small>{article.readTime} <ArrowRight color="#fff" size={14} /></small>
-      </a>
-    </section>
-  );
-}
-
 /* ===== LETTERS TO NEWSLETTER TRANSITION ===== */
 function JournalLettersTransition() {
   const ref = useRef(null);
@@ -559,10 +522,6 @@ function JournalLettersTransition() {
     <section className="jdrift" id="journal-letter" ref={ref} aria-labelledby="jdrift-title" aria-describedby="jdrift-copy">
       <div className="jdrift-sticky">
         <div className="jdrift-orange-flood" style={{ opacity: visualMorphP }} aria-hidden="true" />
-        <div className="jdrift-stripe" style={{ opacity: lettersP }} aria-hidden="true">
-          <span className="jdrift-mark">—— STAY IN THE LOOP ——</span>
-        </div>
-
         <svg className="jdrift-flight" viewBox="0 0 1200 600" preserveAspectRatio="none" aria-hidden="true">
           <path
             ref={pathRef}
@@ -666,14 +625,10 @@ export function JournalPage() {
 
   const [featured, ...rest] = ARTICLES;
   const sorted = rest.filter((a) => filter === 'all' || a.cat === filter);
-  const nextArticle = sorted[0] || rest[0];
-
   return (
     <main className="journal-page">
-      <JournalHero />
-      <JournalStart onChoose={chooseJournalPath} />
+      <JournalHero onChoose={chooseJournalPath} />
       <JournalFeatured article={featured} onOpen={openArticle} />
-      <JournalScrollCue />
       <JournalGrid articles={sorted} filter={filter} onFilter={setFilter} onOpen={openArticle} />
 
       {sorted.length === 0 && (
@@ -700,8 +655,6 @@ export function JournalPage() {
           </span>
         </div>
       </section>
-
-      {nextArticle && <JournalContinue article={nextArticle} onOpen={openArticle} />}
 
       <JournalLettersTransition />
       {selectedArticle && <JournalReader article={selectedArticle} onClose={closeArticle} />}
