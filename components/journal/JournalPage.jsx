@@ -493,69 +493,87 @@ function JournalContinue({ article, onOpen }) {
   );
 }
 
-/* ===== DRIFT BAND ===== */
-function JournalDrift() {
+/* ===== LETTERS TO NEWSLETTER TRANSITION ===== */
+function JournalLettersTransition() {
   const ref = useRef(null);
   const prog = useScrollProgress(ref);
   const pathRef = useRef(null);
   const [planePos, setPlanePos] = useState({ x: 0, y: 0, angle: 0, len: 1 });
-  const [approachP, setApproachP] = useState(0);
+  const [email, setEmail] = useState('');
+  const [done, setDone] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [deepLinked, setDeepLinked] = useState(false);
 
   useEffect(() => {
-    if (pathRef.current) {
-      const len = pathRef.current.getTotalLength();
-      setPlanePos((p) => ({ ...p, len }));
-    }
+    if (!pathRef.current) return;
+    const len = pathRef.current.getTotalLength();
+    setPlanePos((p) => ({ ...p, len }));
   }, []);
 
-  // Tracks section_rect.top to animate letters during the approach phase (before pinning)
   useEffect(() => {
-    const update = () => {
-      if (!ref.current) return;
-      const r = ref.current.getBoundingClientRect();
-      setApproachP(Math.max(0, Math.min(1, 1 - r.top / window.innerHeight)));
-    };
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const sync = () => setReducedMotion(query.matches);
+    sync();
+    query.addEventListener?.('change', sync);
+    return () => query.removeEventListener?.('change', sync);
+  }, []);
+
+  useEffect(() => {
+    const syncHash = () => setDeepLinked(window.location.hash === '#journal-letter');
+    syncHash();
+    window.addEventListener('hashchange', syncHash);
+    return () => window.removeEventListener('hashchange', syncHash);
   }, []);
 
   useEffect(() => {
     if (!pathRef.current) return;
     const len = pathRef.current.getTotalLength();
-    const t = Math.max(0, Math.min(1, prog / 0.53));
-    const pt = pathRef.current.getPointAtLength(t * len);
-    const ptAhead = pathRef.current.getPointAtLength(Math.min(len, t * len + 6));
+    const flightP = reducedMotion ? 1 : Math.max(0, Math.min(1, prog / 0.54));
+    const pt = pathRef.current.getPointAtLength(flightP * len);
+    const ptAhead = pathRef.current.getPointAtLength(Math.min(len, flightP * len + 6));
     const angle = Math.atan2(ptAhead.y - pt.y, ptAhead.x - pt.x) * 180 / Math.PI;
     setPlanePos({ x: pt.x, y: pt.y, angle, len });
-  }, [prog]);
+  }, [prog, reducedMotion]);
 
-  const dashLen = planePos.len;
-  const trail    = Math.max(0, Math.min(1, prog / 0.53)) * dashLen;
-  const titleP   = approachP;
-  const subP     = Math.max(0, Math.min(1, (prog - 0.65) / 0.07));
-  const exitFade = 1 - Math.max(0, Math.min(1, (prog - 0.65) / 0.25));
-  const titleY   = (1 - titleP) * 40;
-  const subY     = (1 - subP) * 30;
+  const clamp = (value) => Math.max(0, Math.min(1, value));
+  const flightP = reducedMotion ? 1 : clamp(prog / 0.54);
+  const morphP = reducedMotion ? 1 : clamp((prog - 0.46) / 0.24);
+  const forcedNewsletter = deepLinked || reducedMotion;
+  const visualMorphP = forcedNewsletter ? 1 : morphP;
+  const lettersP = forcedNewsletter ? 0 : clamp(1 - morphP * 1.55);
+  const newsletterP = forcedNewsletter ? 1 : clamp((morphP - 0.28) / 0.55);
+  const newsletterReady = forcedNewsletter || morphP > 0.62;
+  const trail = flightP * planePos.len;
+  const titleY = (1 - lettersP) * -32;
+  const newsletterY = (1 - newsletterP) * 22;
+
+  const submit = (e) => {
+    e.preventDefault();
+    if (/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
+      setDone(true);
+      setEmail('');
+      setTimeout(() => setDone(false), 4000);
+    }
+  };
 
   return (
-    <section className="jdrift" ref={ref} aria-hidden="true">
+    <section className="jdrift" id="journal-letter" ref={ref} aria-labelledby="jdrift-title" aria-describedby="jdrift-copy">
       <div className="jdrift-sticky">
-        <div className="jdrift-orange-flood" style={{ opacity: 1 - exitFade }} />
-        <div className="jdrift-stripe" style={{ opacity: exitFade }}>
+        <div className="jdrift-orange-flood" style={{ opacity: visualMorphP }} aria-hidden="true" />
+        <div className="jdrift-stripe" style={{ opacity: lettersP }} aria-hidden="true">
           <span className="jdrift-mark">—— STAY IN THE LOOP ——</span>
         </div>
 
-        <svg className="jdrift-flight" viewBox="0 0 1200 600" preserveAspectRatio="none">
+        <svg className="jdrift-flight" viewBox="0 0 1200 600" preserveAspectRatio="none" aria-hidden="true">
           <path
             ref={pathRef}
             className="jdrift-flight-path"
             d="M -40 480 C 200 460, 280 200, 480 250 S 800 460, 980 280 S 1200 80, 1280 60"
             fill="none" stroke="#fef9ee" strokeWidth="1.8" strokeLinecap="round"
             strokeDasharray="4 8"
-            style={{ strokeDashoffset: (dashLen - trail).toFixed(1) }}
+            style={{ strokeDashoffset: (planePos.len - trail).toFixed(1), opacity: lettersP }}
           />
-          {planePos.len > 1 && (
+          {planePos.len > 1 && lettersP > 0 && (
             <g
               className="jdrift-plane"
               transform={`translate(${planePos.x.toFixed(1)} ${planePos.y.toFixed(1)}) rotate(${planePos.angle.toFixed(1)})`}
@@ -569,104 +587,46 @@ function JournalDrift() {
           )}
         </svg>
 
-        <div className="jdrift-titles">
-          <div
-            className="jdrift-title"
-            style={{ transform: `translate3d(0, ${titleY.toFixed(1)}px, 0)`, opacity: titleP }}
-          >
-            <em>Letters.</em>
-          </div>
-          <div
-            className="jdrift-sub"
-            style={{ transform: `translate3d(0, ${subY.toFixed(1)}px, 0)`, opacity: subP }}
-          >
-            Don&apos;t miss a single one.
-          </div>
+        <div className="jdrift-titles" style={{ opacity: lettersP, transform: `translate3d(0, ${titleY.toFixed(1)}px, 0)` }}>
+          <h2 className="jdrift-title" id="jdrift-title"><em>Letters.</em></h2>
+          <p className="jdrift-sub" id="jdrift-copy">Don&apos;t miss a single one.</p>
         </div>
-      </div>
-    </section>
-  );
-}
 
-/* ===== NEWSLETTER ===== */
-function JournalNewsletter() {
-  const ref = useRef(null);
-  const prog = useScrollProgress(ref);
-  const [email, setEmail] = useState('');
-  const [done, setDone] = useState(false);
-  const [approachP, setApproachP] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth <= 767);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
-  useEffect(() => {
-    const update = () => {
-      if (!ref.current) return;
-      const r = ref.current.getBoundingClientRect();
-      setApproachP(Math.max(0, Math.min(1, 1 - r.top / window.innerHeight)));
-    };
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => window.removeEventListener('scroll', update);
-  }, []);
-
-  const submit = (e) => {
-    e.preventDefault();
-    if (/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
-      setDone(true);
-      setEmail('');
-      setTimeout(() => setDone(false), 4000);
-    }
-  };
-
-  const reveal = (lo, hi) => Math.max(0, Math.min(1, (prog - lo) / (hi - lo)));
-  const tagP   = approachP;
-  const titleP = Math.max(0, Math.min(1, (approachP - 0.35) / 0.65));
-  const subP   = reveal(0.05, 0.20);
-  const formP  = reveal(0.18, 0.35);
-  const sideP  = reveal(0.30, 0.50);
-
-  const arrive = (p) => isMobile ? {} : ({
-    opacity: p,
-    transform: `translate3d(0, ${((1 - p) * 28).toFixed(1)}px, 0)`,
-  });
-
-  return (
-    <section className="jnews-sec" id="journal-letter" ref={ref}>
-      <div className="jnews-sticky">
-        <article className="jnews-inset">
-          <div className="jnews-inset-body">
-            <div className="jnews-inset-tag" style={arrive(tagP)}>DON&apos;T MISS AN ISSUE</div>
-            <h3 className="jnews-inset-title" style={arrive(titleP)}>
-              One letter, <em>once a month</em>.
-            </h3>
-            <p className="jnews-inset-sub" style={arrive(subP)}>
-              Recaps, essays, and career talks — the moment they go live. No spam, ever.
-            </p>
-            <form className="jnews-inset-form" onSubmit={submit} style={arrive(formP)}>
-              <label className="sr-only" htmlFor="journal-letter-email">Email address</label>
-              <input
-                id="journal-letter-email"
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <button type="submit">
-                {done ? '✓ SUBSCRIBED' : <><span>SUBSCRIBE</span> <ArrowRight color="#0a1f29" size={14} /></>}
-              </button>
-            </form>
-          </div>
-          <div className="jnews-inset-side" aria-hidden="true" style={arrive(sideP)}>
-            Letters from the field, written by the people who&apos;ve walked it.
-          </div>
-        </article>
+        <div
+          className="jdrift-newsletter-layer"
+          style={{ opacity: newsletterP, transform: `translate3d(0, ${newsletterY.toFixed(1)}px, 0)`, pointerEvents: newsletterReady ? 'auto' : 'none' }}
+          aria-hidden={!newsletterReady}
+        >
+          <article className="jnews-inset" aria-labelledby="journal-letter-title">
+            <div className="jnews-inset-body">
+              <div className="jnews-inset-tag">DON&apos;T MISS AN ISSUE</div>
+              <h3 className="jnews-inset-title" id="journal-letter-title">
+                One letter, <em>once a month</em>.
+              </h3>
+              <p className="jnews-inset-sub">
+                Recaps, essays, and career talks — the moment they go live. No spam, ever.
+              </p>
+              <form className="jnews-inset-form" onSubmit={submit}>
+                <label className="sr-only" htmlFor="journal-letter-email">Email address</label>
+                <input
+                  id="journal-letter-email"
+                  type="email"
+                  placeholder="your@email.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  tabIndex={newsletterReady ? undefined : -1}
+                  required
+                />
+                <button type="submit" tabIndex={newsletterReady ? undefined : -1}>
+                  {done ? '✓ SUBSCRIBED' : <><span>SUBSCRIBE</span> <ArrowRight color="#0a1f29" size={14} /></>}
+                </button>
+              </form>
+            </div>
+            <div className="jnews-inset-side" aria-hidden="true">
+              Letters from the field, written by the people who&apos;ve walked it.
+            </div>
+          </article>
+        </div>
       </div>
     </section>
   );
@@ -744,9 +704,7 @@ export function JournalPage() {
 
       {nextArticle && <JournalContinue article={nextArticle} onOpen={openArticle} />}
 
-      <div className="jdrift-lead" aria-hidden="true" />
-      <JournalDrift />
-      <JournalNewsletter />
+      <JournalLettersTransition />
       {selectedArticle && <JournalReader article={selectedArticle} onClose={closeArticle} />}
     </main>
   );
