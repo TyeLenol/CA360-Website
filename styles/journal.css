@@ -683,7 +683,7 @@
   inset: 0;
   background: var(--c-orange);
   pointer-events: none;
-  z-index: 10;
+  z-index: 0;
 }
 .jdrift-stripe {
   position: absolute;
@@ -750,8 +750,20 @@
   color: rgba(254, 249, 238, 0.85);
   will-change: transform, opacity;
 }
+.jdrift-newsletter-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0 var(--gutter);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
 
-/* === NEWSLETTER (160vh — tighter, dark stays late so text stays readable) === */
+/* === NEWSLETTER INSET — rendered inside the shared Letters scene === */
 .jnews-sec {
   position: relative;
   height: 160vh;
@@ -873,7 +885,7 @@
 
 /* === JOURNAL START RAIL — explicit first decision for new readers === */
 .jstart-sec {
-  padding: 110px var(--gutter) 100px;
+  padding: 82px var(--gutter) 76px;
   color: var(--c-ink);
   background: var(--c-cream);
   border-top: 1px solid var(--c-rule);
@@ -918,11 +930,11 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
-  margin-top: 72px;
+  margin-top: 52px;
 }
 .jstart-path {
   position: relative;
-  min-height: 242px;
+  min-height: 214px;
   padding: 22px 22px 20px;
   display: flex;
   flex-direction: column;
@@ -952,7 +964,7 @@
 .jstart-path.is-primary .jstart-path-label { color: var(--c-orange-soft); }
 .jstart-path strong {
   max-width: 250px;
-  margin-top: 60px;
+  margin-top: 42px;
   font: 700 clamp(24px, 2.5vw, 35px)/1 var(--font-display);
   letter-spacing: -0.045em;
 }
@@ -1003,16 +1015,293 @@
 }
 
 @media (max-width: 767px) {
-  .jstart-sec { padding: 72px var(--gutter) 68px; }
+  .jstart-sec { padding: 58px var(--gutter) 56px; }
   .jstart-head { grid-template-columns: 1fr; gap: 34px; align-items: start; }
   .jstart-head h2 { font-size: clamp(40px, 12vw, 66px); }
   .jstart-intro { max-width: 420px; font-size: 17px; }
-  .jstart-paths { grid-template-columns: 1fr; margin-top: 44px; gap: 12px; }
-  .jstart-path { min-height: 190px; }
-  .jstart-path strong { margin-top: 38px; }
+  .jstart-paths { grid-template-columns: 1fr; margin-top: 34px; gap: 10px; }
+  .jstart-path { min-height: 174px; }
+  .jstart-path strong { margin-top: 30px; }
   .jstart-browse { align-items: flex-start; flex-direction: column; gap: 14px; margin-top: 24px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .jstart-path { transition: none; }
+}
+
+
+/* === JOURNAL VISUAL SHELL PASS — content stays data-pluggable === */
+.jh-hero {
+  height: auto;
+  min-height: 0;
+}
+.jh-hero-sticky {
+  position: relative;
+  top: auto;
+  height: calc(92vh - 80px);
+  min-height: 600px;
+  padding-top: 30px;
+  overflow: visible;
+}
+.jh-hero-title { font-size: clamp(60px, min(14vw, 18vh), 220px); }
+.jh-hero-lower { padding-bottom: 30px; gap: 18px; }
+.jh-hero-statement { max-width: 760px; font-size: clamp(20px, 2.7vw, 38px); }
+.jh-hero-anchor { padding: 14px 18px 14px 22px; }
+
+/* The opening now contains its own orientation rail. It should read as one invitation, not a second page. */
+.jstart-embedded {
+  padding: 38px var(--gutter) 42px;
+  border-top: 1px solid var(--c-rule);
+  border-bottom: 0;
+}
+.jstart-embedded .jstart-head {
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 32px;
+  align-items: center;
+}
+.jstart-embedded .jstart-paths { margin-top: 28px; gap: 10px; }
+.jstart-embedded .jstart-path {
+  min-height: 170px;
+  padding: 18px;
+  box-shadow: 4px 4px 0 var(--c-ink);
+}
+.jstart-embedded .jstart-path:hover,
+.jstart-embedded .jstart-path:focus-visible { box-shadow: 7px 7px 0 var(--c-ink); }
+.jstart-embedded .jstart-path strong { margin-top: 28px; font-size: clamp(22px, 2.1vw, 30px); }
+.jstart-embedded .jstart-path-detail { font-size: 13px; }
+.jstart-embedded .jstart-browse { margin-top: 16px; }
+
+.jf-sec {
+  height: 106vh;
+  min-height: 760px;
+}
+.jf-sticky { padding-top: 30px; padding-bottom: 34px; }
+.jf-card { gap: clamp(28px, 4vw, 56px); }
+.jf-title { font-size: clamp(34px, 4.4vw, 58px); }
+.jf-excerpt { font-size: 17px; line-height: 1.45; }
+.jf-foot { padding-top: 16px; }
+.jf-cta { padding: 12px 18px; font-size: 12px; }
+
+.jscrollcue {
+  height: auto;
+  min-height: 0;
+  padding: 62px var(--gutter) 70px;
+  background: var(--c-paper);
+  border-top: 1px solid var(--c-rule);
+  border-bottom: 1px solid var(--c-rule);
+}
+.jscrollcue-panel-static {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 0.7fr 1.1fr 0.8fr;
+  align-items: end;
+  gap: 28px;
+}
+.jscrollcue-kicker {
+  color: var(--c-orange-deep);
+  font: 700 10px/1 var(--font-mono);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.jscrollcue-panel-static p {
+  color: var(--c-ink);
+  font: italic 400 clamp(24px, 3vw, 42px)/1.04 var(--font-serif);
+  margin: 0;
+}
+.jscrollcue-panel-static strong {
+  color: var(--c-orange);
+  font: 800 clamp(26px, 3vw, 44px)/0.95 var(--font-display);
+  letter-spacing: -0.05em;
+  text-align: right;
+  text-transform: uppercase;
+}
+
+.jgrid-header { padding: 44px var(--gutter) 34px; }
+.jgrid-header-copy {
+  max-width: var(--max-w);
+  margin: 0 auto 34px;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 36px;
+}
+.jgrid-kicker {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--c-orange-soft);
+  font: 700 10px/1 var(--font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.jgrid-header-copy h2 {
+  color: var(--c-cream);
+  font: 800 clamp(34px, 4.5vw, 64px)/0.95 var(--font-display);
+  letter-spacing: -0.06em;
+  margin: 0;
+}
+.jgrid-header-copy h2 em {
+  color: var(--c-orange-soft);
+  font: 400 italic 1.06em/0.86 var(--font-serif);
+  letter-spacing: -0.04em;
+}
+.jgrid-header-copy p {
+  margin-top: 14px;
+  color: rgba(254, 249, 238, 0.64);
+  font: italic 16px/1.3 var(--font-serif);
+}
+.jgrid-count {
+  flex-shrink: 0;
+  color: rgba(254, 249, 238, 0.58);
+  font: 700 10px/1.35 var(--font-mono);
+  letter-spacing: 0.13em;
+  text-align: right;
+  text-transform: uppercase;
+}
+.jgrid-count span {
+  display: block;
+  color: var(--c-orange-soft);
+  font: 400 62px/0.8 var(--font-serif);
+  letter-spacing: -0.05em;
+}
+.jfilter-bar { max-width: var(--max-w); margin: 0 auto; }
+.jfilter-tab { padding-top: 8px; padding-bottom: 8px; }
+
+.jcontinue-sec {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 76px var(--gutter) 84px;
+  display: grid;
+  grid-template-columns: 0.55fr 1.15fr 0.85fr;
+  gap: clamp(30px, 6vw, 96px);
+  align-items: end;
+  color: var(--c-ink);
+  background: var(--c-cream);
+}
+.jcontinue-sec::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--c-rule);
+}
+.jcontinue-marker {
+  align-self: start;
+  color: var(--c-orange-deep);
+  font: 700 10px/1 var(--font-mono);
+  letter-spacing: 0.16em;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-transform: uppercase;
+}
+.jcontinue-kicker {
+  color: var(--c-orange-deep);
+  font: 700 10px/1 var(--font-mono);
+  letter-spacing: 0.15em;
+}
+.jcontinue-copy h2 {
+  max-width: 570px;
+  margin-top: 20px;
+  color: var(--c-ink);
+  font: 800 clamp(38px, 5vw, 70px)/0.94 var(--font-display);
+  letter-spacing: -0.065em;
+}
+.jcontinue-copy h2 em {
+  color: var(--c-orange);
+  font: 400 italic 1.06em/0.88 var(--font-serif);
+}
+.jcontinue-copy p {
+  max-width: 380px;
+  margin-top: 22px;
+  color: var(--c-body);
+  font: italic 17px/1.4 var(--font-serif);
+}
+.jcontinue-card {
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 24px;
+  color: var(--c-cream);
+  background: var(--c-teal-deep);
+  border: 2px solid var(--c-ink);
+  border-radius: 14px;
+  box-shadow: 8px 8px 0 var(--c-orange);
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+.jcontinue-card:hover,
+.jcontinue-card:focus-visible { transform: translate(-3px, -3px); box-shadow: 11px 11px 0 var(--c-orange); }
+.jcontinue-card > span {
+  color: var(--c-orange-soft);
+  font: 700 10px/1 var(--font-mono);
+  letter-spacing: 0.15em;
+}
+.jcontinue-card strong {
+  max-width: 280px;
+  margin-top: 30px;
+  font: 700 clamp(22px, 2.4vw, 32px)/1.02 var(--font-display);
+  letter-spacing: -0.04em;
+}
+.jcontinue-card small {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  color: rgba(254, 249, 238, 0.72);
+  font: 600 11px/1 var(--font-mono);
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+.jcontinue-card small svg { padding: 6px; width: 28px; height: 28px; border-radius: 50%; background: var(--c-orange); box-sizing: content-box; }
+
+.jdrift-lead { height: 100px; }
+.jdrift { height: 145vh; min-height: 1040px; pointer-events: auto; }
+
+@media (max-width: 900px) {
+  .jscrollcue-panel-static { grid-template-columns: 0.5fr 1.3fr 0.8fr; gap: 18px; }
+  .jcontinue-sec { grid-template-columns: 0.35fr 1.1fr 0.85fr; gap: 26px; }
+}
+
+@media (max-width: 767px) {
+  .jh-hero-sticky {
+    height: calc(96vh - 80px);
+    min-height: 500px;
+    padding-top: 20px;
+  }
+  .jstart-embedded { padding: 30px var(--gutter) 34px; }
+  .jstart-embedded .jstart-head { grid-template-columns: 1fr; gap: 14px; }
+  .jstart-embedded .jstart-paths { grid-template-columns: 1fr; margin-top: 24px; gap: 8px; }
+  .jstart-embedded .jstart-path { min-height: 132px; padding: 16px; }
+  .jstart-embedded .jstart-path strong { margin-top: 22px; }
+  .jh-hero-lower { padding-bottom: 24px; }
+  .jh-hero-metric-label { max-width: 100px; }
+  .jf-sec { height: auto; min-height: 0; }
+  .jf-sticky { padding-top: 24px; padding-bottom: 56px; }
+  .jf-title { font-size: clamp(32px, 10vw, 56px); }
+  .jf-excerpt { font-size: 16px; }
+  .jscrollcue { padding: 44px var(--gutter) 50px; }
+  .jscrollcue-panel-static { grid-template-columns: 1fr; gap: 16px; }
+  .jscrollcue-panel-static strong { text-align: left; }
+  .jgrid-header { padding-top: 36px; }
+  .jgrid-header-copy { align-items: start; flex-direction: column; gap: 22px; margin-bottom: 22px; }
+  .jgrid-count { text-align: left; }
+  .jgrid-count span { display: inline; font-size: 42px; margin-right: 8px; }
+  .jfilter-bar { justify-content: flex-start; gap: 4px 18px; }
+  .jcontinue-sec { margin: 0; padding: 76px var(--gutter) 84px; display: grid; grid-template-columns: 1fr; gap: 34px; }
+  .jcontinue-marker { writing-mode: initial; transform: none; }
+  .jcontinue-card { min-height: 185px; }
+  .jdrift { height: 105vh; min-height: 640px; }
+  .jdrift-lead { height: 56px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .jcontinue-card { transition: none; }
+  .jdrift { height: 92vh; min-height: 620px; }
+  .jdrift-flight-path,
+  .jdrift-plane,
+  .jdrift-stripe,
+  .jdrift-titles { opacity: 0 !important; }
+  .jdrift-plane { display: none; }
+  .jdrift-newsletter-layer { opacity: 1 !important; transform: none !important; pointer-events: auto !important; }
 }

@@ -435,7 +435,7 @@
 @media (max-width: 767px) {
   .journal-page { padding-top: 68px; }
   /* A short opening keeps the choice rail within the first meaningful scroll. */
-  .jh-hero { height: 110vh; min-height: 590px; }
+  .jh-hero { height: 96vh; min-height: 600px; }
   .jh-hero-sticky { padding: 20px var(--gutter) 0; top: 68px; height: calc(100vh - 68px); }
   .jh-hero-top { margin-bottom: 10px; }
   .jh-hero-side { display: none; }
@@ -567,8 +567,41 @@
 
 /* ── Newsletter (cohesive dark close) ─────────────────── */
 @media (max-width: 767px) {
+<<<<<<< HEAD
   .jnews-sec { padding: 56px var(--gutter) 64px; }
   .jnews-inset { grid-template-columns: 1fr; gap: 28px; }
+=======
+  /* A compact chapter keeps the airplane transition decorative, not obstructive. */
+  .jdrift { height: 120vh; min-height: 720px; }
+  .jdrift-lead { height: 80px; }
+  .jdrift-titles { padding: 0 var(--gutter); gap: 10px; }
+  .jdrift-title { font-size: clamp(64px, 17vw, 110px); }
+  .jdrift-sub { font-size: clamp(15px, 3.5vw, 22px); }
+  .jdrift-stripe { padding: 16px var(--gutter); font-size: 9px; }
+}
+
+/* ── Newsletter ───────────────────────────────────────── */
+@media (max-width: 767px) {
+  .jnews-sec { height: auto; min-height: 0; }
+  .jdrift-newsletter-layer {
+    align-items: flex-start;
+    padding-top: 22vh;
+  }
+  .jnews-sticky {
+    position: relative;
+    top: auto;
+    height: auto;
+    padding: 52px var(--gutter) 56px;
+  }
+  .jnews-inset { grid-template-columns: 1fr; min-height: 0; }
+  .jnews-inset-body { padding: 0; }
+  /* override arrive() opacity/transform — section is static on mobile */
+  .jnews-inset-tag, .jnews-inset-title, .jnews-inset-sub,
+  .jnews-inset-form, .jnews-inset-side {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+>>>>>>> 260cd31313fc05cfb25b625e9c247a3b7237eb94
   .jnews-inset-title { font-size: 36px; max-width: 100%; margin-bottom: 12px; }
   .jnews-inset-sub { font-size: 15px; margin-bottom: 24px; }
   .jnews-inset-form { max-width: 100%; }
