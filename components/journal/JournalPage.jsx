@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, ArrowDown, PinIcon } from '../shared/Icons';
 import { PhotoPlaceholder, Portrait } from '../shared/Placeholders';
 import { RouteMarker } from '../shared/RouteMarker';
-import { useScrollProgress, useInView, usePrefersReducedMotion } from '../../hooks/ui-hooks';
+import { useScrollProgress } from '../../hooks/ui-hooks';
 
 /* ===== LOCAL HOOK — element-relative scroll progress ===== */
 function useElementScroll(ref) {
@@ -87,41 +87,12 @@ const CATEGORIES = [
 ];
 
 /* ===== JOURNAL HERO ===== */
-<<<<<<< HEAD
-function JournalHero() {
-  const ref = useRef(null);
-  const prog = useScrollProgress(ref);
-  const reduced = usePrefersReducedMotion();
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsMobile(window.innerWidth <= 767);
-    check();
-    window.addEventListener('resize', check);
-    return () => window.removeEventListener('resize', check);
-  }, []);
-
-=======
 function JournalHero({ onChoose }) {
->>>>>>> 260cd31313fc05cfb25b625e9c247a3b7237eb94
   const jump = (e) => {
     e.preventDefault();
     document.getElementById('journal-start')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-<<<<<<< HEAD
-  const arrive = (lo, hi, dy = 44) => {
-    if (isMobile || reduced) return {};
-    const p = Math.max(0, Math.min(1, (prog - lo) / (hi - lo)));
-    return {
-      opacity: p,
-      transform: `translate3d(0, ${((1 - p) * dy).toFixed(1)}px, 0)`,
-      willChange: 'opacity, transform',
-    };
-  };
-
-=======
->>>>>>> 260cd31313fc05cfb25b625e9c247a3b7237eb94
   return (
     <section className="jh-hero" id="journal-top">
       <div className="jh-hero-sticky">
@@ -236,7 +207,6 @@ function JournalStart({ onChoose }) {
 function JournalFeatured({ article, onOpen }) {
   const secRef = useRef(null);
   const scroll = useElementScroll(secRef);
-  const reduced = usePrefersReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
@@ -246,17 +216,7 @@ function JournalFeatured({ article, onOpen }) {
     return () => window.removeEventListener('resize', check);
   }, []);
 
-<<<<<<< HEAD
-  const imgY = (isMobile || reduced) ? 0 : scroll * -40;
-
-  const arrive = (lo, hi, dy = 40) => {
-    if (isMobile || reduced) return {};
-    const p = Math.max(0, Math.min(1, (prog - lo) / (hi - lo)));
-    return { opacity: p, transform: `translate3d(0, ${((1 - p) * dy).toFixed(1)}px, 0)`, willChange: 'opacity, transform' };
-  };
-=======
   const imgY = isMobile ? 0 : scroll * -42;
->>>>>>> 260cd31313fc05cfb25b625e9c247a3b7237eb94
 
   return (
     <section className="jf-sec" id="journal-featured" ref={secRef}>
@@ -268,11 +228,7 @@ function JournalFeatured({ article, onOpen }) {
         </div>
         <article className="jf-card">
           {/* Image arrives first */}
-<<<<<<< HEAD
-          <div className="jf-img" style={arrive(0.02, 0.16, 70)}>
-=======
           <div className="jf-img">
->>>>>>> 260cd31313fc05cfb25b625e9c247a3b7237eb94
             <div className="jf-img-inner" style={{ transform: `translate3d(0, ${imgY.toFixed(1)}px, 0)` }}>
               <PhotoPlaceholder tone={article.tone} label={article.label} style={{ width: '100%', height: '100%' }} />
             </div>
@@ -290,40 +246,24 @@ function JournalFeatured({ article, onOpen }) {
 
           {/* Text body — meta + title then blurb then rest */}
           <div className="jf-body">
-<<<<<<< HEAD
-            <div className="jf-meta" style={arrive(0.10, 0.22, 28)}>
-=======
             <div className="jf-meta">
->>>>>>> 260cd31313fc05cfb25b625e9c247a3b7237eb94
               <span>{article.date}</span>
               <span className="dot" />
               <span>{article.readTime}</span>
               <span className="dot" />
               <span>{article.author.toUpperCase()}</span>
             </div>
-<<<<<<< HEAD
-            <h2 className="jf-title" style={arrive(0.16, 0.30, 44)}>{article.title}</h2>
-            <p className="jf-excerpt" style={arrive(0.24, 0.38, 32)}>{article.excerpt}</p>
-
-            {article.venue && (
-              <div className="jf-venue" style={arrive(0.32, 0.44, 24)}>
-=======
             <h2 className="jf-title">{article.title}</h2>
             <p className="jf-excerpt">{article.excerpt}</p>
 
             {article.venue && (
               <div className="jf-venue">
->>>>>>> 260cd31313fc05cfb25b625e9c247a3b7237eb94
                 <PinIcon size={14} color="#d68307" />
                 Hosted at <span>{article.venue}</span>
               </div>
             )}
 
-<<<<<<< HEAD
-            <div className="jf-foot" style={arrive(0.40, 0.52, 22)}>
-=======
             <div className="jf-foot">
->>>>>>> 260cd31313fc05cfb25b625e9c247a3b7237eb94
               <div className="jf-author">
                 <div className="jf-author-avatar">
                   <PhotoPlaceholder tone="warm" label="" style={{ width: '100%', height: '100%' }}>
@@ -351,64 +291,6 @@ function JournalFeatured({ article, onOpen }) {
   );
 }
 
-<<<<<<< HEAD
-/* ===== SCROLL CUE — text the article grid slides up and covers as it reveals ===== */
-function JournalScrollCue() {
-  const ref = useRef(null);
-  const prog = useScrollProgress(ref);
-  const reduced = usePrefersReducedMotion();
-  const [coverAlpha, setCoverAlpha] = useState(1);
-
-  useEffect(() => {
-    if (reduced) return;
-    let raf = 0;
-    const update = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => {
-        const el = ref.current;
-        if (!el) return;
-        // Fade the fixed panel out as the grid (z-index:2) slides up over it:
-        // coverAt = scroll position where the grid top reaches screen centre.
-        const rect = el.getBoundingClientRect();
-        const coverAt = window.scrollY + rect.bottom - window.innerHeight * 0.5;
-        const alpha = 1 - Math.max(0, Math.min(1, (window.scrollY - coverAt) / (window.innerHeight * 0.35)));
-        setCoverAlpha(alpha);
-      });
-    };
-    update();
-    window.addEventListener('scroll', update, { passive: true });
-    return () => { window.removeEventListener('scroll', update); cancelAnimationFrame(raf); };
-  }, [reduced]);
-
-  const p1 = reduced ? 1 : Math.max(0, Math.min(1, (prog - 0.03) / 0.14));
-  const p2 = reduced ? 1 : Math.max(0, Math.min(1, (prog - 0.20) / 0.14));
-
-  return (
-    <section className="jscrollcue" ref={ref}>
-      <div className="jscrollcue-panel" style={{ opacity: reduced ? 1 : coverAlpha }}>
-        <p
-          className="jscrollcue-part1"
-          style={{ opacity: p1, transform: `translateY(${((1 - p1) * 32).toFixed(1)}px)` }}
-        >
-          Stories. Guides. Honest takes.
-        </p>
-        <p
-          className="jscrollcue-part2"
-          style={{ opacity: p2, transform: `translateY(${((1 - p2) * 32).toFixed(1)}px)` }}
-        >
-          All of it, below.
-        </p>
-      </div>
-    </section>
-  );
-}
-
-/* ===== FILTER BAR (integrated into grid header) ===== */
-function JournalFilter({ filter, onFilter }) {
-  return (
-    <div className="jfilter-bar" role="tablist" aria-label="Filter journal stories">
-      {CATEGORIES.map((c) => (
-=======
 /* ===== FILTER BAR (integrated into grid header) ===== */
 function JournalFilter({ filter, onFilter }) {
   const tabRefs = useRef([]);
@@ -425,7 +307,6 @@ function JournalFilter({ filter, onFilter }) {
   return (
     <div className="jfilter-bar" role="tablist" aria-label="Filter journal stories">
       {CATEGORIES.map((c, index) => (
->>>>>>> 260cd31313fc05cfb25b625e9c247a3b7237eb94
         <button
           key={c.id}
           ref={(node) => { tabRefs.current[index] = node; }}
@@ -574,14 +455,6 @@ function JournalGrid({ articles, filter, onFilter, onOpen }) {
   );
 }
 
-<<<<<<< HEAD
-/* ===== NEWSLETTER — cohesive dark close (continues the grid's deep-teal world) ===== */
-function JournalNewsletter() {
-  const [email, setEmail] = useState('');
-  const [done, setDone] = useState(false);
-  const titleRef = useRef(null);
-  const titleIn = useInView(titleRef, { threshold: 0.5 });
-=======
 /* ===== LETTERS TO NEWSLETTER TRANSITION ===== */
 function JournalLettersTransition() {
   const ref = useRef(null);
@@ -635,7 +508,6 @@ function JournalLettersTransition() {
   const trail = flightP * planePos.len;
   const titleY = (1 - lettersP) * -32;
   const newsletterY = (1 - newsletterP) * 22;
->>>>>>> 260cd31313fc05cfb25b625e9c247a3b7237eb94
 
   const submit = (e) => {
     e.preventDefault();
@@ -647,38 +519,6 @@ function JournalLettersTransition() {
   };
 
   return (
-<<<<<<< HEAD
-    <section className="jnews-sec" id="journal-letter" ref={ref}>
-      <div className="jnews-sticky">
-        <article className="jnews-inset">
-          <div className="jnews-inset-body">
-            <div className="jnews-inset-tag" style={arrive(tagP)}>DON&apos;T MISS AN ISSUE</div>
-            <h3 className="jnews-inset-title" style={arrive(titleP)}>
-              One letter, <em>once a month</em>.
-            </h3>
-            <p className="jnews-inset-sub" style={arrive(subP)}>
-              Recaps, essays, and career talks — the moment they go live. No spam, ever.
-            </p>
-            <form className="jnews-inset-form" onSubmit={submit} style={arrive(formP)}>
-              <label className="sr-only" htmlFor="journal-letter-email">Email address</label>
-              <input
-                id="journal-letter-email"
-                type="email"
-                placeholder="your@email.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              />
-              <button type="submit">
-                {done ? '✓ SUBSCRIBED' : <><span>SUBSCRIBE</span> <ArrowRight color="#0a1f29" size={14} /></>}
-              </button>
-            </form>
-          </div>
-          <div className="jnews-inset-side" aria-hidden="true" style={arrive(sideP)}>
-            Letters from the field, written by the people who&apos;ve walked it.
-          </div>
-        </article>
-=======
     <section className="jdrift" id="journal-letter" ref={ref} aria-labelledby="jdrift-title" aria-describedby="jdrift-copy">
       <div className="jdrift-sticky">
         <div className="jdrift-orange-flood" style={{ opacity: visualMorphP }} aria-hidden="true" />
@@ -745,7 +585,6 @@ function JournalLettersTransition() {
             </div>
           </article>
         </div>
->>>>>>> 260cd31313fc05cfb25b625e9c247a3b7237eb94
       </div>
     </section>
   );
@@ -812,20 +651,12 @@ export function JournalPage() {
           <span>
             {filter === 'all'
               ? `ALL ${ARTICLES.length} ARTICLES`
-<<<<<<< HEAD
-              : `${sorted.length + (featured.cat === filter ? 1 : 0)} OF ${ARTICLES.length} ARTICLES`}
-=======
               : `${sorted.length} ${CATEGORIES.find((c) => c.id === filter)?.label.toUpperCase()}`}
->>>>>>> 260cd31313fc05cfb25b625e9c247a3b7237eb94
           </span>
         </div>
       </section>
 
-<<<<<<< HEAD
-      <JournalNewsletter />
-=======
       <JournalLettersTransition />
->>>>>>> 260cd31313fc05cfb25b625e9c247a3b7237eb94
       {selectedArticle && <JournalReader article={selectedArticle} onClose={closeArticle} />}
     </main>
   );

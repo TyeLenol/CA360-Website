@@ -489,8 +489,9 @@
   .jf-img-corner { display: none; }
 }
 
-/* ── Scroll cue — static block on mobile (fixed panel jumps with iOS address bar) ── */
+/* ── Scroll cue — static text block on mobile ─────────── */
 @media (max-width: 767px) {
+  /* remove fixed panel — it jumps with iOS address bar */
   .jscrollcue { height: auto; min-height: 0; padding: 52px 0 56px; }
   .jscrollcue-panel {
     position: relative;
@@ -502,6 +503,7 @@
     align-items: flex-start;
     gap: 8px;
   }
+  /* text is always visible — no scroll gating */
   .jscrollcue-part1, .jscrollcue-part2 {
     opacity: 1 !important;
     transform: none !important;
@@ -524,7 +526,7 @@
     position: sticky;
     top: 68px;
     z-index: 10;
-    background: var(--c-teal-grid);
+    background: var(--c-teal-deep);
     padding: 0 var(--gutter);
     border-bottom: 1px solid rgba(254, 249, 238, 0.14);
   }
@@ -538,8 +540,7 @@
     scrollbar-width: none;
   }
   .jfilter-bar::-webkit-scrollbar { display: none; }
-  /* taller hit area — ~44px tap target */
-  .jfilter-tab { font-size: 13px; padding: 14px 2px; white-space: nowrap; flex-shrink: 0; }
+  .jfilter-tab { font-size: 13px; padding: 6px 2px; white-space: nowrap; flex-shrink: 0; }
   .jgrid { padding: 0 var(--gutter); }
   .jcard { padding: 24px 0; }
   /* image stacked above text */
@@ -565,12 +566,8 @@
   .jgrid-empty p { font-size: 22px; }
 }
 
-/* ── Newsletter (cohesive dark close) ─────────────────── */
+/* ── Drift band ───────────────────────────────────────── */
 @media (max-width: 767px) {
-<<<<<<< HEAD
-  .jnews-sec { padding: 56px var(--gutter) 64px; }
-  .jnews-inset { grid-template-columns: 1fr; gap: 28px; }
-=======
   /* A compact chapter keeps the airplane transition decorative, not obstructive. */
   .jdrift { height: 120vh; min-height: 720px; }
   .jdrift-lead { height: 80px; }
@@ -601,23 +598,23 @@
     opacity: 1 !important;
     transform: none !important;
   }
->>>>>>> 260cd31313fc05cfb25b625e9c247a3b7237eb94
   .jnews-inset-title { font-size: 36px; max-width: 100%; margin-bottom: 12px; }
   .jnews-inset-sub { font-size: 15px; margin-bottom: 24px; }
   .jnews-inset-form { max-width: 100%; }
   .jnews-inset-form input { font-size: 16px; }
   .jnews-inset-side {
     border-left: none;
-    border-top: 1px solid rgba(254, 249, 238, 0.18);
+    border-top: 1px solid rgba(10, 31, 41, 0.18);
     padding: 28px 0 0;
     justify-content: flex-start;
     text-align: left;
     font-size: 15px;
   }
-  .jnews-inset-side::after { top: 28px; left: 0; }
+  .jnews-inset-side::after { top: 28px; right: auto; left: 0; }
 }
 @media (max-width: 480px) {
   .jnews-inset-title { font-size: 30px; }
+  .jdrift-title { font-size: 56px; }
 }
 
 /* ═══════════════════════════════════════════════════════════
