@@ -158,7 +158,7 @@ export function Mentors() {
             ))}
           </ul>
 
-          <a className="mentors-join" href="mailto:hello@careerarcadia360.org?subject=Mentor%20application">
+          <a className="mentors-join" href="/contact?type=mentor">
             Become a mentor <ArrowRight size={14} color="#0a1f29" />
           </a>
         </aside>

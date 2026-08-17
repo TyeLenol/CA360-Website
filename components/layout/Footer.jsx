@@ -43,7 +43,7 @@ export function Footer() {
             <li><a href="/#join">Membership</a></li>
             <li><a href="/journal">Journal</a></li>
             <li><a href="/gallery">Gallery</a></li>
-            <li><a href="mailto:hello@careerarcadia360.org">Contact</a></li>
+            <li><a href="/contact">Contact</a></li>
           </ul>
         </div>
 

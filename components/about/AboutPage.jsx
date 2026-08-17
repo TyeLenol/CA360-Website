@@ -410,7 +410,7 @@ export function AboutPage() {
             <li>Open a career track</li>
             <li>Support a cohort</li>
           </ul>
-          <a className="ab-partners-link" href="mailto:hello@careerarcadia360.org?subject=Partnership%20inquiry">
+          <a className="ab-partners-link" href="/contact?type=partner">
             Start a partnership conversation <ArrowRight color="currentColor" size={14} />
           </a>
         </article>
@@ -428,7 +428,7 @@ export function AboutPage() {
               <span className="ab-cta-label">Become a mentor</span>
               <ArrowRight color="currentColor" size={16} />
             </a>
-            <a className="ab-cta-card" href="mailto:hello@careerarcadia360.org?subject=Support%20the%20CA360%20mission">
+            <a className="ab-cta-card" href="/contact?type=support">
               <span className="ab-cta-num">03</span>
               <span className="ab-cta-label">Support the mission</span>
               <ArrowRight color="currentColor" size={16} />
