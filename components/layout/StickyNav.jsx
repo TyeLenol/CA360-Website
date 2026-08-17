@@ -94,7 +94,7 @@ export function StickyNav() {
 
       <div className="nav-actions">
         <a className="btn btn-primary nav-cta" href={applyHref}>
-          Apply <ArrowRight color="#fff" size={14} />
+          Apply <ArrowRight color="#0a1f29" size={14} />
         </a>
       </div>
     </nav>

@@ -243,3 +243,160 @@
 @media (prefers-reduced-motion: reduce) {
   .jreader-panel { scroll-behavior: auto; }
 }
+
+
+/* Lighthouse remediation — retain the palette, strengthen text/background pairings. */
+.nav-brand-text small { color: var(--c-orange-deep); }
+.btn-primary { color: var(--c-ink); }
+.hero-italic { color: var(--c-orange-deep); }
+
+/* Homepage opportunity surfaces */
+.opportunity-head .sec-eyebrow { color: var(--c-orange-deep); }
+.opportunity-head .sec-eyebrow::before { background: var(--c-orange-deep); }
+.opportunity-stamp { color: var(--c-ink); }
+.opportunity-signpost-label,
+.opportunity-signpost-meta small { color: var(--c-body); }
+.opportunity-signpost-status { color: var(--c-teal-deep); }
+.opportunity-path-label { color: var(--c-teal-deep); }
+.opportunity-path:hover .opportunity-path-label,
+.opportunity-path:focus-visible .opportunity-path-label { color: var(--c-orange-soft); }
+
+/* About: semantic tabs and light/dark tile contrast */
+.ab-hero > .ab-hero-head > .sec-eyebrow { color: var(--c-orange-deep); }
+.ab-hero > .ab-hero-head > .sec-eyebrow::before { background: var(--c-orange-deep); }
+.ab-ask { color: var(--c-body); }
+.ab-ask-mark { color: var(--c-orange-deep); }
+.ab-side-label--right,
+.ab-answer-tag { color: var(--c-orange-soft); }
+.ab-tile-eyebrow { color: var(--c-orange-deep); }
+.ab-tile-eyebrow span { color: var(--c-body); }
+.ab-vision .ab-tile-eyebrow,
+.ab-impact .ab-tile-eyebrow,
+.ab-map .ab-tile-eyebrow { color: var(--c-orange-soft); }
+.ab-vision-head em { color: var(--c-orange-soft); }
+.ab-mission-text em { color: var(--c-orange-deep); }
+.ab-mission-meta { color: var(--c-body); }
+.ab-track-name { color: rgba(254, 249, 238, 0.84); }
+.ab-track-state { color: rgba(254, 249, 238, 0.78); }
+.ab-stat-label { color: rgba(254, 249, 238, 0.84); }
+.ab-stat-detail { color: rgba(254, 249, 238, 0.86); }
+.ab-cta-num { color: var(--c-orange-soft); }
+
+/* Gallery labels and active controls */
+.gstrip-hint,
+.gstrip-section-label,
+.gstrip-tile-desc { color: var(--c-body); }
+.gstrip-tile-pair { color: var(--c-teal-deep); }
+.ggrid-filter-btn { color: rgba(254, 249, 238, 0.86); }
+.ggrid-filter-btn:hover { color: var(--c-orange-soft); }
+.ggrid-filter-btn.is-active { color: var(--c-ink); }
+
+/* Journal hero, card metadata, and dark archive controls */
+.jh-hero-side em,
+.jh-hero-title em,
+.jh-hero-metric-label,
+.jh-hero-statement em { color: var(--c-orange-deep); }
+.jf-venue span,
+.jf-author-role { color: var(--c-teal-deep); }
+.jgrid-count { color: var(--c-cream); }
+.jfilter-tab { color: rgba(254, 249, 238, 0.84); }
+
+/* Shared route markers: dark surfaces keep a light orange accent. */
+.route-marker-index { color: var(--c-orange-deep); }
+.route-marker-context { color: var(--c-body); }
+.route-marker-dark .route-marker-index { color: var(--c-orange-soft); }
+.route-marker-dark .route-marker-context { color: rgba(254, 249, 238, 0.88); }
+
+
+/* Journal stability: reserve the editorial lower block before font/layout
+   settling so the pinned hero does not visibly jump on first paint. */
+.jh-hero-lower {
+  min-height: 252px;
+  contain: layout paint;
+}
+@media (max-width: 1024px) {
+  .jh-hero-lower { min-height: 246px; }
+}
+
+
+/* Lighthouse remediation pass 2 — use the darkest approved palette tokens
+   where small editorial labels sit on light backgrounds. */
+.nav-brand-text small,
+.opportunity-head .sec-eyebrow,
+.ab-hero > .ab-hero-head > .sec-eyebrow,
+.ab-tile-eyebrow,
+.jh-hero-side em,
+.jh-hero-title em,
+.jh-hero-metric-label,
+.jh-hero-statement em,
+.route-marker-index { color: var(--c-teal-deep); }
+.opportunity-head .sec-eyebrow::before,
+.ab-hero > .ab-hero-head > .sec-eyebrow::before { background: var(--c-teal-deep); }
+
+.chapter-bridge-kicker,
+.chapter-bridge-index { color: var(--c-teal-deep); }
+.chapter-bridge-head p { color: var(--c-body); }
+.chapter-bridge-link:hover .chapter-bridge-index,
+.chapter-bridge-link:focus-visible .chapter-bridge-index { color: var(--c-orange-deep); }
+
+.join-rail-step.is-active .join-rail-num,
+.join-rail-step.is-done .join-rail-num { color: var(--c-ink); }
+
+.jload .jload-link {
+  color: var(--c-ink);
+  border-color: rgba(10, 31, 41, 0.55);
+}
+.jload .jload-link:hover,
+.jload .jload-link:focus-visible { color: var(--c-ink); border-color: var(--c-ink); }
+.jload-foot { color: rgba(254, 249, 238, 0.86); }
+
+
+/* Final Lighthouse contrast cleanup. */
+.ab-hero-title em { color: var(--c-teal-deep); }
+
+.join-rail-num {
+  background: var(--c-orange-soft);
+  color: var(--c-ink);
+}
+.join-rail-step.is-active .join-rail-num,
+.join-rail-step.is-done .join-rail-num {
+  background: var(--c-cream);
+  color: var(--c-ink);
+}
+
+.opportunity-main p { color: var(--c-cream); }
+.faq-answer-link {
+  color: var(--c-orange-soft);
+  border-color: var(--c-orange-soft);
+}
+
+.footer-brand .sec-eyebrow {
+  color: var(--c-orange-soft) !important;
+}
+.footer-brand .sec-eyebrow::before { background: var(--c-orange-soft); }
+.footer-brand p { color: rgba(254, 249, 238, 0.9); }
+.footer-handle { color: rgba(254, 249, 238, 0.86); }
+.footer-bottom span { color: rgba(254, 249, 238, 0.84); }
+
+.jstart-path-detail { color: var(--c-body); }
+.jstart-path.is-primary .jstart-path-detail { color: var(--c-cream); }
+.jgrid-header-copy p { color: rgba(254, 249, 238, 0.88); }
+.jgrid-count,
+.jgrid-count span { color: var(--c-cream) !important; }
+.jcard-label { color: rgba(254, 249, 238, 0.86); }
+.jcard-excerpt { color: rgba(254, 249, 238, 0.86); }
+.jcard-meta { color: rgba(254, 249, 238, 0.84); }
+
+
+/* Journal CLS fix: the block is absolutely pinned, so a fixed reserved
+   height keeps its top edge stable while web fonts settle. */
+.jh-hero-lower {
+  height: 330px;
+  min-height: 0;
+}
+@media (max-width: 1024px) {
+  .jh-hero-lower { height: 270px; }
+}
+@media (max-width: 767px) {
+  .jh-hero-lower { height: 250px; }
+}

@@ -80,7 +80,7 @@ export function Sessions() {
           const rot = offset * -2;
 
           return (
-            <article
+            <div
               key={s.id}
               id={`session-${s.id}`}
               className={'sessions-card' + (absOff === 0 ? ' is-center' : '')}
@@ -92,6 +92,7 @@ export function Sessions() {
                 pointerEvents: absOff === 0 ? 'auto' : 'none',
               }}
               aria-hidden={absOff !== 0}
+              inert={absOff !== 0}
             >
               <div className="sessions-card-img">
                 <PhotoPlaceholder tone={s.tone} label={'SESSION ' + s.num} style={{ width: '100%', height: '100%' }} />
@@ -116,18 +117,19 @@ export function Sessions() {
                   <a className="sessions-read" href="/journal#journal-grid">Explore the journal <ArrowRight size={14} /></a>
                 </div>
               </div>
-            </article>
+            </div>
           );
         })}
       </div>
 
       <div className="sessions-controls">
-        <button className="sessions-arrow" onClick={prev} aria-label="Previous session">
+        <button type="button" className="sessions-arrow" onClick={prev} aria-label="Previous session">
           <ArrowLeft size={18} />
         </button>
         <div className="sessions-dots" role="tablist" aria-label="Choose a session">
           {SESSIONS.map((s, i) => (
             <button
+              type="button"
               key={s.id}
               id={`session-tab-${s.id}`}
               className={'sessions-dot' + (i === active ? ' is-active' : '')}
@@ -140,7 +142,7 @@ export function Sessions() {
             />
           ))}
         </div>
-        <button className="sessions-arrow" onClick={next} aria-label="Next session">
+        <button type="button" className="sessions-arrow" onClick={next} aria-label="Next session">
           <ArrowRight size={18} />
         </button>
       </div>

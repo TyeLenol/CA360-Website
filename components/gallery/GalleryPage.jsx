@@ -338,7 +338,6 @@ function GalleryFilmstrip({ onAlbumClick }) {
                   className={`gstrip-tile${isActive ? ' is-active' : ''}`}
                   onClick={() => onAlbumClick(album)}
                   aria-current={isActive ? 'true' : undefined}
-                  aria-label={`Open ${album.label} album`}
                 >
                   <div className="gstrip-tile-photo">
                     <PhotoPlaceholder tone={album.tone} label={album.label} style={{ width: '100%', height: '100%' }} />
@@ -379,6 +378,7 @@ function GalleryGrid({ onPhotoClick }) {
       <div className="ggrid-filter-bar">
         {FILTERS.map(f => (
           <button
+            type="button"
             key={f.key}
             className={`ggrid-filter-btn${filter === f.key ? ' is-active' : ''}`}
             onClick={() => setFilter(f.key)}

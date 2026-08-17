@@ -178,7 +178,7 @@ section { position: relative; }
 }
 .btn-primary {
   background: var(--c-orange);
-  color: #fff;
+  color: var(--c-ink);
   box-shadow: 4px 4px 0 var(--c-ink);
 }
 .btn-primary:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--c-ink); }

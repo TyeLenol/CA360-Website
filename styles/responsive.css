@@ -707,3 +707,43 @@
   .glbx-caption-name { font-size: 15px; }
   .glbx-caption-text { font-size: 13px; }
 }
+
+
+/* Lighthouse remediation: make the mobile Gain geometry stable before JS adds
+   the gain-sec--mobile class. This keeps the visual stack but removes the
+   desktop-height first paint that caused the large #gain layout shift. */
+@media (max-width: 1024px) {
+  .gain-sec {
+    height: auto;
+  }
+  .gain-sec .gain-pin {
+    position: relative;
+    top: auto;
+    height: auto;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+    padding: 60px var(--gutter) 72px;
+    gap: 48px;
+  }
+  .gain-sec .gain-head {
+    max-width: 100%;
+    align-self: auto;
+  }
+  .gain-sec .gain-stack {
+    position: relative;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .gain-sec .gain-card {
+    position: relative;
+    left: auto;
+    top: auto;
+    margin-left: 0;
+    width: 100%;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}

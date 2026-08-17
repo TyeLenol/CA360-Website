@@ -95,26 +95,25 @@ function AboutDialogue() {
         {/* LEFT — the student asks */}
         <div className="ab-asks">
           <div className="ab-side-label">THE STUDENT ASKS</div>
-          <ul className="ab-ask-list" role="tablist" aria-label="Student questions">
+          <div className="ab-ask-list" role="tablist" aria-label="Student questions">
             {DIALOGUE.map((d, i) => (
-              <li key={d.q}>
-                <button
-                  type="button"
-                  id={`ab-tab-${i}`}
-                  className={'ab-ask' + (i === active ? ' is-active' : '')}
-                  role="tab"
-                  aria-selected={i === active}
-                  aria-controls="ab-answer-panel"
-                  tabIndex={i === active ? 0 : -1}
-                  onClick={() => setActive(i)}
-                  onKeyDown={(event) => moveQuestion(event, i)}
-                >
-                  <span className="ab-ask-mark" aria-hidden="true">{i === active ? '◆' : '◇'}</span>
-                  {d.q}
-                </button>
-              </li>
+              <button
+                type="button"
+                key={d.q}
+                id={`ab-tab-${i}`}
+                className={'ab-ask' + (i === active ? ' is-active' : '')}
+                role="tab"
+                aria-selected={i === active}
+                aria-controls="ab-answer-panel"
+                tabIndex={i === active ? 0 : -1}
+                onClick={() => setActive(i)}
+                onKeyDown={(event) => moveQuestion(event, i)}
+              >
+                <span className="ab-ask-mark" aria-hidden="true">{i === active ? '◆' : '◇'}</span>
+                {d.q}
+              </button>
             ))}
-          </ul>
+          </div>
         </div>
 
         {/* RIGHT — the mentor answers (the kinetic moment) */}
@@ -141,7 +140,6 @@ function ValueCard({ value, i }) {
       data-reveal-delay={(i % 3) + 1}
       onClick={() => setOpen((current) => !current)}
       aria-pressed={open}
-      aria-label={`${open ? 'Hide' : 'Show'} detail for ${value.t}`}
     >
       <span className="ab-value-inner">
         <span className="ab-value-front">

@@ -74,7 +74,7 @@ export function Gain() {
                   <div className="gain-num">{c.num}</div>
                   <h3>{c.title}</h3>
                   <p>{c.desc}</p>
-                  <a className="gain-link" href={c.href}>Learn more <ArrowRight size={14} color="#d68307" /></a>
+                  <a className="gain-link" href={c.href}>Explore {c.title.toLowerCase()} <ArrowRight size={14} color="#d68307" /></a>
                 </article>
               );
             }
@@ -101,7 +101,7 @@ export function Gain() {
                 <div className="gain-num">{c.num}</div>
                 <h3>{c.title}</h3>
                 <p>{c.desc}</p>
-                <a className="gain-link" href={c.href}>Read more <ArrowRight size={14} color="#d68307" /></a>
+                <a className="gain-link" href={c.href}>Explore {c.title.toLowerCase()} <ArrowRight size={14} color="#d68307" /></a>
               </article>
             );
           })}

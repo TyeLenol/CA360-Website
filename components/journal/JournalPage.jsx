@@ -417,7 +417,7 @@ function JournalReader({ article, onClose }) {
             <p>Use this preview to find your next question, then keep exploring the Journal.</p>
             <div className="jreader-actions">
               <a className="btn btn-primary" href="/#opportunity" onClick={onClose}>
-                See what&apos;s open <ArrowRight color="#fff" size={14} />
+                See what&apos;s open <ArrowRight color="#0a1f29" size={14} />
               </a>
               <a className="jreader-secondary" href="#journal-letter" onClick={onClose}>
                 Get the monthly letter <ArrowRight color="#0a1f29" size={14} />

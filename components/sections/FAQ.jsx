@@ -61,10 +61,11 @@ export function FAQ() {
               role="presentation"
             >
               <button
+                type="button"
                 id={`faq-tab-${f.id}`}
                 role="tab"
                 aria-selected={i === active}
-                aria-controls={`faq-answer-${f.id}`}
+                aria-controls="faq-answer-panel"
                 tabIndex={i === active ? 0 : -1}
                 onClick={() => setActive(i)}
                 onKeyDown={(event) => handleTabKeyDown(event, i)}
@@ -84,7 +85,7 @@ export function FAQ() {
 
         <div
           className="faq-answer"
-          id={`faq-answer-${m.id}`}
+          id="faq-answer-panel"
           role="tabpanel"
           aria-labelledby={`faq-tab-${m.id}`}
           tabIndex={0}

@@ -16,7 +16,7 @@ export function CurrentOpportunity() {
       <div className="opportunity-head">
         <div className="sec-eyebrow">Right now at CA360</div>
         <div className="opportunity-stamp">
-          <Star size={11} color="#fff" />
+          <Star size={11} color="#0a1f29" />
           LIVE SIGNAL · 06
         </div>
       </div>
@@ -34,7 +34,7 @@ export function CurrentOpportunity() {
           </p>
           <div className="opportunity-actions">
             <a className="btn btn-primary" href="#news">
-              Get cohort updates <ArrowRight color="#fff" size={14} />
+              Get cohort updates <ArrowRight color="#0a1f29" size={14} />
             </a>
             <a className="opportunity-link" href="#programs">
               See how it works <ArrowRight color="#fff" size={14} />

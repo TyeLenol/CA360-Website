@@ -47,7 +47,7 @@ export function Hero() {
             </p>
             <div className="hero-cta">
               <a className="btn btn-primary" href="#opportunity">
-                See what&apos;s open <ArrowRight color="#fff" size={14} />
+                See what&apos;s open <ArrowRight color="#0a1f29" size={14} />
               </a>
               <a className="btn btn-secondary" href="mailto:hello@careerarcadia360.org?subject=Mentor%20application">Become a mentor</a>
             </div>
