@@ -1,9 +1,42 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
+import { ComposableMap, Geography, Geographies, Marker } from 'react-simple-maps';
+import { geoCentroid } from 'd3-geo';
+import ghanaRegions from '../../data/ghana-regions.topo.json';
 import { ArrowRight } from '../shared/Icons';
 import { RouteMarker } from '../shared/RouteMarker';
 import { usePrefersReducedMotion } from '../../hooks/ui-hooks';
+
+const PRESENCE = [
+  {
+    id: 'korle-bu',
+    name: 'Korle Bu',
+    city: 'Accra',
+    region: 'Greater Accra',
+    kind: 'Medicine conversations',
+    detail: 'The starting point for CA360’s first career conversations and mentor-led sessions.',
+    coordinates: [-0.225, 5.65],
+  },
+  {
+    id: 'knust',
+    name: 'KNUST · Kumasi',
+    city: 'Kumasi',
+    region: 'Ashanti',
+    kind: 'Campus community',
+    detail: 'One of the communities in the conversation as the network grows beyond Accra.',
+    coordinates: [-1.6244, 6.6885],
+  },
+  {
+    id: 'ucc',
+    name: 'UCC · Cape Coast',
+    city: 'Cape Coast',
+    region: 'Central',
+    kind: 'Student access',
+    detail: 'A marker for the students and mentors making the path clearer on the coast.',
+    coordinates: [-1.2554, 5.1053],
+  },
+];
 
 const PATHS = [
   {
@@ -51,6 +84,112 @@ const PATHS = [
     messageHint: 'A little context helps us send a useful reply.',
   },
 ];
+
+function GhanaPresence() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const active = PRESENCE[activeIndex];
+
+  const choosePlace = (index) => setActiveIndex(index);
+  const movePlace = (event, index) => {
+    if (!['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].includes(event.key)) return;
+    event.preventDefault();
+    const delta = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : -1;
+    const next = (index + delta + PRESENCE.length) % PRESENCE.length;
+    choosePlace(next);
+    document.getElementById(`ct-place-tab-${next}`)?.focus();
+  };
+
+  return (
+    <section className="ct-presence" data-reveal aria-labelledby="ct-presence-title">
+      <div className="ct-presence-head">
+        <div>
+          <span className="ct-presence-kicker">WHERE THE CONVERSATION TRAVELS</span>
+          <h2 id="ct-presence-title">A growing conversation across <em>Ghana</em>.</h2>
+        </div>
+        <span className="ct-presence-count">03 PLACES · 16 REGIONS</span>
+      </div>
+      <div className="ct-presence-layout">
+        <div className="ct-map-shell">
+          <span className="ct-map-coordinate ct-map-coordinate-top">11°N</span>
+          <span className="ct-map-coordinate ct-map-coordinate-bottom">5°N</span>
+          <span className="ct-map-coordinate ct-map-coordinate-east">1°W</span>
+          <span className="ct-map-coordinate ct-map-coordinate-west">3°W</span>
+          <ComposableMap
+            className="ct-map-svg"
+            projection="geoMercator"
+            projectionConfig={{ scale: 3300, center: [-1.15, 7.7] }}
+            viewBox="0 0 800 620"
+            role="img"
+            aria-label="Map of Ghana showing CA360 presence markers in Accra, Kumasi, and Cape Coast"
+          >
+            <title>CA360 presence across Ghana</title>
+            <Geographies geography={ghanaRegions}>
+              {({ geographies }) => (
+                <Fragment>
+                  {geographies.map((geo) => (
+                    <Geography
+                      key={geo.rsmKey}
+                      geography={geo}
+                      fill={geo.properties?.region === active.region ? '#36728f' : 'rgba(254, 249, 238, 0.09)'}
+                      stroke="rgba(254, 249, 238, 0.42)"
+                      strokeWidth={0.75}
+                      style={{ default: { outline: 'none' }, hover: { outline: 'none' }, pressed: { outline: 'none' } }}
+                    />
+                  ))}
+                  {PRESENCE.map((place, index) => (
+                    <Marker key={place.id} coordinates={place.coordinates}>
+                      <g
+                        className={'ct-map-marker' + (index === activeIndex ? ' is-active' : '')}
+                        role="button"
+                        tabIndex={index === activeIndex ? 0 : -1}
+                        aria-label={`Show ${place.name} details`}
+                        onClick={() => choosePlace(index)}
+                        onKeyDown={(event) => movePlace(event, index)}
+                      >
+                        <circle className="ct-map-marker-halo" r={index === activeIndex ? 19 : 13} />
+                        <circle className="ct-map-marker-dot" r={index === activeIndex ? 7 : 5} />
+                        <text className="ct-map-marker-label" x="12" y="4">{place.city}</text>
+                      </g>
+                    </Marker>
+                  ))}
+                </Fragment>
+              )}
+            </Geographies>
+          </ComposableMap>
+          <span className="ct-map-note">CA360 · GHANA</span>
+        </div>
+        <div className="ct-presence-info">
+          <div className="ct-presence-tabs" role="tablist" aria-label="CA360 locations">
+            {PRESENCE.map((place, index) => (
+              <button
+                type="button"
+                role="tab"
+                id={`ct-place-tab-${index}`}
+                key={place.id}
+                className={'ct-presence-tab' + (index === activeIndex ? ' is-active' : '')}
+                aria-selected={index === activeIndex}
+                aria-controls="ct-presence-panel"
+                tabIndex={index === activeIndex ? 0 : -1}
+                onClick={() => choosePlace(index)}
+                onKeyDown={(event) => movePlace(event, index)}
+              >
+                <span>{`0${index + 1}`}</span>
+                <strong>{place.name}</strong>
+                <ArrowRight color="currentColor" size={14} />
+              </button>
+            ))}
+          </div>
+          <div className="ct-presence-panel" id="ct-presence-panel" role="tabpanel" aria-labelledby={`ct-place-tab-${activeIndex}`} aria-live="polite">
+            <span className="ct-presence-panel-index">0{activeIndex + 1} / 03 · {active.region}</span>
+            <h3>{active.city}</h3>
+            <div>{active.kind}</div>
+            <p>{active.detail}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
 
 function getInitialPath() {
   if (typeof window === 'undefined') return 'student';
@@ -252,6 +391,8 @@ export function ContactPage() {
           )}
         </div>
       </section>
+
+      <GhanaPresence />
 
       <section className="ct-expect" data-reveal aria-labelledby="ct-expect-title">
         <div className="ct-expect-sign">WHAT HAPPENS NEXT?</div>

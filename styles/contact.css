@@ -316,3 +316,137 @@
 .ct-form .ct-form-step,
 .ct-field-help,
 .ct-optional { color: var(--c-teal-deep); }
+
+
+/* ============================================================
+   Ghana presence map — real geography, editorial treatment
+   ============================================================ */
+.ct-presence {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 92px var(--gutter) 112px;
+  background: var(--c-teal-darker);
+  color: var(--c-cream);
+}
+.ct-presence-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 30px;
+  padding-bottom: 30px;
+  border-bottom: 1px solid rgba(254, 249, 238, 0.24);
+}
+.ct-presence-kicker,
+.ct-presence-count,
+.ct-map-note,
+.ct-map-coordinate,
+.ct-presence-panel-index {
+  font: 700 10px/1.2 var(--font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.ct-presence-kicker { color: var(--c-orange-soft); }
+.ct-presence-head h2 {
+  max-width: 720px;
+  margin-top: 17px;
+  color: var(--c-cream);
+  font: 400 clamp(38px, 5vw, 72px)/0.96 var(--font-serif);
+  letter-spacing: -0.05em;
+}
+.ct-presence-head h2 em { color: var(--c-orange); }
+.ct-presence-count { color: rgba(254, 249, 238, 0.68); white-space: nowrap; }
+.ct-presence-layout {
+  display: grid;
+  grid-template-columns: 1.25fr 0.75fr;
+  gap: 24px;
+  padding-top: 28px;
+  align-items: stretch;
+}
+.ct-map-shell {
+  position: relative;
+  min-height: 470px;
+  overflow: hidden;
+  border: 1px solid rgba(254, 249, 238, 0.2);
+  background:
+    linear-gradient(rgba(254, 249, 238, 0.065) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(254, 249, 238, 0.065) 1px, transparent 1px),
+    var(--c-teal-grid);
+  background-size: 44px 44px;
+}
+.ct-map-shell::before {
+  content: '';
+  position: absolute;
+  inset: 18px;
+  border: 1px solid rgba(254, 249, 238, 0.16);
+  pointer-events: none;
+}
+.ct-map-svg { position: absolute; inset: 32px 28px 30px; width: calc(100% - 56px); height: calc(100% - 62px); overflow: visible; }
+.ct-map-svg path { transition: fill 220ms ease-out; }
+.ct-map-marker { cursor: pointer; outline: none; }
+.ct-map-marker:focus-visible { outline: 2px solid var(--c-orange); outline-offset: 4px; }
+.ct-map-marker-halo { fill: rgba(214, 131, 7, 0.16); stroke: rgba(214, 131, 7, 0.36); stroke-width: 1; transition: r 180ms ease-out, fill 180ms ease-out; }
+.ct-map-marker-dot { fill: var(--c-orange); stroke: var(--c-cream); stroke-width: 2; transition: r 180ms ease-out; }
+.ct-map-marker-label { fill: var(--c-cream); font: 700 13px var(--font-mono); letter-spacing: 0.04em; paint-order: stroke; stroke: var(--c-teal-grid); stroke-width: 4px; stroke-linejoin: round; }
+.ct-map-marker:not(.is-active) .ct-map-marker-label { opacity: 0.78; }
+.ct-map-marker:hover .ct-map-marker-halo,
+.ct-map-marker:focus-visible .ct-map-marker-halo { fill: rgba(214, 131, 7, 0.28); }
+.ct-map-coordinate { position: absolute; z-index: 1; color: rgba(254, 249, 238, 0.5); font-size: 9px; pointer-events: none; }
+.ct-map-coordinate-top { top: 27px; left: 31px; }
+.ct-map-coordinate-bottom { bottom: 27px; left: 31px; }
+.ct-map-coordinate-east { top: 27px; right: 31px; }
+.ct-map-coordinate-west { bottom: 27px; right: 31px; }
+.ct-map-note { position: absolute; right: 30px; bottom: 28px; color: var(--c-orange-soft); font-size: 9px; }
+.ct-presence-info { display: flex; flex-direction: column; min-width: 0; }
+.ct-presence-tabs { border-top: 1px solid rgba(254, 249, 238, 0.28); }
+.ct-presence-tab {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 34px 1fr 18px;
+  gap: 12px;
+  align-items: center;
+  padding: 17px 2px;
+  border-bottom: 1px solid rgba(254, 249, 238, 0.22);
+  color: rgba(254, 249, 238, 0.72);
+  text-align: left;
+  transition: color 180ms ease-out, padding-left 180ms ease-out;
+}
+.ct-presence-tab > span { color: var(--c-orange-soft); font: 700 10px var(--font-mono); }
+.ct-presence-tab strong { font: 700 12px var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; }
+.ct-presence-tab svg { justify-self: end; color: var(--c-orange-soft); }
+.ct-presence-tab:hover,
+.ct-presence-tab:focus-visible,
+.ct-presence-tab.is-active { padding-left: 9px; color: var(--c-cream); }
+.ct-presence-tab:focus-visible { outline: 2px solid var(--c-orange); outline-offset: 3px; }
+.ct-presence-panel {
+  flex: 1;
+  margin-top: 34px;
+  padding: 28px 0 0;
+  border-top: 1px solid rgba(254, 249, 238, 0.28);
+}
+.ct-presence-panel-index { color: var(--c-orange-soft); }
+.ct-presence-panel h3 { margin-top: 28px; color: var(--c-cream); font: 400 clamp(40px, 5vw, 70px)/0.92 var(--font-serif); letter-spacing: -0.05em; }
+.ct-presence-panel > div { margin-top: 13px; color: var(--c-orange); font: 700 10px var(--font-mono); letter-spacing: 0.12em; text-transform: uppercase; }
+.ct-presence-panel p { max-width: 330px; margin-top: 22px; color: rgba(254, 249, 238, 0.78); font: 400 14px/1.55 var(--font-ui); }
+
+@media (max-width: 900px) {
+  .ct-presence-layout { grid-template-columns: 1fr; }
+  .ct-map-shell { min-height: 450px; }
+  .ct-presence-info { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+  .ct-presence-panel { margin-top: 0; }
+}
+@media (max-width: 700px) {
+  .ct-presence { padding: 68px 22px 78px; }
+  .ct-presence-head { display: block; }
+  .ct-presence-head h2 { font-size: 45px; }
+  .ct-presence-count { display: block; margin-top: 22px; }
+  .ct-map-shell { min-height: 360px; }
+  .ct-map-svg { inset: 22px 13px 23px; width: calc(100% - 26px); height: calc(100% - 45px); }
+  .ct-map-marker-label { font-size: 10px; }
+  .ct-map-coordinate-top { top: 20px; left: 20px; }
+  .ct-map-coordinate-bottom { bottom: 20px; left: 20px; }
+  .ct-map-coordinate-east { top: 20px; right: 20px; }
+  .ct-map-coordinate-west { bottom: 20px; right: 20px; }
+  .ct-map-note { right: 20px; bottom: 20px; }
+  .ct-presence-info { display: block; }
+  .ct-presence-panel { margin-top: 30px; }
+}
