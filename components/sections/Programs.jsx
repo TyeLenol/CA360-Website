@@ -6,15 +6,18 @@ const programs = [
   { n: '01', side: 'left',  tag: 'VIRTUAL · CAREER-BASED',
     title: 'Virtual programmes',
     desc: 'Live career sessions with professionals, alumni and industry guests. Bring your questions, walk out with a plan.',
-    bullets: ['90-minute live career sessions', 'Open Q&A with working professionals', 'Recordings shared with registered members'] },
+    bullets: ['90-minute live career sessions', 'Open Q&A with working professionals', 'Recordings shared with registered members'],
+    href: '#sessions', cta: 'See upcoming sessions' },
   { n: '02', side: 'right', tag: 'IN PERSON · SCHOOLS',
     title: 'Schools outreach',
     desc: 'In-person career talks in various high schools — by invitation from head teachers and school counsellors.',
-    bullets: ['Open to all year groups', 'Free for partner institutions'] },
+    bullets: ['Open to all year groups', 'Free for partner institutions'],
+    href: 'mailto:hello@careerarcadia360.org?subject=School%20outreach%20partnership', cta: 'Ask about school visits' },
   { n: '03', side: 'left',  tag: 'COMING SOON',
     title: '1:1 mentorship',
     desc: 'Personalised matching with a mentor who has walked a similar path — same field, similar background, a few years ahead of you.',
-    bullets: ['Hand-matched to your goals', 'Structured 3-month programme', 'Currently under development'] },
+    bullets: ['Hand-matched to your goals', 'Structured 3-month programme', 'Currently under development'],
+    href: '#news', cta: 'Get launch updates' },
 ];
 
 export function Programs() {
@@ -56,8 +59,8 @@ export function Programs() {
                   </li>
                 ))}
               </ul>
-              <a className="programs-more">
-                Learn more <ArrowRight size={14} />
+              <a className="programs-more" href={p.href}>
+                {p.cta} <ArrowRight size={14} />
               </a>
             </div>
 

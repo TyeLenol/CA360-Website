@@ -69,8 +69,8 @@ export function Mentors() {
         <h2 className="mentors-title" data-reveal data-reveal-delay="1">
           Mentors who&apos;ve<br />walked your <em>exact</em> path.
         </h2>
-        <a className="mentors-all" data-reveal data-reveal-delay="2">
-          All mentors <ArrowRight size={14} />
+        <a className="mentors-all" href="#mentors" data-reveal data-reveal-delay="2">
+          Browse the roster <ArrowRight size={14} />
         </a>
       </div>
 
@@ -137,13 +137,13 @@ export function Mentors() {
               <li
                 key={mm.id}
                 className={'mentors-rail-item' + (i === active ? ' is-active' : '')}
-                onClick={() => setActive(i)}
-                style={{ cursor: 'pointer' }}
               >
                 <button
+                  type="button"
                   className="mentors-avatar"
                   aria-label={'Select ' + mm.name}
-                  tabIndex={-1}
+                  aria-pressed={i === active}
+                  onClick={() => setActive(i)}
                 >
                   <PhotoPlaceholder tone={mm.tone} label="" style={{ width: '100%', height: '100%' }}>
                     <Portrait seed={mm.seed} bg="transparent" tone="#d68307" />
@@ -158,7 +158,7 @@ export function Mentors() {
             ))}
           </ul>
 
-          <a className="mentors-join">
+          <a className="mentors-join" href="mailto:hello@careerarcadia360.org?subject=Mentor%20application">
             Become a mentor <ArrowRight size={14} color="#0a1f29" />
           </a>
         </aside>

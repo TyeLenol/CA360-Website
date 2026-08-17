@@ -11,7 +11,8 @@ const JOIN_PANELS = [
     title: 'Attend a session.', titleEm: 'session',
     body: "Free, online or on your campus. Bring a friend, bring a question, leave with a plan that actually fits your life — not someone else's.",
     bullets: ['Free for all SHS and undergrad students', 'Online and in-person formats', 'Recordings stay free forever'],
-    cta: 'Reserve a seat',
+    cta: 'Get session updates',
+    href: '#news',
     bg: 'rgba(214, 131, 7, 1)', fg: '#fff',
     photoTone: 'teal', photoLabel: 'STUDENTS · SESSION 04',
   },
@@ -21,6 +22,7 @@ const JOIN_PANELS = [
     body: 'If you walked the path — medicine, law, engineering, business — share it with someone behind you. We match you with a student who started where you did.',
     bullets: ['3-month rolling commitment', 'Hand-matched within 14 days', 'Async or live, your call'],
     cta: 'Apply to mentor',
+    href: 'mailto:hello@careerarcadia360.org?subject=Mentor%20application',
     bg: 'rgba(54, 114, 143, 1)', fg: '#fff',
     photoTone: 'warm', photoLabel: 'MENTOR · WHITEBOARD',
   },
@@ -30,6 +32,7 @@ const JOIN_PANELS = [
     body: "Sponsor a session, partner with us as a school, or fund a cohort that wouldn't happen otherwise. Every cedi turns into a seat — guaranteed.",
     bullets: ['School and university partnerships', 'Per-session sponsorship', 'Annual cohort funding'],
     cta: 'Partner with us',
+    href: 'mailto:hello@careerarcadia360.org?subject=Partnership%20inquiry',
     bg: 'rgba(10, 31, 41, 1)', fg: '#fff',
     photoTone: 'deep', photoLabel: 'PARTNER · HANDSHAKE',
   },
@@ -91,6 +94,7 @@ export function JoinIn() {
 
             return (
               <article
+                id={i === 0 ? 'join-students' : i === 1 ? 'join-mentors' : 'join-partners'}
                 key={p.n}
                 className="join-small-card"
                 style={{
@@ -114,7 +118,7 @@ export function JoinIn() {
                     </li>
                   ))}
                 </ul>
-                <a className="join-panel-cta-small" style={{ background: p.bg, color: '#fff' }}>
+                <a className="join-panel-cta-small" href={p.href} style={{ background: p.bg, color: '#fff' }}>
                   {p.cta} <ArrowRight color="#fff" size={16} />
                 </a>
               </article>
@@ -142,7 +146,7 @@ export function JoinIn() {
           </div>
         </div>
 
-        <div className="join-overlay-head">
+        <div className="join-overlay-head" id="join-paths">
           <div className="sec-eyebrow" style={{ color: '#fff' }}>Get involved</div>
           <h2 className="join-overlay-title">
             Three ways to <em>show up</em>.

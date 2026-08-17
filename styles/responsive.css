@@ -434,8 +434,8 @@
 }
 @media (max-width: 767px) {
   .journal-page { padding-top: 68px; }
-  /* 120vh — enough for the title + lower block without feeling endless */
-  .jh-hero { height: 120vh; min-height: 640px; }
+  /* A short opening keeps the choice rail within the first meaningful scroll. */
+  .jh-hero { height: 110vh; min-height: 590px; }
   .jh-hero-sticky { padding: 20px var(--gutter) 0; top: 68px; height: calc(100vh - 68px); }
   .jh-hero-top { margin-bottom: 10px; }
   .jh-hero-side { display: none; }

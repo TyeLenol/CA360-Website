@@ -35,9 +35,10 @@ export function Newsletter() {
         </div>
 
         <form className="news-form" onSubmit={onSubmit} data-reveal data-reveal-delay="2">
-          <label className="news-lab">YOUR EMAIL</label>
+          <label className="news-lab" htmlFor="newsletter-email">YOUR EMAIL</label>
           <div className={'news-input-wrap' + (submitted ? ' is-success' : '')}>
             <input
+              id="newsletter-email"
               type="email"
               placeholder="you@university.edu.gh"
               value={email}

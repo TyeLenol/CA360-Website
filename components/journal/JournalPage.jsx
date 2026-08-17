@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { ArrowRight, ArrowDown, PinIcon } from '../shared/Icons';
 import { PhotoPlaceholder, Portrait } from '../shared/Placeholders';
+import { RouteMarker } from '../shared/RouteMarker';
 import { useScrollProgress, useInView, usePrefersReducedMotion } from '../../hooks/ui-hooks';
 
 /* ===== LOCAL HOOK — element-relative scroll progress ===== */
@@ -101,7 +102,7 @@ function JournalHero() {
 
   const jump = (e) => {
     e.preventDefault();
-    document.getElementById('journal-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    document.getElementById('journal-start')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const arrive = (lo, hi, dy = 44) => {
@@ -118,7 +119,7 @@ function JournalHero() {
     <section className="jh-hero" id="journal-top" ref={ref}>
       <div className="jh-hero-sticky">
         <div className="jh-hero-top">
-          <div className="sec-eyebrow" data-reveal>The blog</div>
+          <RouteMarker index="02" label="Journal" context="stories, guides, honest takes" />
           <div className="jh-hero-side" data-reveal data-reveal-delay="1">
             A journal on mentorship,<br />
             <em>careers, and the life after SHS.</em>
@@ -129,7 +130,7 @@ function JournalHero() {
         <div className="jh-hero-title-wrap">
           <h1 className="jh-hero-title">
             The <em className="jh-hero-em">
-              Blog
+              Journal
               <svg className="jh-hero-scribble" viewBox="0 0 160 14" preserveAspectRatio="none" aria-hidden="true">
                 <path d="M2 10 C 30 4, 70 13, 110 7 S 148 12, 158 8" stroke="#d68307" strokeWidth="4" fill="none" strokeLinecap="round" />
               </svg>
@@ -139,19 +140,18 @@ function JournalHero() {
 
         {/* Metric + statement — scroll-animated on desktop, always visible on mobile */}
         <div className="jh-hero-lower">
-          <div className="jh-hero-metric" style={arrive(0.08, 0.30, 60)}>
+          <div className="jh-hero-metric">
             <div className="jh-hero-metric-label">PUBLISHED</div>
             <div className="jh-hero-metric-num">{ARTICLES.length}</div>
             <div className="jh-hero-metric-suf">articles</div>
           </div>
 
-          <div className="jh-hero-statement-row" style={arrive(0.28, 0.52, 36)}>
+          <div className="jh-hero-statement-row">
             <p className="jh-hero-statement">
-              Real stories. Real careers. Real talk — from people who have
-              already walked the path <em>you&apos;re looking at</em>.
+              Stories, guides, and honest takes for the path after <em>SHS</em> — from people who have already walked it.
             </p>
-            <a className="jh-hero-anchor" href="#journal-grid" onClick={jump}>
-              <span>READ ARTICLES</span>
+            <a className="jh-hero-anchor" href="#journal-start" onClick={jump}>
+              <span>CHOOSE YOUR WAY IN</span>
               <span className="jh-hero-anchor-arrow"><ArrowDown color="#fff" size={14} /></span>
             </a>
           </div>
@@ -162,8 +162,77 @@ function JournalHero() {
 }
 
 
+const JOURNAL_PATHS = [
+  {
+    id: 'clarity',
+    label: 'IF YOU ARE CHOOSING',
+    title: 'I need career clarity.',
+    detail: 'Start with guides, admissions context, and the questions worth asking before you commit.',
+    filter: 'guide',
+    target: 'journal-grid',
+  },
+  {
+    id: 'stories',
+    label: 'IF YOU WANT THE REAL VERSION',
+    title: 'Show me the path.',
+    detail: 'Hear from students and mentors about the turns, doubts, and decisions behind the polished title.',
+    filter: 'student',
+    target: 'journal-grid',
+  },
+  {
+    id: 'wander',
+    label: 'IF YOU ARE JUST EXPLORING',
+    title: 'Start with what is new.',
+    detail: 'Begin with this month’s featured story, then keep wandering through the archive at your own pace.',
+    filter: 'all',
+    target: 'journal-featured',
+  },
+];
+
+function JournalStart({ onChoose }) {
+  return (
+    <section className="jstart-sec" id="journal-start" aria-labelledby="journal-start-title">
+      <div className="jstart-head">
+        <div className="jstart-marker" data-reveal>
+          <RouteMarker index="02" label="Start here" context="choose a way in" />
+        </div>
+        <div>
+          <p className="jstart-kicker" data-reveal>NO RIGHT ORDER REQUIRED</p>
+          <h2 id="journal-start-title" data-reveal data-reveal-delay="1">
+            Not sure where to begin?<br /><em>Start with the question.</em>
+          </h2>
+        </div>
+        <p className="jstart-intro" data-reveal data-reveal-delay="2">
+          The Journal is not a test. Pick the sentence that sounds most like you and we will take you to a good first story.
+        </p>
+      </div>
+      <div className="jstart-paths">
+        {JOURNAL_PATHS.map((path, index) => (
+          <button
+            type="button"
+            className={'jstart-path' + (index === 0 ? ' is-primary' : '')}
+            key={path.id}
+            onClick={() => onChoose(path.filter, path.target)}
+            data-reveal
+            data-reveal-delay={index + 1}
+          >
+            <span className="jstart-path-label">{path.label}</span>
+            <strong>{path.title}</strong>
+            <span className="jstart-path-detail">{path.detail}</span>
+            <span className="jstart-path-arrow"><ArrowRight color={index === 0 ? '#fff' : '#d68307'} size={15} /></span>
+          </button>
+        ))}
+      </div>
+      <div className="jstart-browse" data-reveal>
+        <span>Already know what you want?</span>
+        <a href="#journal-grid">Browse every story <ArrowRight color="#d68307" size={14} /></a>
+      </div>
+    </section>
+  );
+}
+
 /* ===== FEATURED ARTICLE ===== */
-function JournalFeatured({ article }) {
+function JournalFeatured({ article, onOpen }) {
   const secRef = useRef(null);
   const prog = useScrollProgress(secRef);
   const scroll = useElementScroll(secRef);
@@ -186,11 +255,11 @@ function JournalFeatured({ article }) {
   };
 
   return (
-    <section className="jf-sec" ref={secRef}>
+    <section className="jf-sec" id="journal-featured" ref={secRef}>
       <div className="jf-sticky">
         <div className="jf-eyebrow" data-reveal>
           <span className="jf-eyebrow-mark">★</span>
-          Featured · This issue
+          A good place to begin · Featured story
           <span className="jf-eyebrow-rule" />
         </div>
         <article className="jf-card">
@@ -242,8 +311,12 @@ function JournalFeatured({ article }) {
                   <div className="jf-author-role">{article.authorRole}</div>
                 </div>
               </div>
-              <a className="jf-cta">
-                Read the recap
+              <a
+                className="jf-cta"
+                href={`/journal#${article.id}`}
+                onClick={(e) => { e.preventDefault(); onOpen(article); }}
+              >
+                Read the featured story
                 <span className="jf-cta-arrow"><ArrowRight color="#fff" size={16} /></span>
               </a>
             </div>
@@ -308,14 +381,16 @@ function JournalScrollCue() {
 /* ===== FILTER BAR (integrated into grid header) ===== */
 function JournalFilter({ filter, onFilter }) {
   return (
-    <div className="jfilter-bar" role="tablist" aria-label="Filter articles by category">
+    <div className="jfilter-bar" role="tablist" aria-label="Filter journal stories">
       {CATEGORIES.map((c) => (
         <button
           key={c.id}
+          id={`journal-filter-${c.id}`}
           className={'jfilter-tab' + (filter === c.id ? ' is-active' : '')}
           onClick={() => onFilter(c.id)}
           role="tab"
           aria-selected={filter === c.id}
+          aria-controls="journal-grid-list"
         >
           {c.label}
         </button>
@@ -325,10 +400,14 @@ function JournalFilter({ filter, onFilter }) {
 }
 
 /* ===== ARTICLE CARD ===== */
-function ArticleCard({ article, index }) {
+function ArticleCard({ article, index, onOpen }) {
   return (
     <article className="jcard" data-reveal data-reveal-delay={index % 2}>
-      <a className="jcard-link">
+      <a
+        className="jcard-link"
+        href={`/journal#${article.id}`}
+        onClick={(e) => { e.preventDefault(); onOpen(article); }}
+      >
         <div className="jcard-img">
           <PhotoPlaceholder tone={article.tone} label={article.label} style={{ width: '100%', height: '100%' }} />
         </div>
@@ -350,18 +429,73 @@ function ArticleCard({ article, index }) {
   );
 }
 
+/* ===== READING ROOM ===== */
+function JournalReader({ article, onClose }) {
+  const closeRef = useRef(null);
+
+  useEffect(() => {
+    const previousFocus = document.activeElement;
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', onKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const focusFrame = window.requestAnimationFrame(() => closeRef.current?.focus());
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      window.cancelAnimationFrame(focusFrame);
+      if (previousFocus instanceof HTMLElement) previousFocus.focus();
+    };
+  }, [onClose]);
+
+  return (
+    <div className="jreader" role="dialog" aria-modal="true" aria-labelledby="jreader-title">
+      <button className="jreader-backdrop" aria-label="Close article" onClick={onClose} />
+      <article className="jreader-panel">
+        <div className="jreader-topline">
+          <span>READING ROOM · {article.catLabel}</span>
+          <button ref={closeRef} className="jreader-close" onClick={onClose} aria-label="Close article">
+            CLOSE <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div className="jreader-body">
+          <div className="jreader-kicker">{article.date} · {article.readTime}</div>
+          <h2 id="jreader-title">{article.title}</h2>
+          <div className="jreader-author">
+            <Portrait seed={article.authorSeed} bg="transparent" tone="#d68307" />
+            <span>{article.author} · {article.authorRole}</span>
+          </div>
+          <p className="jreader-excerpt">{article.excerpt}</p>
+          <div className="jreader-next">
+            <span className="jreader-next-label">KEEP GOING</span>
+            <strong>Turn the thought into a next step.</strong>
+            <p>See what is open at CA360, or get the next letter when another story goes live.</p>
+            <div className="jreader-actions">
+              <a className="btn btn-primary" href="/#opportunity" onClick={onClose}>
+                See what&apos;s open <ArrowRight color="#fff" size={14} />
+              </a>
+              <a className="jreader-secondary" href="#journal-letter" onClick={onClose}>
+                Get the monthly letter <ArrowRight color="#0a1f29" size={14} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+  );
+}
+
 /* ===== GRID ===== */
-function JournalGrid({ articles, filter, onFilter }) {
+function JournalGrid({ articles, filter, onFilter, onOpen }) {
   return (
     <section className="jgrid-sec" id="journal-grid">
       <div className="jgrid-header">
         <JournalFilter filter={filter} onFilter={onFilter} />
       </div>
-      <p className="sr-only" role="status" aria-live="polite">
-        {`Showing ${articles.length} ${articles.length === 1 ? 'article' : 'articles'}`}
-      </p>
-      <div className="jgrid" role="tabpanel">
-        {articles.map((a, i) => <ArticleCard key={a.id} article={a} index={i} />)}
+      <div className="jgrid" id="journal-grid-list" role="tabpanel" aria-live="polite">
+        {articles.map((a, i) => <ArticleCard key={a.id} article={a} index={i} onOpen={onOpen} />)}
       </div>
     </section>
   );
@@ -384,35 +518,37 @@ function JournalNewsletter() {
   };
 
   return (
-    <section className="jnews-sec">
-      <article className="jnews-inset">
-        <div className="jnews-inset-body">
-          <div className="jnews-inset-tag" data-reveal>DON&apos;T MISS AN ISSUE</div>
-          <h3 ref={titleRef} className={'jnews-inset-title' + (titleIn ? ' is-wiped' : '')}>
-            One letter, <em>once a month</em>.
-          </h3>
-          <p className="jnews-inset-sub" data-reveal data-reveal-delay="2">
-            Recaps, essays, and career talks — the moment they go live. No spam, ever.
-          </p>
-          <form className="jnews-inset-form" onSubmit={submit} data-reveal data-reveal-delay="3">
-            <input
-              type="email"
-              placeholder="your@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <button type="submit">
-              {done
-                ? <span className="jnews-done">✓ SUBSCRIBED</span>
-                : <><span>SUBSCRIBE</span> <ArrowRight color="#fef9ee" size={14} /></>}
-            </button>
-          </form>
-        </div>
-        <div className="jnews-inset-side" aria-hidden="true" data-reveal data-reveal-delay="2">
-          Letters from the field, written by the people who&apos;ve walked it.
-        </div>
-      </article>
+    <section className="jnews-sec" id="journal-letter" ref={ref}>
+      <div className="jnews-sticky">
+        <article className="jnews-inset">
+          <div className="jnews-inset-body">
+            <div className="jnews-inset-tag" style={arrive(tagP)}>DON&apos;T MISS AN ISSUE</div>
+            <h3 className="jnews-inset-title" style={arrive(titleP)}>
+              One letter, <em>once a month</em>.
+            </h3>
+            <p className="jnews-inset-sub" style={arrive(subP)}>
+              Recaps, essays, and career talks — the moment they go live. No spam, ever.
+            </p>
+            <form className="jnews-inset-form" onSubmit={submit} style={arrive(formP)}>
+              <label className="sr-only" htmlFor="journal-letter-email">Email address</label>
+              <input
+                id="journal-letter-email"
+                type="email"
+                placeholder="your@email.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <button type="submit">
+                {done ? '✓ SUBSCRIBED' : <><span>SUBSCRIBE</span> <ArrowRight color="#0a1f29" size={14} /></>}
+              </button>
+            </form>
+          </div>
+          <div className="jnews-inset-side" aria-hidden="true" style={arrive(sideP)}>
+            Letters from the field, written by the people who&apos;ve walked it.
+          </div>
+        </article>
+      </div>
     </section>
   );
 }
@@ -420,6 +556,35 @@ function JournalNewsletter() {
 /* ===== PAGE ROOT ===== */
 export function JournalPage() {
   const [filter, setFilter] = useState('all');
+  const [selectedArticle, setSelectedArticle] = useState(null);
+
+  const chooseJournalPath = (nextFilter, targetId) => {
+    setFilter(nextFilter);
+    window.requestAnimationFrame(() => {
+      document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
+
+  const openArticle = (article) => {
+    setSelectedArticle(article);
+    window.history.replaceState(null, '', `/journal#${article.id}`);
+  };
+
+  const closeArticle = () => {
+    setSelectedArticle(null);
+    window.history.replaceState(null, '', '/journal');
+  };
+
+  useEffect(() => {
+    const syncHash = () => {
+      const id = window.location.hash.slice(1);
+      const article = ARTICLES.find((item) => item.id === id);
+      if (article) setSelectedArticle(article);
+    };
+    syncHash();
+    window.addEventListener('hashchange', syncHash);
+    return () => window.removeEventListener('hashchange', syncHash);
+  }, []);
 
   const [featured, ...rest] = ARTICLES;
   const sorted = rest.filter((a) => filter === 'all' || a.cat === filter);
@@ -427,9 +592,10 @@ export function JournalPage() {
   return (
     <main className="journal-page">
       <JournalHero />
-      <JournalFeatured article={featured} />
+      <JournalStart onChoose={chooseJournalPath} />
+      <JournalFeatured article={featured} onOpen={openArticle} />
       <JournalScrollCue />
-      <JournalGrid articles={sorted} filter={filter} onFilter={setFilter} />
+      <JournalGrid articles={sorted} filter={filter} onFilter={setFilter} onOpen={openArticle} />
 
       {sorted.length === 0 && (
         <div className="jgrid-empty">
@@ -441,10 +607,12 @@ export function JournalPage() {
       )}
 
       <section className="jload-sec">
-        <button className="jload">
-          Load older articles
-          <span className="jload-arrow"><ArrowDown color="#fff" size={16} /></span>
-        </button>
+        <div className="jload" aria-live="polite">
+          You&apos;re caught up — more stories arrive once a month.
+          <a className="jload-link" href="#journal-letter">
+            Get the monthly letter <ArrowRight color="#fff" size={14} />
+          </a>
+        </div>
         <div className="jload-foot">
           <span>
             {filter === 'all'
@@ -455,6 +623,7 @@ export function JournalPage() {
       </section>
 
       <JournalNewsletter />
+      {selectedArticle && <JournalReader article={selectedArticle} onClose={closeArticle} />}
     </main>
   );
 }
