@@ -428,9 +428,9 @@ export function AboutPage() {
               <span className="ab-cta-label">Become a mentor</span>
               <ArrowRight color="currentColor" size={16} />
             </a>
-            <a className="ab-cta-card" href="/contact?type=support">
+            <a className="ab-cta-card" href="/contact?type=partner">
               <span className="ab-cta-num">03</span>
-              <span className="ab-cta-label">Support the mission</span>
+              <span className="ab-cta-label">Support or partner</span>
               <ArrowRight color="currentColor" size={16} />
             </a>
           </div>
