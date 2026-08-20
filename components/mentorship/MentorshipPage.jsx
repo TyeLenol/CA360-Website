@@ -43,7 +43,7 @@ function MentorCard({ mentor, selected, onSelect }) {
           <span className="mt-card-index">{selected ? 'SELECTED' : `0${MENTORS.indexOf(mentor) + 1}`}</span>
         </span>
         <span className="mt-card-copy">
-          <span className="mt-card-topline"><MentorStatus mentor={mentor} /><span>{mentor.field}</span></span>
+          <span className="mt-card-topline"><MentorStatus mentor={mentor} /><span>{mentor.specialty}</span></span>
           <strong>{mentor.name}</strong>
           <span className="mt-card-role">{mentor.role}</span>
           <span className="mt-card-positioning">{mentor.positioning}</span>
@@ -109,7 +109,7 @@ function Spotlight({ mentor }) {
         <div className="mt-spotlight-kicker"><MentorStatus mentor={mentor} /> <TrackPill trackId={mentor.track} /></div>
         <p className="mt-spotlight-question">{mentor.positioning}</p>
         <h2 id="mt-spotlight-title">{mentor.name}</h2>
-        <p className="mt-spotlight-role">{mentor.role}</p>
+        <p className="mt-spotlight-role">{mentor.specialty} · {mentor.role}</p>
         <p className="mt-spotlight-path">{mentor.path}</p>
         <blockquote>&ldquo;{mentor.quote}&rdquo;</blockquote>
         <div className="mt-spotlight-actions">
@@ -274,9 +274,21 @@ export function MentorProfilePage({ mentorSlug }) {
             <MentorStatus mentor={mentor} />
             <TrackPill trackId={mentor.track} />
             <h1>{mentor.name}</h1>
-            <p>{mentor.role}</p>
+            <p className="mt-profile-role">{mentor.specialty} · {mentor.role}</p>
             <strong>{mentor.positioning}</strong>
           </div>
+        </div>
+      </section>
+
+      <section className="mt-request-panel mt-request-panel-priority" aria-labelledby="mt-request-title">
+        <div>
+          <span className="sec-eyebrow">YOUR NEXT STEP</span>
+          <h2 id="mt-request-title">Ask CA360 to make the <em>introduction.</em></h2>
+          <p>Requesting {mentor.name} tells CA360 where you would like to begin. The team will confirm fit, availability, and the safest next step before any introduction is made.</p>
+        </div>
+        <div className="mt-request-actions">
+          <a className="btn btn-primary" href={`/contact?type=student&mentor=${mentor.slug}`}>Request {mentor.name} <ArrowRight color="#0a1f29" size={14} /></a>
+          <a className="mt-text-link" href="/contact?type=student">Help me choose instead <ArrowRight color="currentColor" size={14} /></a>
         </div>
       </section>
 
@@ -289,6 +301,8 @@ export function MentorProfilePage({ mentorSlug }) {
           <div className="mt-profile-question"><span>A QUESTION I LOVE</span><strong>{mentor.firstQuestion}</strong></div>
         </div>
         <aside className="mt-profile-fit">
+          <span className="mt-profile-fit-label">SPECIALTY</span>
+          <strong className="mt-profile-specialty">{mentor.specialty}</strong>
           <span className="mt-profile-fit-label">I CAN HELP WITH</span>
           <ul>{mentor.helpWith.map((item) => <li key={item}>{item}</li>)}</ul>
           <span className="mt-profile-fit-label">GOOD FOR</span>
@@ -311,22 +325,10 @@ export function MentorProfilePage({ mentorSlug }) {
         <p>{mentor.boundary}</p>
       </section>
 
-      <section className="mt-request-panel" aria-labelledby="mt-request-title">
-        <div>
-          <span className="sec-eyebrow">IF THIS PERSON FEELS CLOSE</span>
-          <h2 id="mt-request-title">Ask CA360 to make the <em>introduction.</em></h2>
-          <p>Requesting {mentor.name} tells CA360 where you would like to begin. The team will confirm fit, availability, and the safest next step before any introduction is made.</p>
-        </div>
-        <div className="mt-request-actions">
-          <a className="btn btn-primary" href={`/contact?type=student&mentor=${mentor.slug}`}>Request {mentor.name} <ArrowRight color="#0a1f29" size={14} /></a>
-          <a className="mt-text-link" href="/contact?type=student">Help me choose instead <ArrowRight color="currentColor" size={14} /></a>
-        </div>
-      </section>
-
       {related.length > 0 && (
         <section className="mt-related" aria-labelledby="mt-related-title">
           <div><span className="sec-eyebrow">KEEP EXPLORING</span><h2 id="mt-related-title">Another path<br /><em>might fit.</em></h2></div>
-          <div className="mt-related-grid">{related.map((item) => <a href={`/mentorship/${item.slug}`} className="mt-related-card" key={item.slug}><MentorPortrait mentor={item} /><span><strong>{item.name}</strong><small>{item.field} · {item.role}</small></span><ArrowRight size={15} /></a>)}</div>
+          <div className="mt-related-grid">{related.map((item) => <a href={`/mentorship/${item.slug}`} className="mt-related-card" key={item.slug}><MentorPortrait mentor={item} /><span><strong>{item.name}</strong><small>{item.specialty} · {item.field} · {item.role}</small></span><ArrowRight size={15} /></a>)}</div>
         </section>
       )}
     </main>
