@@ -747,3 +747,211 @@
     opacity: 1 !important;
   }
 }
+
+
+/* ============================================================
+   MOBILE HARDENING PASS — content-driven interaction states
+   These overrides keep the desktop scroll scenes intact while
+   giving small screens an actual, readable document flow.
+   ============================================================ */
+@media (max-width: 767px) {
+  /* IMPACT: the proof moment becomes a complete content section,
+     not a 280vh desktop pin with long empty scroll. */
+  .impact-sec {
+    height: auto;
+    min-height: 0;
+  }
+  .impact-pin {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+  }
+  .impact-inner {
+    height: auto;
+    min-height: 0;
+    padding: 60px var(--gutter) 72px;
+  }
+  .impact-num {
+    opacity: 1 !important;
+    transform: none !important;
+    font-size: clamp(92px, 28vw, 126px);
+  }
+  .impact-sub {
+    opacity: 1 !important;
+    transform: none !important;
+    max-width: 100%;
+    margin-top: 18px;
+  }
+  .impact-quote { display: none !important; }
+  .impact-stats {
+    grid-template-columns: 1fr;
+    gap: 22px;
+    margin-top: 40px;
+    padding-top: 24px;
+  }
+  .impact-stat {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .impact-stat p { display: block; }
+  .impact-scroll-cue { display: none; }
+
+  /* JOIN: show the three ways to participate as a normal, scannable
+     stack. The desktop pinned/falling choreography is not usable on touch. */
+  .join-sec {
+    height: auto;
+    min-height: 0;
+  }
+  .join-pin {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    display: block;
+    padding: 16px 0 64px;
+  }
+  .join-stage {
+    position: relative;
+    inset: auto;
+    width: auto;
+    height: auto;
+    margin: 0 var(--gutter);
+    padding: 22px 16px 24px;
+    border-radius: 20px;
+    overflow: visible;
+    display: flex;
+    flex-direction: column;
+  }
+  .join-big-bg { display: none !important; }
+  .join-overlay-head {
+    position: relative;
+    inset: auto;
+    order: 0;
+    padding: 0 2px 24px;
+  }
+  .join-overlay-title {
+    font-size: 24px;
+    line-height: 1.08;
+  }
+  .join-overlay-title em { display: inline; }
+  .join-stack {
+    position: relative;
+    order: 1;
+    height: auto;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 16px;
+  }
+  .join-small-card {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    padding: 24px 20px;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+  .join-panel-title-small { font-size: 26px; }
+  .join-panel-body-small { font-size: 14px; }
+  .join-panel-bullets-small { margin-bottom: 20px; }
+  .join-rail {
+    position: relative;
+    order: 2;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px 2px 0;
+  }
+  .join-rail-steps {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+    overflow: visible;
+  }
+  .join-rail-step { font-size: 0; gap: 0; }
+  .join-rail-num { width: 30px; height: 30px; }
+  .join-rail-progress { width: 100%; margin-top: 0; }
+
+  /* SESSIONS: the active card is fully centered; inactive cards cannot
+     contribute a translated desktop edge or steal the mobile reading width. */
+  .sessions-card {
+    width: calc(100vw - (2 * var(--gutter)));
+  }
+  .sessions-card.is-center {
+    transform: translate(-50%, 0) !important;
+    opacity: 1 !important;
+  }
+  .sessions-card:not(.is-center) {
+    transform: translate(-50%, 0) scale(0.96) !important;
+    opacity: 0 !important;
+  }
+  .sessions-card-body {
+    min-width: 0;
+    overflow: hidden;
+  }
+  .sessions-card-meta { gap: 6px; font-size: 10px; }
+  .sessions-card-venue span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+
+/* The base token is declared after the imported responsive sheet in globals.css;
+   restore the intended mobile gutter at the end of the cascade. */
+@media (max-width: 1024px) {
+  :root { --gutter: 32px !important; }
+}
+@media (max-width: 767px) {
+  :root { --gutter: 20px !important; }
+}
+
+
+@media (max-width: 767px) {
+  /* JoinIn keeps its visual background stage separate from the cards in the DOM. */
+  .join-pin {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .join-stage { display: none; }
+  .join-overlay-head {
+    width: calc(100% - (2 * var(--gutter)));
+    margin: 0 var(--gutter);
+    order: 0;
+  }
+  .join-stack {
+    width: calc(100% - (2 * var(--gutter)));
+    margin: 0 var(--gutter);
+    order: 1;
+  }
+  .join-rail {
+    width: calc(100% - (2 * var(--gutter)));
+    margin: 0 var(--gutter);
+    order: 2;
+  }
+}
+
+
+@media (max-width: 767px) {
+  .sessions-carousel { height: 430px; }
+}
+@media (max-width: 480px) {
+  .sessions-carousel { height: 430px; }
+}
+
+
+@media (max-width: 767px) {
+  .sessions-dot { width: 24px; height: 24px; }
+  .sessions-dot.is-active { width: 44px; }
+}
