@@ -69,8 +69,8 @@ export function Mentors() {
         <h2 className="mentors-title" data-reveal data-reveal-delay="1">
           Mentors who&apos;ve<br />walked your <em>exact</em> path.
         </h2>
-        <a className="mentors-all" href="#mentors" data-reveal data-reveal-delay="2">
-          Browse the roster <ArrowRight size={14} />
+          <a className="mentors-all" href="/mentorship" data-reveal data-reveal-delay="2">
+          Browse the mentor index <ArrowRight size={14} />
         </a>
       </div>
 

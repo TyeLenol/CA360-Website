@@ -9,22 +9,25 @@ const NAV_SECTIONS = [
   { id: 'about',      label: 'About',       href: '/about' },
   { id: 'contact',    label: 'Contact Us',  href: '/contact' },
   { id: 'gallery',    label: 'Gallery',     href: '/gallery' },
-  { id: 'mentorship', label: 'Mentorship',  href: '#join' },
+  { id: 'mentorship', label: 'Mentorship',  href: '/mentorship' },
 ];
 
 export function StickyNav() {
   const [scrolled, setScrolled] = useState(false);
   const [active, setActive] = useState('home');
   const [isHome, setIsHome] = useState(true);
+  const [isMentorship, setIsMentorship] = useState(false);
 
   // Detect current page on mount — sets active state and home flag
   useEffect(() => {
     const path = window.location.pathname;
     setIsHome(path === '/');
+    setIsMentorship(path.startsWith('/mentorship'));
     if (path === '/journal') setActive('blog');
     if (path === '/about') setActive('about');
     if (path === '/gallery') setActive('gallery');
     if (path === '/contact') setActive('contact');
+    if (path.startsWith('/mentorship')) setActive('mentorship');
   }, []);
 
   useEffect(() => {
@@ -66,7 +69,7 @@ export function StickyNav() {
     if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const applyHref = isHome ? '#join' : '/#join';
+  const applyHref = isMentorship ? '/contact?type=student' : (isHome ? '#join' : '/#join');
 
   return (
     <nav className={'nav' + (scrolled ? ' is-scrolled' : '')}>

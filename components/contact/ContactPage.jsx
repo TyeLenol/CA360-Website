@@ -7,6 +7,7 @@ import ghanaRegions from '../../data/ghana-regions.topo.json';
 import { ArrowRight } from '../shared/Icons';
 import { RouteMarker } from '../shared/RouteMarker';
 import { usePrefersReducedMotion } from '../../hooks/ui-hooks';
+import { getMentor } from '../../data/mentors';
 
 const PRESENCE = [
   {
@@ -193,16 +194,20 @@ function GhanaPresence() {
 
 function getInitialPath() {
   if (typeof window === 'undefined') return 'student';
-  const type = new URLSearchParams(window.location.search).get('type');
+  const params = new URLSearchParams(window.location.search);
+  const type = params.get('type');
+  const mentor = params.get('mentor');
+  if (mentor && getMentor(mentor)) return 'student';
   return PATHS.some((path) => path.id === type || (type === 'support' && path.id === 'partner')) ? (type === 'support' ? 'partner' : type) : 'student';
 }
 
-function buildMailto(path, values) {
+function buildMailto(path, values, selectedMentor) {
   const body = [
     `Name: ${values.name}`,
     `Email: ${values.email}`,
     `Phone / WhatsApp: ${values.phone || 'Not provided'}`,
     `Reason: ${path.subject}`,
+    selectedMentor ? `Selected mentor: ${selectedMentor.name}` : 'Mentor preference: CA360 to recommend',
     '',
     values.message,
   ].join('\n');
@@ -239,7 +244,7 @@ function PathCard({ path, active, onSelect, index }) {
   );
 }
 
-function ContactForm({ path, onSuccess }) {
+function ContactForm({ path, selectedMentor, onSuccess }) {
   const [values, setValues] = useState({ name: '', email: '', phone: '', message: '' });
   const [error, setError] = useState('');
   const [mailtoHref, setMailtoHref] = useState('');
@@ -261,7 +266,7 @@ function ContactForm({ path, onSuccess }) {
       setError('Please add your name, email, and message so we know how to reply.');
       return;
     }
-    const href = buildMailto(path, values);
+    const href = buildMailto(path, values, selectedMentor);
     setMailtoHref(href);
     onSuccess(href);
   };
@@ -273,6 +278,15 @@ function ContactForm({ path, onSuccess }) {
         <h3 id="ct-form-title" tabIndex="-1">{path.messageLabel}</h3>
         <p>{path.messageHint}</p>
       </div>
+
+      {selectedMentor && (
+        <div className="ct-selected-mentor" role="note">
+          <span className="ct-selected-mentor-label">REQUESTING AN INTRODUCTION TO</span>
+          <strong>{selectedMentor.name}</strong>
+          <span>{selectedMentor.field} · {selectedMentor.role}</span>
+          <a href={`/mentorship/${selectedMentor.slug}`}>Review profile <ArrowRight color="currentColor" size={13} /></a>
+        </div>
+      )}
 
       <div className="ct-field">
         <label htmlFor="ct-name">Full name <span aria-hidden="true">*</span></label>
@@ -320,21 +334,27 @@ function SuccessState({ path, mailtoHref, onChangePath }) {
 export function ContactPage() {
   const reduced = usePrefersReducedMotion();
   const [activeId, setActiveId] = useState('student');
+  const [selectedMentorSlug, setSelectedMentorSlug] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [mailtoHref, setMailtoHref] = useState('');
   const path = useMemo(() => PATHS.find((item) => item.id === activeId) || PATHS[0], [activeId]);
+  const selectedMentor = useMemo(() => getMentor(selectedMentorSlug), [selectedMentorSlug]);
 
   useEffect(() => {
     setActiveId(getInitialPath());
+    const mentorSlug = typeof window !== 'undefined' ? new URLSearchParams(window.location.search).get('mentor') : '';
+    if (mentorSlug && getMentor(mentorSlug)) setSelectedMentorSlug(mentorSlug);
   }, []);
 
   const selectPath = (id) => {
     setActiveId(id);
     setSubmitted(false);
     setMailtoHref('');
+    if (id !== 'student') setSelectedMentorSlug('');
     if (typeof window !== 'undefined') {
       const url = new URL(window.location.href);
       url.searchParams.set('type', id);
+      if (id !== 'student') url.searchParams.delete('mentor');
       window.history.replaceState({}, '', url);
     }
     window.requestAnimationFrame(() => document.getElementById('ct-form-title')?.focus());
@@ -384,7 +404,7 @@ export function ContactPage() {
           {!submitted ? (
             <>
               <p className="ct-reply-text" key={path.id}>{path.reply}</p>
-              <ContactForm path={path} onSuccess={handleSuccess} />
+              <ContactForm path={path} selectedMentor={selectedMentor} onSuccess={handleSuccess} />
             </>
           ) : (
             <SuccessState path={path} mailtoHref={mailtoHref} onChangePath={() => setSubmitted(false)} />
