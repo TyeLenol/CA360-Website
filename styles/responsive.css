@@ -955,3 +955,148 @@
   .sessions-dot { width: 24px; height: 24px; }
   .sessions-dot.is-active { width: 44px; }
 }
+
+
+/* ============================================================
+   MOBILE-ONLY EDITORIAL POLISH
+   Desktop keeps the full art-directed scenes. Mobile receives
+   the content-first edit: less staging, fewer duplicate choices,
+   and shorter interaction distances.
+   ============================================================ */
+@media (max-width: 767px) {
+  /* Decorative desktop-only ticker; the hero headline and CTAs remain. */
+  .hero-ticker { display: none; }
+
+  /* The three audience cards already provide the next choice. */
+  .chapter-bridge { display: none; }
+  .opportunity-grid-mark { display: none; }
+
+  /* About bento cards should not wait for desktop reveal choreography on a
+     touch screen; the content is already ordered into a mobile stack. */
+  .ab-bento [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Journal: replace the pinned airplane flight with a short, static Letters
+     handoff. The newsletter form becomes part of the normal reading flow. */
+  .jdrift {
+    height: auto;
+    min-height: 0;
+    padding: 64px var(--gutter) 32px;
+    background: var(--c-teal-deep);
+    pointer-events: auto;
+  }
+  .jdrift-sticky {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 0;
+    display: block;
+    padding: 0;
+  }
+  .jdrift-orange-flood,
+  .jdrift-flight,
+  .jdrift-stripe { display: none; }
+  .jdrift-titles {
+    position: relative;
+    padding: 0;
+    align-items: flex-start;
+    gap: 8px;
+    text-align: left;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .jdrift-title {
+    font-size: clamp(56px, 18vw, 84px);
+    line-height: 0.94;
+  }
+  .jdrift-sub { font-size: 16px; }
+  .jdrift-newsletter-layer {
+    position: relative;
+    inset: auto;
+    display: block;
+    width: 100%;
+    padding: 28px 0 0;
+    opacity: 1 !important;
+    transform: none !important;
+    pointer-events: auto;
+  }
+  .jnews-inset {
+    display: block;
+    min-height: 0;
+    background: var(--c-orange);
+    border: 2px solid var(--c-ink);
+    border-radius: 16px;
+    box-shadow: 6px 6px 0 var(--c-ink);
+  }
+  .jnews-inset-body { padding: 24px 20px 28px; }
+  .jnews-inset-tag { margin-bottom: 14px; }
+  .jnews-inset-title { font-size: 30px; margin-bottom: 12px; }
+  .jnews-inset-sub { font-size: 15px; margin-bottom: 20px; }
+  .jnews-inset-side { display: none; }
+  .jnews-inset-form { max-width: none; }
+
+  /* Gallery: preserve the named album cards but remove the 280vh desktop
+     scroll scene. The rail becomes an explicit horizontal touch browse. */
+  .gstrip-wrap {
+    height: auto;
+    min-height: 0;
+  }
+  .gstrip-sticky {
+    position: relative;
+    top: auto;
+    height: auto;
+    min-height: 0;
+    padding-top: 24px;
+    overflow: visible;
+  }
+  .gstrip-header { padding-bottom: 16px; }
+  .gstrip-hint,
+  .gstrip-counter { display: none; }
+  .gstrip-viewport {
+    flex: none;
+    height: auto;
+    overflow-x: auto;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+  .gstrip-viewport::-webkit-scrollbar { display: none; }
+  .gstrip-rail {
+    width: max-content;
+    height: auto;
+    padding: 0 var(--gutter) 18px;
+    align-items: stretch;
+    transform: none !important;
+  }
+  .gstrip-tile {
+    width: calc(100vw - (2 * var(--gutter)));
+    height: auto;
+    scroll-snap-align: start;
+  }
+  .gstrip-tile-photo {
+    flex: none;
+    height: clamp(280px, 72vw, 350px);
+  }
+  .gstrip-progress-bar { display: none; }
+}
+
+
+@media (max-width: 767px) {
+  .jnews-inset-form {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+  }
+  .jnews-inset-form input {
+    min-width: 0;
+    font-size: 16px;
+  }
+  .jnews-inset-form button {
+    white-space: nowrap;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+  }
+}
