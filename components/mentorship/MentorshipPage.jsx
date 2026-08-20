@@ -155,7 +155,7 @@ function Directory({ filter, setFilter, mentors, selectedSlug, onSelect }) {
           <span className="mt-empty-index">NO OPEN MENTORS IN THIS PATH — YET.</span>
           <h3>This door is still being built carefully.</h3>
           <p>Tell CA360 what you hoped to find and the team can point you toward the nearest useful conversation.</p>
-          <a className="btn btn-secondary" href="/contact?type=student">Ask CA360 for a starting point <ArrowRight color="#0a1f29" size={14} /></a>
+          <a className="btn btn-secondary" href="/mentorship/find">Find a useful starting point <ArrowRight color="#0a1f29" size={14} /></a>
         </div>
       )}
     </section>
@@ -171,7 +171,7 @@ function TrustNote() {
         <h2 id="mt-trust-title">Choosing a mentor starts a <em>conversation</em>, not an instant match.</h2>
         <p>When you request someone, CA360 receives your preference and helps confirm the right next step, availability, programme fit, and the safest way to begin. This page is a starting point for a human introduction — not an unmoderated private connection.</p>
         <div className="mt-trust-links">
-          <a href="/contact?type=student">I need help choosing <ArrowRight color="currentColor" size={14} /></a>
+          <a href="/mentorship/find">I need help choosing <ArrowRight color="currentColor" size={14} /></a>
           <a href="/contact?type=mentor">I want to become a mentor <ArrowRight color="currentColor" size={14} /></a>
         </div>
       </div>
@@ -226,7 +226,7 @@ export function MentorshipPage({ initialMentorSlug = '' }) {
           <p className="mt-hero-dek">A curated starting point for students carrying a career question. Browse a real mentor, read the honest version of their path, and ask CA360 to help make the connection carefully.</p>
           <div className="mt-hero-actions">
             <a className="btn btn-primary" href="#mentor-directory">Explore the mentors <ArrowRight color="#0a1f29" size={14} /></a>
-            <a className="mt-text-link mt-text-link-light" href="/contact?type=student">I&apos;m not sure who fits <ArrowRight color="currentColor" size={14} /></a>
+            <a className="mt-text-link mt-text-link-light" href="/mentorship/find">I&apos;m not sure who fits <ArrowRight color="currentColor" size={14} /></a>
           </div>
         </div>
         <div className="mt-hero-side" data-reveal data-reveal-delay="1">
@@ -288,7 +288,7 @@ export function MentorProfilePage({ mentorSlug }) {
         </div>
         <div className="mt-request-actions">
           <a className="btn btn-primary" href={`/contact?type=student&mentor=${mentor.slug}`}>Request {mentor.name} <ArrowRight color="#0a1f29" size={14} /></a>
-          <a className="mt-text-link" href="/contact?type=student">Help me choose instead <ArrowRight color="currentColor" size={14} /></a>
+          <a className="mt-text-link" href="/mentorship/find">Help me choose instead <ArrowRight color="currentColor" size={14} /></a>
         </div>
       </section>
 

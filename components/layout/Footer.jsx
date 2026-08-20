@@ -40,6 +40,7 @@ export function Footer() {
             <li><a href="/">Home</a></li>
             <li><a href="/about">About</a></li>
             <li><a href="/mentorship">Mentorship</a></li>
+            <li><a href="/mentorship/find">Find a mentor</a></li>
             <li><a href="/contact?type=student">Start a conversation</a></li>
             <li><a href="/journal">Journal</a></li>
             <li><a href="/gallery">Gallery</a></li>
