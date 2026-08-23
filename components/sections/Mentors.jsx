@@ -105,7 +105,7 @@ export function Mentors() {
 
             <div className="mentors-feature-controls">
               <button className="mentors-arrow" onClick={prev} aria-label="Previous mentor">
-                <ArrowLeft size={16} color="#fff" />
+                <ArrowLeft size={16} color="#0a1f29" />
               </button>
               <div className="mentors-progress" aria-hidden="true">
                 <div
@@ -114,7 +114,7 @@ export function Mentors() {
                 />
               </div>
               <button className="mentors-arrow mentors-arrow-next" onClick={next} aria-label="Next mentor">
-                <ArrowRight size={16} color="#fff" />
+                <ArrowRight size={16} color="#0a1f29" />
               </button>
             </div>
           </div>

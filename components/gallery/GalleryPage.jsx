@@ -341,7 +341,7 @@ function GalleryFilmstrip({ onAlbumClick }) {
                 >
                   <div className="gstrip-tile-photo">
                     <PhotoPlaceholder tone={album.tone} label={album.label} style={{ width: '100%', height: '100%' }} />
-                    <span className="gstrip-tile-num">{String(i + 1).padStart(2, '0')}</span>
+                    <span className="gstrip-tile-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                   </div>
                   <div className="gstrip-tile-foot">
                     <div className="gstrip-tile-albumname">{album.label}</div>

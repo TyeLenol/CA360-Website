@@ -66,7 +66,7 @@ export function Impact() {
             className="impact-quote"
             style={{ opacity: quoteOpacity, transform: `translateY(${quoteY}px) rotate(2deg)` }}
           >
-            <span className="impact-quote-mark">&ldquo;</span>
+            <span className="impact-quote-mark" aria-hidden="true">&ldquo;</span>
             Inspiring. Life-changing. I finally knew what direction to go — and
             what kind of professional I wanted to become.
             <small>— PARTICIPANT · SESSION 04 · WESLEY GIRLS&apos;</small>

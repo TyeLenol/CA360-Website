@@ -23,7 +23,7 @@ const JOIN_PANELS = [
     bullets: ['3-month rolling commitment', 'Hand-matched within 14 days', 'Async or live, your call'],
     cta: 'Apply to mentor',
     href: 'mailto:hello@careerarcadia360.org?subject=Mentor%20application',
-    bg: 'rgba(54, 114, 143, 1)', fg: '#fff',
+    bg: 'rgba(31, 74, 94, 1)', fg: '#fff',
     photoTone: 'warm', photoLabel: 'MENTOR · WHITEBOARD',
   },
   {
@@ -92,6 +92,10 @@ export function JoinIn() {
             const r = eased * baseRot + wobble;
             const op = raw > 0.02 ? 1 : 0;
 
+            const ctaColor = p.bg === 'rgba(10, 31, 41, 1)' || p.bg === 'rgba(31, 74, 94, 1)'
+              ? '#fef9ee'
+              : '#0a1f29';
+
             return (
               <article
                 id={i === 0 ? 'join-students' : i === 1 ? 'join-mentors' : 'join-partners'}
@@ -118,8 +122,15 @@ export function JoinIn() {
                     </li>
                   ))}
                 </ul>
-                <a className="join-panel-cta-small" href={p.href} style={{ background: p.bg, color: '#fff' }}>
-                  {p.cta} <ArrowRight color="#fff" size={16} />
+                <a
+                  className="join-panel-cta-small"
+                  href={p.href}
+                  style={{
+                    background: p.bg,
+                    color: ctaColor,
+                  }}
+                >
+                  {p.cta} <ArrowRight color={ctaColor} size={16} />
                 </a>
               </article>
             );

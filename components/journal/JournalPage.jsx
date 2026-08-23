@@ -505,6 +505,7 @@ function JournalLettersTransition() {
   const lettersP = forcedNewsletter ? 0 : clamp(1 - morphP * 1.55);
   const newsletterP = forcedNewsletter ? 1 : clamp((morphP - 0.28) / 0.55);
   const newsletterReady = forcedNewsletter || morphP > 0.62;
+  const lettersTone = visualMorphP > 0.5 ? '#0a1f29' : '#fef9ee';
   const trail = flightP * planePos.len;
   const titleY = (1 - lettersP) * -32;
   const newsletterY = (1 - newsletterP) * 22;
@@ -545,7 +546,7 @@ function JournalLettersTransition() {
           )}
         </svg>
 
-        <div className="jdrift-titles" style={{ opacity: lettersP, transform: `translate3d(0, ${titleY.toFixed(1)}px, 0)` }}>
+        <div className="jdrift-titles" style={{ opacity: lettersP, transform: `translate3d(0, ${titleY.toFixed(1)}px, 0)`, color: lettersTone }}>
           <h2 className="jdrift-title" id="jdrift-title"><em>Letters.</em></h2>
           <p className="jdrift-sub" id="jdrift-copy">Don&apos;t miss a single one.</p>
         </div>

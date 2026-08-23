@@ -220,7 +220,7 @@ export function MentorshipPage({ initialMentorSlug = '' }) {
     <main className="mentorship-page">
       <section className="mt-hero" id="mentorship-top">
         <div className="mt-hero-main" data-reveal>
-          <RouteMarker index="05" label="Mentorship" context="Choose carefully" />
+          <RouteMarker index="05" label="Mentorship" context="Choose carefully" dark />
           <p className="mt-kicker">REAL PATHS · HONEST ANSWERS · A HUMAN INTRODUCTION</p>
           <h1>Meet the people behind the next version of <em>you.</em></h1>
           <p className="mt-hero-dek">A curated starting point for students carrying a career question. Browse a real mentor, read the honest version of their path, and ask CA360 to help make the connection carefully.</p>

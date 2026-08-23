@@ -22,7 +22,7 @@ function FinderIntro({ onBegin }) {
   return (
     <section className="mf-intro" aria-labelledby="mf-title">
       <div className="mf-intro-main">
-        <RouteMarker index="05 / FIND" label="Mentorship" context="Find your starting point" />
+        <RouteMarker index="05 / FIND" label="Mentorship" context="Find your starting point" dark />
         <p className="mf-kicker">A SHORT WAY IN · HONEST RECOMMENDATIONS · NO WRONG ANSWERS</p>
         <h1 id="mf-title">Find the mentor who makes your next question <em>clearer.</em></h1>
         <p className="mf-intro-dek">Answer four quick questions about where you are and what you need. We will suggest the people whose experience is closest to your question — and tell you why.</p>
