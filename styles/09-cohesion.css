@@ -540,3 +540,21 @@
 @media (max-width: 767px) {
   .jdrift-titles { color: var(--c-cream) !important; }
 }
+
+
+/* Gallery hero overlays: preserve the mosaic while protecting small labels. */
+.gh-hero-route-marker .route-marker-dark {
+  padding: 10px 12px;
+  background: rgba(10, 31, 41, 0.76);
+  border: 1px solid rgba(254, 249, 238, 0.34);
+}
+.gh-hero-title { text-shadow: 0 4px 18px rgba(10, 31, 41, 0.55); }
+
+
+/* Universal keyboard focus: an orange inner ring plus ink outer ring survives
+   every approved light, orange, teal, and dark surface. */
+:where(a, button, input, textarea, select):focus-visible {
+  outline: 3px solid var(--c-orange);
+  outline-offset: 4px;
+  box-shadow: 0 0 0 6px var(--c-ink);
+}

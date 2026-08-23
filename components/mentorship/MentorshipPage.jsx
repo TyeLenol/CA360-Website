@@ -243,13 +243,12 @@ export function MentorshipPage({ initialMentorSlug = '' }) {
         <span>GHANA · PATHS · QUESTIONS</span>
       </section>
 
-      <HowItWorks />
-
       <div ref={directoryRef}>
         <Spotlight mentor={selected} />
         <Directory filter={filter} setFilter={changeFilter} mentors={filteredMentors} selectedSlug={selectedSlug} onSelect={selectMentor} />
       </div>
 
+      <HowItWorks />
       <TrackStates />
       <TrustNote />
     </main>
