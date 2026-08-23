@@ -99,7 +99,10 @@
 .mf-intro-side p em { color: var(--c-orange); }
 .mf-intro-side span:last-child { margin-top: 24px; color: rgba(254, 249, 238, 0.58); }
 
-.mf-shell { background: var(--c-cream); }
+.mf-shell {
+  padding-top: 84px;
+  background: var(--c-cream);
+}
 .mf-progress-wrap {
   padding: 26px var(--gutter) 22px;
   background: var(--c-orange);
