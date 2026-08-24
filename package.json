@@ -22,6 +22,7 @@
   },
   "homepage": "https://github.com/TyeLenol/CA360-Website#readme",
   "dependencies": {
+    "@supabase/supabase-js": "^2.112.4",
     "next": "^16.2.7",
     "prop-types": "^15.8.1",
     "react": "^19.2.7",

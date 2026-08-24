@@ -6,6 +6,7 @@ import { RouteMarker } from '../shared/RouteMarker';
 import { usePrefersReducedMotion } from '../../hooks/ui-hooks';
 import { getMentor } from '../../data/mentors';
 import { ContactNewsletter } from '../sections/Newsletter';
+import { supabase } from '../../lib/supabase';
 
 const PATHS = [
   {
@@ -123,9 +124,43 @@ function ContactForm({ path, selectedMentor, onSuccess }) {
       setError('Please add your name, email, and message so we know how to reply.');
       return;
     }
+
     const href = buildMailto(path, values, selectedMentor);
     setMailtoHref(href);
+
     onSuccess(href);
+
+    if (supabase) {
+      void (async () => {
+        const topic = path.id === 'partner' ? 'school_partner' : path.id;
+        let selectedMentorId = null;
+        if (selectedMentor) {
+          const { data: mentor } = await supabase
+            .from('mentors')
+            .select('id')
+            .eq('slug', selectedMentor.slug)
+            .maybeSingle();
+          selectedMentorId = mentor?.id || null;
+        }
+
+        const { error: insertError } = await supabase
+          .from('contact_messages')
+          .insert({
+            topic,
+            name: values.name.trim(),
+            email: values.email.trim().toLowerCase(),
+            phone: values.phone.trim() || null,
+            message: values.message.trim(),
+            selected_mentor_id: selectedMentorId,
+          });
+
+        if (insertError) {
+          // Keep the mailto path available as the reliable fallback if the database
+          // is temporarily unavailable or the user is offline.
+          console.error('Contact message could not be saved:', insertError);
+        }
+      })();
+    }
   };
 
   return (

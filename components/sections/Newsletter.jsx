@@ -2,19 +2,49 @@
 
 import { useState } from 'react';
 import { ArrowRight } from '../shared/Icons';
+import { supabase } from '../../lib/supabase';
 
 export function NewsletterSignup({ contact = false }) {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState('');
+  const [saving, setSaving] = useState(false);
   const inputId = contact ? 'contact-newsletter-email' : 'newsletter-email';
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
-    if (email && /^[^@]+@[^@]+\.[^@]+$/.test(email)) {
-      setSubmitted(true);
-      setTimeout(() => setSubmitted(false), 4000);
-      setEmail('');
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail || !/^[^@]+@[^@]+\.[^@]+$/.test(normalizedEmail)) return;
+
+    setSaving(true);
+    setError('');
+
+    if (supabase) {
+      const { error: insertError } = await supabase
+        .from('newsletter_subscribers')
+        .insert({
+          email: normalizedEmail,
+          source: contact ? 'contact' : 'homepage',
+          is_subscribed: true,
+          subscribed_at: new Date().toISOString(),
+        });
+
+      // A duplicate means the address is already subscribed. Treat that as success
+      // while keeping unexpected database errors visible to the person submitting.
+      if (insertError && insertError.code !== '23505') {
+        console.error('Newsletter signup failed:', insertError);
+        setError('We could not save that just now. Please try again in a moment.');
+        setSaving(false);
+        return;
+      }
+    } else {
+      console.warn('Newsletter signup skipped: Supabase environment variables are missing.');
     }
+
+    setSubmitted(true);
+    setSaving(false);
+    setEmail('');
+    window.setTimeout(() => setSubmitted(false), 4000);
   };
 
   return (
@@ -26,13 +56,18 @@ export function NewsletterSignup({ contact = false }) {
           type="email"
           placeholder="you@university.edu.gh"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            if (error) setError('');
+          }}
           required
+          aria-describedby={error ? `${inputId}-error` : undefined}
         />
-        <button type="submit" aria-label="Subscribe">
-          {submitted ? 'SUBSCRIBED' : <>SUBSCRIBE <ArrowRight size={14} color="#d68307" /></>}
+        <button type="submit" aria-label="Subscribe" disabled={saving}>
+          {saving ? 'SAVING…' : submitted ? 'SUBSCRIBED' : <>SUBSCRIBE <ArrowRight size={14} color="#d68307" /></>}
         </button>
       </div>
+      {error && <p id={`${inputId}-error`} className="news-error" role="alert">{error}</p>}
     </form>
   );
 }
