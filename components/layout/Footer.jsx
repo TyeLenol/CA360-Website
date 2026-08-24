@@ -48,10 +48,7 @@ export function Footer() {
           </ul>
         </div>
 
-      </div>
-
-      <div className="footer-follow-row">
-        <div className="footer-col" data-reveal>
+        <div className="footer-col footer-social-col" data-reveal data-reveal-delay="2">
           <h4>Follow</h4>
           <ul>
             <li><a href="https://instagram.com/careerarcadia360">Instagram <span className="footer-handle">@careerarcadia360</span></a></li>
