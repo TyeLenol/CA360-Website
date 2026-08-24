@@ -185,19 +185,73 @@
   font: italic 18px/1.45 var(--font-serif);
 }
 
-.jreader-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-top: 26px; }
-.jreader-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
+.jreader-recommendations {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 28px;
+  margin-top: 28px;
+  border-top: 1px solid rgba(10, 31, 41, 0.28);
+}
+
+.jreader-recommendation {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 22px 0 24px;
+  color: var(--c-ink);
+  border-bottom: 1px solid rgba(10, 31, 41, 0.22);
+  text-decoration: none;
+}
+
+.jreader-recommendation + .jreader-recommendation {
+  position: relative;
+}
+
+.jreader-recommendation + .jreader-recommendation::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -14px;
+  width: 1px;
+  background: rgba(10, 31, 41, 0.18);
+  content: '';
+}
+
+.jreader-recommendation-meta,
+.jreader-recommendation-link {
   color: var(--c-teal-deep);
-  border-bottom: 1px solid rgba(31, 74, 94, 0.55);
-  padding-bottom: 6px;
-  font: 700 10px/1 var(--font-mono);
+  font: 700 10px/1.2 var(--font-mono);
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
-.jreader-secondary:hover { color: var(--c-orange-deep); border-color: var(--c-orange-deep); }
+
+.jreader-recommendation-meta em {
+  color: var(--c-orange-deep);
+  font-style: normal;
+}
+
+.jreader-recommendation strong {
+  max-width: 320px;
+  color: var(--c-ink);
+  font: 700 clamp(21px, 2.4vw, 30px)/1.03 var(--font-display);
+  letter-spacing: -0.04em;
+}
+
+.jreader-recommendation-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: auto;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 5px;
+}
+
+.jreader-recommendation:hover strong,
+.jreader-recommendation:focus-visible strong { color: var(--c-orange-deep); }
+.jreader-recommendation:hover .jreader-recommendation-link,
+.jreader-recommendation:focus-visible .jreader-recommendation-link { color: var(--c-orange-deep); }
 
 /* Gallery: make buttonized visual tiles inherit the existing tile grammar. */
 .gstrip-tile,
@@ -247,8 +301,11 @@
   .jreader-body { padding: 36px 22px 42px; }
   .jreader-body h2 { font-size: clamp(38px, 11vw, 62px); }
   .jreader-excerpt { font-size: 17px; }
-  .jreader-next { padding: 24px 20px; }
-  .jreader-actions { align-items: flex-start; flex-direction: column; }
+  .jreader-next { padding: 24px 0 0; }
+  .jreader-recommendations { grid-template-columns: 1fr; gap: 0; margin-top: 24px; }
+  .jreader-recommendation + .jreader-recommendation::before { display: none; }
+  .jreader-recommendation { gap: 12px; padding: 20px 0 22px; }
+  .jreader-recommendation strong { max-width: 100%; font-size: 24px; }
   .gstrip-hint { display: none; }
 }
 
@@ -421,8 +478,7 @@
 .mt-card-profile,
 .mt-track-state a,
 .mt-trust-links a,
-.mt-back-link,
-.jreader-secondary {
+.mt-back-link {
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 4px;

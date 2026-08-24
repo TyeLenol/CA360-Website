@@ -78,6 +78,21 @@ const ARTICLES = [
     tone: 'orange', label: 'CAREER PREP' },
 ];
 
+function getRelatedArticles(article) {
+  return ARTICLES
+    .filter((candidate) => candidate.id !== article.id)
+    .map((candidate, index) => ({
+      candidate,
+      score: (candidate.cat === article.cat ? 3 : 0)
+        + (candidate.author === article.author ? 1 : 0)
+        + (candidate.featured ? 0 : 0)
+        - index * 0.01,
+    }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 2)
+    .map(({ candidate }) => candidate);
+}
+
 const CATEGORIES = [
   { id: 'all',     label: 'All articles' },
   { id: 'student', label: 'Student stories' },
@@ -331,16 +346,17 @@ function JournalReader({ article, onClose }) {
           </div>
           <p className="jreader-excerpt">{article.excerpt}</p>
           <div className="jreader-next">
-            <span className="jreader-next-label">KEEP GOING</span>
-            <strong>One story should lead to another.</strong>
-            <p>Use this preview to find your next question, then keep exploring the Journal.</p>
-            <div className="jreader-actions">
-              <a className="btn btn-primary" href="/#opportunity" onClick={onClose}>
-                See what&apos;s open <ArrowRight color="#0a1f29" size={14} />
-              </a>
-              <a className="jreader-secondary" href="#journal-letter" onClick={onClose}>
-                Get the monthly letter <ArrowRight color="#0a1f29" size={14} />
-              </a>
+            <span className="jreader-next-label">RECOMMENDED</span>
+            <strong>Other articles you might like.</strong>
+            <p>Keep reading from a related question, path, or point of view.</p>
+            <div className="jreader-recommendations">
+              {getRelatedArticles(article).map((story) => (
+                <a className="jreader-recommendation" href={`/journal#${story.id}`} key={story.id}>
+                  <span className="jreader-recommendation-meta">{story.catLabel} <em>{story.readTime}</em></span>
+                  <strong>{story.title}</strong>
+                  <span className="jreader-recommendation-link">OPEN STORY <ArrowRight color="currentColor" size={13} /></span>
+                </a>
+              ))}
             </div>
           </div>
         </div>
