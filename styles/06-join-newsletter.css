@@ -273,13 +273,3 @@
   transition: color 0.2s;
 }
 .news-input-wrap.is-success button { color: var(--c-orange-deep); }
-
-.news-foot {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 18px;
-  margin-top: 14px;
-  font: 500 12px var(--font-mono);
-  letter-spacing: 0.1em;
-  color: var(--c-muted);
-}

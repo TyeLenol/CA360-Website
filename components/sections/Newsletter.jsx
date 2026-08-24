@@ -33,11 +33,6 @@ export function NewsletterSignup({ contact = false }) {
           {submitted ? 'SUBSCRIBED' : <>SUBSCRIBE <ArrowRight size={14} color="#d68307" /></>}
         </button>
       </div>
-      <div className="news-foot">
-        <span>Free</span>
-        <span>No tracking</span>
-        <span>Once a month, max</span>
-      </div>
     </form>
   );
 }

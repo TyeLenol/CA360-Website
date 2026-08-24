@@ -252,7 +252,6 @@
 .ct-newsletter .news-input-wrap input { color: var(--c-cream); }
 .ct-newsletter .news-input-wrap input::placeholder { color: rgba(254, 249, 238, 0.65); }
 .ct-newsletter .news-input-wrap button { color: var(--c-cream); }
-.ct-newsletter .news-foot { color: rgba(254, 249, 238, 0.72); }
 .ct-newsletter .news-input-wrap.is-success { border-color: var(--c-orange); }
 
 .ct-expect {

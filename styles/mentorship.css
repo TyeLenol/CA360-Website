@@ -8,14 +8,10 @@
 }
 
 .mt-hero {
-  min-height: 720px;
+  min-height: 610px;
   padding: 144px var(--gutter) 96px;
   background: var(--c-ink);
   color: var(--c-cream);
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(180px, 0.28fr);
-  gap: 72px;
-  align-items: end;
   position: relative;
 }
 .mt-hero::after {
@@ -27,15 +23,13 @@
   height: 1px;
   background: rgba(254, 249, 238, 0.28);
 }
-.mt-hero-main { max-width: 940px; }
+.mt-hero-main { max-width: 1040px; }
 .mt-hero .route-marker { margin-bottom: 46px; }
-  .mt-hero-side span,
 .mt-directory-count span,
 .mt-card-topline,
 .mt-status,
 .mt-track-pill,
 .mt-filter-bar button,
-.mt-track-state-label,
 .mt-profile-topline,
 .mt-profile-fit-label,
 .mt-profile-question span,
@@ -54,7 +48,6 @@
 .mt-hero h1 em,
 .mt-how h2 em,
 .mt-directory h2 em,
-.mt-trust h2 em,
 .mt-profile-story h2 em,
 .mt-profile-conversation h2 em,
 .mt-request-panel h2 em,
@@ -85,24 +78,16 @@
 }
 .mt-text-link:hover { color: var(--c-orange-deep); }
 .mt-text-link-light { color: var(--c-cream); }
-.mt-hero-side { align-self: stretch; display: flex; flex-direction: column; justify-content: flex-end; padding-bottom: 22px; }
-.mt-hero-side-label { color: var(--c-orange-soft); }
-.mt-hero-side-line { width: 1px; height: 210px; background: rgba(254, 249, 238, 0.3); margin: 24px 0; }
-.mt-hero-side p { margin: 0; font: 400 34px/1.04 var(--font-serif); }
-.mt-hero-side p em { color: var(--c-orange); }
-.mt-hero-side span { color: rgba(254, 249, 238, 0.58); margin-top: 24px; }
-
-.mt-how { padding: 126px var(--gutter) 136px; background: var(--c-cream); }
-.mt-how-head { display: block; max-width: 1180px; margin: 0 auto 72px; }
+.mt-how { padding: 92px var(--gutter) 96px; background: var(--c-cream); }
+.mt-how-head { display: block; max-width: 1180px; margin: 0 auto 48px; }
 .mt-how h2,
 .mt-directory h2,
-.mt-trust h2,
 .mt-profile-story h2,
 .mt-profile-conversation h2,
 .mt-request-panel h2,
-.mt-related h2 { margin: 18px 0 0; font: 800 clamp(42px, 5.4vw, 84px)/0.94 var(--font-display); letter-spacing: -0.055em; }
+.mt-related h2 { margin: 0; font: 800 clamp(42px, 5.4vw, 84px)/0.94 var(--font-display); letter-spacing: -0.055em; }
 .mt-how-grid { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-.mt-how-step { min-height: 250px; padding: 26px 26px 30px; border-top: 2px solid var(--c-ink); border-bottom: 1px solid var(--c-rule); }
+.mt-how-step { min-height: 190px; padding: 22px 24px 26px; border-top: 2px solid var(--c-ink); border-bottom: 1px solid var(--c-rule); }
 .mt-how-step h3 { margin: 0 0 12px; font: 700 24px/1.05 var(--font-display); letter-spacing: -0.03em; }
 .mt-how-step p { max-width: 290px; margin: 0; color: var(--c-body); font: 400 14px/1.55 var(--font-ui); }
 
@@ -136,12 +121,14 @@
 .mt-spotlight blockquote { max-width: 620px; margin: 30px 0; padding-left: 18px; border-left: 3px solid var(--c-orange); color: var(--c-ink); font: italic 400 24px/1.2 var(--font-serif); }
 .mt-spotlight-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; }
 
-.mt-directory { padding: 112px var(--gutter) 132px; background: var(--c-teal-deep); color: var(--c-cream); }
+.mt-directory { scroll-margin-top: 96px; padding: 112px var(--gutter) 132px; background: var(--c-teal-deep); color: var(--c-cream); }
 .mt-directory-head { max-width: 1280px; margin: 0 auto 56px; display: grid; grid-template-columns: 1fr auto; gap: 50px; align-items: end; }
 .mt-directory h2 { margin-top: 0; color: var(--c-cream); }
 .mt-directory h2 em { color: var(--c-orange-soft); }
 .mt-directory-head p { max-width: 500px; margin: 24px 0 0; color: rgba(254, 249, 238, 0.75); font: 400 16px/1.55 var(--font-ui); }
+.mt-directory-side { display: flex; flex-direction: column; align-items: flex-end; gap: 22px; }
 .mt-directory-count { display: flex; align-items: flex-end; gap: 14px; padding-bottom: 7px; }
+.mt-directory-mentor-cta { white-space: nowrap; }
 .mt-directory-count strong { color: var(--c-orange-soft); font: 800 80px/0.8 var(--font-display); letter-spacing: -0.08em; }
 .mt-directory-count span { color: rgba(254, 249, 238, 0.68); }
 .mt-filter-bar { max-width: 1280px; margin: 0 auto 30px; display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
@@ -181,23 +168,6 @@
 .mt-empty { max-width: 700px; margin: 40px auto 0; padding: 48px; border: 1px dashed rgba(254, 249, 238, 0.5); }
 .mt-empty h3 { margin: 20px 0 10px; font: 700 32px/1 var(--font-display); }
 .mt-empty p { margin: 0 0 24px; color: rgba(254, 249, 238, 0.76); font: 400 15px/1.55 var(--font-ui); }
-
-.mt-track-states { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--c-ink); border-top: 1px solid var(--c-ink); border-bottom: 1px solid var(--c-ink); }
-.mt-track-state { min-height: 245px; padding: 28px 24px 30px; background: var(--c-cream); }
-.mt-track-state-growing { background: var(--c-orange-soft); }
-.mt-track-state-future { background: var(--c-paper); }
-.mt-track-state-label { color: var(--c-orange-deep); }
-.mt-track-state strong { display: block; margin-top: 42px; font: 800 27px/0.95 var(--font-display); letter-spacing: -0.05em; }
-.mt-track-state p { margin: 14px 0 0; color: var(--c-body); font: 400 13px/1.45 var(--font-ui); }
-.mt-track-state a { display: inline-flex; align-items: center; gap: 8px; margin-top: 18px; color: var(--c-orange-deep); font: 700 10px var(--font-mono); letter-spacing: 0.07em; text-transform: uppercase; }
-
-.mt-trust { padding: 120px var(--gutter) 132px; display: block; background: var(--c-ink); color: var(--c-cream); }
-.mt-trust-copy { max-width: 850px; }
-.mt-trust h2 { margin-top: 0; }
-.mt-trust h2 em { color: var(--c-orange-soft); }
-.mt-trust p { max-width: 680px; margin: 28px 0 0; color: rgba(254, 249, 238, 0.76); font: 400 16px/1.6 var(--font-ui); }
-.mt-trust-links { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 30px; }
-.mt-trust-links a { color: var(--c-cream); }
 
 /* PROFILE */
 .mt-profile-hero { padding: 136px var(--gutter) 84px; background: var(--c-ink); color: var(--c-cream); }
@@ -254,13 +224,11 @@
 .mt-related-card small { margin-top: 5px; color: var(--c-body); font: 400 11px/1.3 var(--font-ui); }
 
 @media (max-width: 1024px) {
-  .mt-hero { grid-template-columns: 1fr; min-height: 650px; }
-  .mt-hero-side { display: none; }
-  .mt-how-head, .mt-trust, .mt-profile-conversation, .mt-profile-boundary, .mt-related { grid-template-columns: 1fr; gap: 36px; }
+  .mt-hero { min-height: 560px; }
+  .mt-how-head, .mt-profile-conversation, .mt-profile-boundary, .mt-related { grid-template-columns: 1fr; gap: 36px; }
   .mt-profile-grid, .mt-profile-body, .mt-request-panel { gap: 44px; }
   .mt-roster { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .mt-roster > [role="listitem"]:first-child { grid-column: span 2; }
-  .mt-track-states { grid-template-columns: repeat(2, 1fr); }
 }
 
 @media (max-width: 767px) {
@@ -271,8 +239,8 @@
   .mt-hero-dek { margin-top: 26px; font-size: 15px; }
   .mt-hero-actions { align-items: flex-start; flex-direction: column; gap: 18px; }
   .mt-how { padding: 72px var(--gutter) 78px; }
-  .mt-how-head { display: block; margin-bottom: 42px; }
-  .mt-how h2, .mt-directory h2, .mt-trust h2, .mt-profile-story h2, .mt-profile-conversation h2, .mt-request-panel h2, .mt-related h2 { font-size: 43px; }
+  .mt-how-head { display: block; margin-bottom: 30px; }
+  .mt-how h2, .mt-directory h2, .mt-profile-story h2, .mt-profile-conversation h2, .mt-request-panel h2, .mt-related h2 { font-size: 43px; }
   .mt-how-grid { display: block; }
   .mt-how-step { min-height: 0; padding: 22px 0 26px; }
   .mt-how-step h3 { font-size: 23px; }
@@ -287,7 +255,9 @@
   .mt-directory { padding: 74px var(--gutter) 82px; }
   .mt-directory-head { display: block; margin-bottom: 34px; }
   .mt-directory-head p { margin-top: 18px; font-size: 15px; }
-  .mt-directory-count { margin-top: 28px; }
+  .mt-directory-side { flex-direction: row; align-items: flex-end; justify-content: space-between; gap: 12px; margin-top: 28px; }
+  .mt-directory-count { margin-top: 0; }
+  .mt-directory-mentor-cta { padding: 12px 14px; font-size: 11px; }
   .mt-directory-count strong { font-size: 66px; }
   .mt-filter-bar { margin-right: calc(-1 * var(--gutter)); padding-right: var(--gutter); }
   .mt-filter-bar button { padding: 11px 12px; }
@@ -301,12 +271,6 @@
   .mt-card-positioning { padding-top: 18px; font-size: 13px; }
   .mt-card-action { margin-top: 15px; font-size: 9px; }
   .mt-card-profile { padding: 10px 15px 14px; font-size: 9px; }
-  .mt-track-states { display: block; }
-  .mt-track-state { min-height: 0; padding: 26px var(--gutter) 30px; }
-  .mt-track-state strong { margin-top: 28px; }
-  .mt-trust { padding: 76px var(--gutter) 82px; display: block; }
-    .mt-trust p { font-size: 15px; }
-  .mt-trust-links { align-items: flex-start; flex-direction: column; gap: 18px; }
 
   .mt-profile-hero { padding: 102px var(--gutter) 62px; }
   .mt-profile-topline { margin-bottom: 38px; font-size: 9px; }

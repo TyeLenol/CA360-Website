@@ -79,21 +79,6 @@ function HowItWorks() {
   );
 }
 
-function TrackStates() {
-  return (
-    <div className="mt-track-states" aria-label="CA360 career track status">
-      {MENTOR_TRACKS.map((track) => (
-        <div className={`mt-track-state mt-track-state-${track.state}`} key={track.id}>
-          <span className="mt-track-state-label">{track.stateLabel}</span>
-          <strong>{track.label}</strong>
-          <p>{track.description}</p>
-          {track.state === 'future' && <a href="/contact?type=student">Tell CA360 what you need <ArrowRight size={13} /></a>}
-        </div>
-      ))}
-    </div>
-  );
-}
-
 function Spotlight({ mentor }) {
   return (
     <section className="mt-spotlight" aria-labelledby="mt-spotlight-title">
@@ -124,7 +109,10 @@ function Directory({ filter, setFilter, mentors, selectedSlug, onSelect }) {
           <h2 id="mt-directory-title">Choose the question<br /><em>before the title.</em></h2>
           <p>Start with the kind of help you need. Then meet the person whose path can make the next step less abstract.</p>
         </div>
-        <div className="mt-directory-count"><strong>{mentors.length}</strong><span>people<br />in the index</span></div>
+        <div className="mt-directory-side">
+          <div className="mt-directory-count"><strong>{mentors.length}</strong><span>people<br />in the index</span></div>
+          <a className="btn btn-primary mt-directory-mentor-cta" href="/contact?type=mentor">Become a mentor <ArrowRight color="#0a1f29" size={14} /></a>
+        </div>
       </div>
 
       <div className="mt-filter-bar" role="group" aria-label="Filter mentors by career track">
@@ -152,21 +140,6 @@ function Directory({ filter, setFilter, mentors, selectedSlug, onSelect }) {
           <a className="btn btn-secondary" href="/mentorship/find">Find a useful starting point <ArrowRight color="#0a1f29" size={14} /></a>
         </div>
       )}
-    </section>
-  );
-}
-
-function TrustNote() {
-  return (
-    <section className="mt-trust" aria-labelledby="mt-trust-title">
-      <div className="mt-trust-copy">
-        <h2 id="mt-trust-title">Choosing a mentor starts a <em>conversation</em>, not an instant match.</h2>
-        <p>When you request someone, CA360 receives your preference and helps confirm the right next step, availability, programme fit, and the safest way to begin. This page is a starting point for a human introduction — not an unmoderated private connection.</p>
-        <div className="mt-trust-links">
-          <a href="/mentorship/find">I need help choosing <ArrowRight color="currentColor" size={14} /></a>
-          <a href="/contact?type=mentor">I want to become a mentor <ArrowRight color="currentColor" size={14} /></a>
-        </div>
-      </div>
     </section>
   );
 }
@@ -220,11 +193,6 @@ export function MentorshipPage({ initialMentorSlug = '' }) {
             <a className="mt-text-link mt-text-link-light" href="/mentorship/find">I&apos;m not sure who fits <ArrowRight color="currentColor" size={14} /></a>
           </div>
         </div>
-        <div className="mt-hero-side" data-reveal data-reveal-delay="1">
-          <div className="mt-hero-side-line" aria-hidden="true" />
-          <p>Five people.<br /><em>Many ways in.</em></p>
-          <span>Scroll to browse · tap to choose</span>
-        </div>
       </section>
 
       <div ref={directoryRef}>
@@ -233,8 +201,6 @@ export function MentorshipPage({ initialMentorSlug = '' }) {
       </div>
 
       <HowItWorks />
-      <TrackStates />
-      <TrustNote />
     </main>
   );
 }

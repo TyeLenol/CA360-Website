@@ -481,8 +481,6 @@
 /* Text links should look actionable without turning navigation pills or cards into underlined text. */
 .footer-col ul li a,
 .mt-card-profile,
-.mt-track-state a,
-.mt-trust-links a,
 .mt-back-link {
   text-decoration-line: underline;
   text-decoration-thickness: 1px;
@@ -543,9 +541,7 @@
 .mt-profile-fit-label,
 .mt-spotlight-role,
 .mt-spotlight-actions .mt-text-link,
-.mt-request-panel-priority .mt-text-link,
-.mt-track-state-label,
-.mt-track-state a { color: var(--c-teal-deep); }
+.mt-request-panel-priority .mt-text-link { color: var(--c-teal-deep); }
 .mt-card-role { color: var(--c-cream); }
 .mt-status-pilot { color: var(--c-orange-soft); }
 .mt-status-growing { color: var(--c-orange-soft); }
@@ -597,9 +593,6 @@
 .jdrift-mark::after { background: currentColor; opacity: 0.55; }
 
 /* Light-surface metadata should not rely on near-threshold gray. */
-.news-foot { color: var(--c-body); }
-
-
 /* Form placeholders need full-strength readable ink, not near-threshold gray. */
 .news-input-wrap input::placeholder,
 .jnews-inset-form input::placeholder { color: var(--c-ink); }
