@@ -34,47 +34,49 @@ const JOIN_PANELS = [
     cta: 'Partner with us',
     href: 'mailto:hello@careerarcadia360.org?subject=Partnership%20inquiry',
     bg: 'rgba(10, 31, 41, 1)', fg: '#fff',
-    photoTone: 'deep', photoLabel: 'PARTNER · OPEN DOOR',
+    photoTone: 'deep', photoLabel: 'PARTNER · HANDSHAKE',
   },
 ];
 
 export function JoinIn() {
   const wrapRef = useRef(null);
   const progress = useScrollProgress(wrapRef);
-
   const PANEL_COUNT = JOIN_PANELS.length;
   const t = progress * PANEL_COUNT;
   const active = Math.min(PANEL_COUNT - 1, Math.floor(t));
-
   const fallState = (startT, endT) => {
     const raw = Math.max(0, Math.min(1, (t - startT) / (endT - startT)));
     const eased = 1 - Math.pow(1 - raw, 3);
     const wobble = raw > 0.85 ? Math.sin((raw - 0.85) * Math.PI * 6.6) * (1 - raw) * 8 : 0;
     return { raw, eased, wobble };
   };
-
   return (
     <section id="join" className="join-sec" ref={wrapRef}>
       <div className="join-pin">
-        <div className="join-stage" aria-hidden="true">
+        <div className="join-stage">
           {JOIN_PANELS.map((p, i) => {
             const fadeProgress = Math.max(0, Math.min(1, (t - i) / 0.4));
             const outProgress = i < PANEL_COUNT - 1 ? Math.max(0, Math.min(1, (t - (i + 1)) / 0.4)) : 0;
             const opacity = fadeProgress * (1 - outProgress);
-
             return (
               <div
                 key={'bg-' + p.tag}
                 className="join-big-bg"
-                style={{ opacity, background: p.bg }}
+                style={{
+                  opacity,
+                  background: p.bg,
+                  pointerEvents: Math.round(opacity) === 1 ? 'auto' : 'none',
+                }}
+                aria-hidden={opacity < 0.5}
               >
-                <PhotoPlaceholder tone={p.photoTone} label={p.photoLabel} style={{ width: '100%', height: '100%' }} />
+                <div className="join-big-photo-wrap">
+                  <PhotoPlaceholder tone={p.photoTone} label={p.photoLabel} style={{ width: '100%', height: '100%' }} />
+                  <span className="join-panel-deco" />
+                </div>
               </div>
             );
           })}
-          <div className="join-stage-shade" />
         </div>
-
         <div className="join-stack">
           {JOIN_PANELS.map((p, i) => {
             const { raw, eased, wobble } = fallState(i, i + 0.5);
@@ -84,6 +86,7 @@ export function JoinIn() {
             const baseRot = i === 0 ? -1.5 : (i === 1 ? 2.5 : -2);
             const r = eased * baseRot + wobble;
             const op = raw > 0.02 ? 1 : 0;
+
             const ctaColor = p.bg === 'rgba(10, 31, 41, 1)' || p.bg === 'rgba(31, 74, 94, 1)'
               ? '#fef9ee'
               : '#0a1f29';
@@ -97,12 +100,9 @@ export function JoinIn() {
                   transform: `translateY(${y}px) rotate(${r}deg)`,
                   opacity: op,
                   zIndex: 10 + i,
-                  '--join-accent': p.bg,
+                  color: p.bg,
                 }}
               >
-                <div className="join-card-photo">
-                  <PhotoPlaceholder tone={p.photoTone} label={p.photoLabel} style={{ width: '100%', height: '100%' }} />
-                </div>
                 <div className="join-panel-tag-small">{p.tag}</div>
                 <h3 className="join-panel-title-small">
                   {p.title.split(p.titleEm)[0]}<em>{p.titleEm}</em>{p.title.split(p.titleEm)[1]}
@@ -119,7 +119,10 @@ export function JoinIn() {
                 <a
                   className="join-panel-cta-small"
                   href={p.href}
-                  style={{ background: p.bg, color: ctaColor }}
+                  style={{
+                    background: p.bg,
+                    color: ctaColor,
+                  }}
                 >
                   {p.cta} <ArrowRight color={ctaColor} size={16} />
                 </a>
@@ -127,26 +130,28 @@ export function JoinIn() {
             );
           })}
         </div>
-
         <div className="join-rail" aria-hidden="true">
-          <div className="join-rail-dots">
+          <div className="join-rail-label">JOIN IN</div>
+          <div className="join-rail-steps">
             {JOIN_PANELS.map((p, i) => (
-              <span
+              <div
                 key={p.tag}
-                className={'join-rail-dot'
+                className={'join-rail-step'
                   + (i === active ? ' is-active' : '')
                   + (i < active ? ' is-done' : '')}
-              />
+              >
+                <span className="join-rail-name">{p.tag.replace('FOR ', '')}</span>
+              </div>
             ))}
           </div>
           <div className="join-rail-progress">
             <div className="join-rail-progress-bar" style={{ width: (progress * 100) + '%' }} />
           </div>
         </div>
-
         <div className="join-overlay-head" id="join-paths">
+          <div className="sec-eyebrow" style={{ color: '#fff' }}>Get involved</div>
           <h2 className="join-overlay-title">
-            Ways to <em>show up</em>.
+            Three ways to <em>show up</em>.
           </h2>
         </div>
       </div>

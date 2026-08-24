@@ -46,7 +46,6 @@
   font: italic clamp(20px, 2vw, 28px)/1.3 var(--font-serif);
 }
 .ct-hero-email,
-.ct-direct a,
 .ct-hero-link {
   display: inline-flex;
   align-items: center;
@@ -60,9 +59,7 @@
 }
 .ct-hero-email { margin-top: 30px; }
 .ct-hero-email:hover,
-.ct-hero-email:focus-visible,
-.ct-direct a:hover,
-.ct-direct a:focus-visible { color: var(--c-orange-deep); transform: translateX(3px); }
+.ct-hero-email:focus-visible { color: var(--c-orange-deep); transform: translateX(3px); }
 .ct-intro {
   max-width: var(--max-w);
   margin: 0 auto;
@@ -254,22 +251,6 @@
 .ct-newsletter .news-input-wrap button { color: var(--c-cream); }
 .ct-newsletter .news-input-wrap.is-success { border-color: var(--c-orange); }
 
-.ct-expect {
-  max-width: var(--max-w);
-  margin: 0 auto;
-  padding: 88px var(--gutter);
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: 38px;
-  align-items: start;
-  background: var(--c-ink);
-  color: var(--c-cream);
-}
-.ct-expect h2 { color: var(--c-cream); font: 400 clamp(34px, 4.5vw, 64px)/0.98 var(--font-serif); letter-spacing: -0.045em; }
-.ct-expect h2 em { color: var(--c-orange); }
-.ct-expect-copy p { max-width: 480px; margin-top: 20px; color: rgba(254, 249, 238, 0.78); font: 400 14px/1.55 var(--font-ui); }
-.ct-direct { padding-top: 8px; border-top: 1px solid rgba(254, 249, 238, 0.3); color: var(--c-orange-soft); font: 700 10px/1.4 var(--font-mono); letter-spacing: 0.08em; }
-.ct-direct a { margin-top: 18px; color: var(--c-cream); border-color: var(--c-orange); font-size: 10px; }
 .ct-close {
   max-width: var(--max-w);
   margin: 0 auto;
@@ -287,8 +268,6 @@
   .ct-hero { grid-template-columns: 1fr; }
   .ct-workspace { grid-template-columns: 1fr; }
   .ct-paths { position: static; grid-template-columns: repeat(2, 1fr); }
-  .ct-expect { grid-template-columns: 0.6fr 1.4fr; }
-  .ct-direct { grid-column: 2; }
 }
 @media (max-width: 700px) {
   .ct-hero { display: block; padding: 126px 22px 60px; }
@@ -314,8 +293,6 @@
   .ct-newsletter-copy h2 { font-size: 40px; }
   .ct-newsletter-copy p { font-size: 15px; }
   .ct-newsletter .news-form { margin-top: 30px; }
-  .ct-expect { display: block; padding: 60px 22px; }
-  .ct-direct { margin-top: 34px; }
   .ct-close { display: block; padding: 52px 22px 80px; }
   .ct-close a { margin-top: 22px; }
 }

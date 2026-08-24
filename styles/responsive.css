@@ -790,8 +790,8 @@
   .impact-stat p { display: block; }
   .impact-scroll-cue { display: none; }
 
-  /* JOIN: show the three ways to participate as a normal, scannable
-     stack. The desktop pinned/falling choreography is not usable on touch. */
+  /* Keep the compact, content-first mobile treatment while restoring the
+     previous desktop Join composition above. */
   .join-sec {
     height: auto;
     min-height: 0;
@@ -850,14 +850,6 @@
     transform: none !important;
     opacity: 1 !important;
   }
-  .join-card-photo {
-    display: block;
-    height: 112px;
-    margin: -24px -20px 20px;
-    border-radius: 12px 12px 0 0;
-    overflow: hidden;
-  }
-  .join-card-photo > .ph { width: 100%; height: 100%; }
   .join-panel-title-small { font-size: 26px; }
   .join-panel-body-small { font-size: 14px; }
   .join-panel-bullets-small { margin-bottom: 20px; }
@@ -872,6 +864,13 @@
     gap: 12px;
     padding: 24px 2px 0;
   }
+  .join-rail-steps {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+    overflow: visible;
+  }
+  .join-rail-step { font-size: 11px; gap: 0; }
   .join-rail-progress { width: 100%; margin-top: 0; }
 
   /* SESSIONS: the active card is fully centered; inactive cards cannot
@@ -910,7 +909,7 @@
 
 
 @media (max-width: 767px) {
-  /* JoinIn keeps its visual background stage separate from the cards in the DOM. */
+  /* Keep the mobile Join children in heading → cards → rail order. */
   .join-pin {
     display: flex;
     flex-direction: column;
@@ -933,7 +932,6 @@
     order: 2;
   }
 }
-
 
 @media (max-width: 767px) {
   .sessions-carousel { height: 430px; }

@@ -263,17 +263,6 @@ export function ContactPage() {
         </div>
       </section>
 
-      <section className="ct-expect" data-reveal aria-labelledby="ct-expect-title">
-        <div className="ct-expect-copy">
-          <h2 id="ct-expect-title">You send the question.<br /><em>We find the right door.</em></h2>
-          <p>We read every message. When the team confirms the response window, this is where the honest timing will live. Until then, we will not promise a reply time we cannot guarantee.</p>
-        </div>
-        <div className="ct-direct">
-          <span>Prefer direct?</span>
-          <a href="mailto:hello@careerarcadia360.org">Email hello@careerarcadia360.org <ArrowRight color="currentColor" size={14} /></a>
-        </div>
-      </section>
-
       <ContactNewsletter />
 
       <section className="ct-close" data-reveal>
