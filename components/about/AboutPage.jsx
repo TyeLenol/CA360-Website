@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { ArrowRight, PlusIcon, MinusIcon, PinIcon, Star } from '../shared/Icons';
+import { ArrowRight, PlusIcon, MinusIcon, Star } from '../shared/Icons';
 import { PhotoPlaceholder, Portrait } from '../shared/Placeholders';
 import { useCountUp, useInView, usePrefersReducedMotion } from '../../hooks/ui-hooks';
 
@@ -45,24 +45,6 @@ const TRACKS = [
   { t: 'Law', s: 'TRACK · 2026', live: false },
   { t: 'Engineering', s: 'COMING SOON', live: false },
   { t: 'Business', s: 'COMING SOON', live: false },
-];
-
-const PLACES = [
-  {
-    name: 'Korle Bu', city: 'Accra', x: 30, y: 78,
-    kind: 'Medicine conversations',
-    detail: 'The starting point for CA360’s first career conversations and mentor-led sessions.',
-  },
-  {
-    name: 'KNUST · Kumasi', city: 'Kumasi', x: 42, y: 50,
-    kind: 'Campus community',
-    detail: 'One of the communities in the conversation as the network grows beyond Accra.',
-  },
-  {
-    name: 'UCC · Cape Coast', city: 'Cape Coast', x: 26, y: 88,
-    kind: 'Student access',
-    detail: 'A marker for the students and mentors making the path clearer on the coast.',
-  },
 ];
 
 const TEAM = [
@@ -155,9 +137,9 @@ function AboutDialogue() {
 
 function AboutLoop() {
   const steps = [
-    ['01', 'Ask the real question', 'Course, career, confidence, or the thing you were too embarrassed to Google.'],
-    ['02', 'Meet someone a step ahead', 'A mentor gives you the lived version — not a brochure or a perfect LinkedIn story.'],
-    ['03', 'Leave with a next move', 'Not a life plan. Just a clearer decision and someone to ask when the next question arrives.'],
+    ['Ask the real question', 'Course, career, confidence, or the thing you were too embarrassed to Google.'],
+    ['Meet someone a step ahead', 'A mentor gives you the lived version — not a brochure or a perfect LinkedIn story.'],
+    ['Leave with a next move', 'Not a life plan. Just a clearer decision and someone to ask when the next question arrives.'],
   ];
 
   return (
@@ -171,9 +153,8 @@ function AboutLoop() {
           One question. One honest conversation. <em>A clearer next move.</em>
         </h2>
         <div className="ab-loop-steps">
-          {steps.map(([n, title, body], i) => (
-            <article className="ab-loop-step" key={n} data-reveal data-reveal-delay={String(i + 1)}>
-              <span className="ab-loop-num">{n}</span>
+          {steps.map(([title, body], i) => (
+            <article className="ab-loop-step" key={title} data-reveal data-reveal-delay={String(i + 1)}>
               <h3>{title}</h3>
               <p>{body}</p>
             </article>
@@ -197,7 +178,6 @@ function ValueCard({ value, i }) {
     >
       <span className="ab-value-inner">
         <span className="ab-value-front">
-          <span className="ab-value-num">0{i + 1}</span>
           <span className="ab-value-title">{value.t}</span>
         </span>
         <span className="ab-value-back">{value.d}</span>
@@ -267,67 +247,16 @@ function FounderTile() {
   );
 }
 
-function MapTile() {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const active = PLACES[activeIndex];
-  const choosePlace = (index) => setActiveIndex(index);
-  const movePlace = (event, index) => {
-    if (!['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp'].includes(event.key)) return;
-    event.preventDefault();
-    const delta = event.key === 'ArrowRight' || event.key === 'ArrowDown' ? 1 : -1;
-    const next = (index + delta + PLACES.length) % PLACES.length;
-    choosePlace(next);
-    document.getElementById(`ab-map-tab-${next}`)?.focus();
-  };
-
+function StartTile() {
   return (
-    <article className="ab-tile ab-map" data-reveal aria-labelledby="ab-map-title">
-      <div className="ab-map-head">
-        <div>
-          <div className="ab-tile-eyebrow">WHERE WE&apos;VE SHOWN UP</div>
-          <h3 id="ab-map-title">A growing conversation across Ghana.</h3>
-        </div>
-        <span className="ab-map-count">03 MARKERS</span>
-      </div>
-      <div className="ab-map-layout">
-        <div className="ab-map-stage">
-          <svg viewBox="0 0 100 110" className="ab-map-svg" aria-hidden="true">
-            <path
-              d="M18 14 L70 12 L74 30 L66 44 L70 64 L58 96 L46 104 L40 96 L34 98 L30 84 L20 70 L24 50 L16 34 Z"
-              fill="rgba(254,249,238,0.06)" stroke="rgba(254,249,238,0.4)" strokeWidth="1.2"
-            />
-            {PLACES.map((p) => (
-              <circle key={p.name} cx={p.x} cy={p.y} r="2.6" fill="#d68307" />
-            ))}
-          </svg>
-          <div className="ab-map-pins" role="tablist" aria-label="CA360 locations">
-            {PLACES.map((p, i) => (
-              <button
-                type="button"
-                role="tab"
-                id={`ab-map-tab-${i}`}
-                key={p.name}
-                className={'ab-map-pin' + (i === activeIndex ? ' is-active' : '')}
-                style={{ left: `${p.x}%`, top: `${p.y / 1.1}%` }}
-                aria-selected={i === activeIndex}
-                aria-controls="ab-map-panel"
-                aria-label={`Show ${p.name} details`}
-                tabIndex={i === activeIndex ? 0 : -1}
-                onClick={() => choosePlace(i)}
-                onKeyDown={(event) => movePlace(event, i)}
-              >
-                <PinIcon size={16} color="#d68307" />
-                <span className="ab-map-name">{p.name}</span>
-              </button>
-            ))}
-          </div>
-        </div>
-        <div className="ab-map-panel" id="ab-map-panel" role="tabpanel" aria-labelledby={`ab-map-tab-${activeIndex}`} aria-live="polite">
-          <span className="ab-map-panel-index">0{activeIndex + 1} / 03</span>
-          <h4>{active.name}</h4>
-          <div className="ab-map-panel-place">{active.city} · {active.kind}</div>
-          <p>{active.detail}</p>
-        </div>
+    <article className="ab-tile ab-start" data-reveal aria-labelledby="ab-start-title">
+      <div className="ab-tile-eyebrow">THE FIRST DOOR</div>
+      <div className="ab-start-mark" aria-hidden="true">?</div>
+      <h3 id="ab-start-title">Before the title, start with the <em>question.</em></h3>
+      <p>Not sure what to study or who to ask? Tell CA360 where the uncertainty sits and we will help you find a useful first conversation.</p>
+      <div className="ab-start-actions">
+        <a className="ab-start-link" href="/mentorship/find">Find a mentor <ArrowRight color="currentColor" size={14} /></a>
+        <a className="ab-start-secondary" href="/mentorship">Browse the mentor index <ArrowRight color="currentColor" size={13} /></a>
       </div>
     </article>
   );
@@ -383,7 +312,7 @@ export function AboutPage() {
         </article>
 
         <FounderTile />
-        <MapTile />
+        <StartTile />
 
         <article className="ab-tile ab-team" data-reveal>
           <div className="ab-tile-eyebrow">THE PEOPLE BEHIND IT</div>
@@ -419,17 +348,14 @@ export function AboutPage() {
           <h3 className="ab-cta-head">Pick a way in.</h3>
           <div className="ab-cta-trio">
             <a className="ab-cta-card" href="/#join-students">
-              <span className="ab-cta-num">01</span>
               <span className="ab-cta-label">Attend a session</span>
               <ArrowRight color="currentColor" size={16} />
             </a>
             <a className="ab-cta-card" href="/#join-mentors">
-              <span className="ab-cta-num">02</span>
               <span className="ab-cta-label">Become a mentor</span>
               <ArrowRight color="currentColor" size={16} />
             </a>
             <a className="ab-cta-card" href="/contact?type=partner">
-              <span className="ab-cta-num">03</span>
               <span className="ab-cta-label">Support or partner</span>
               <ArrowRight color="currentColor" size={16} />
             </a>

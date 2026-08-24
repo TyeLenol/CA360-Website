@@ -37,23 +37,17 @@ export function StickyNav() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Scroll-spy only runs on homepage where section IDs exist
+  // Keep Home active throughout the homepage; the section IDs are content anchors,
+  // not separate destinations in the primary navigation.
   useEffect(() => {
+    if (!isHome) return;
     const domIds = ['home', 'mission', 'join', 'gallery', 'contact'];
     const els = domIds.map((id) => document.getElementById(id)).filter(Boolean);
     if (!els.length) return;
-    const io = new IntersectionObserver((entries) => {
-      let best = null;
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          if (!best || e.intersectionRatio > best.intersectionRatio) best = e;
-        }
-      });
-      if (best) setActive(best.target.id);
-    }, { rootMargin: '-30% 0px -55% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] });
+    const io = new IntersectionObserver(() => setActive('home'), { rootMargin: '-30% 0px -55% 0px', threshold: [0, 0.25, 0.5, 0.75, 1] });
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
-  }, []);
+  }, [isHome]);
 
   // On non-home pages, turn #hash links into /#hash so the browser navigates home first
   const getHref = (s) => {

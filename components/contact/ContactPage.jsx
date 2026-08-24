@@ -9,7 +9,6 @@ import { getMentor } from '../../data/mentors';
 const PATHS = [
   {
     id: 'student',
-    number: '01',
     eyebrow: 'FOR STUDENTS',
     title: 'I have a career question.',
     description: 'Sessions, fields, access, or the next move that feels hardest to see.',
@@ -20,7 +19,6 @@ const PATHS = [
   },
   {
     id: 'mentor',
-    number: '02',
     eyebrow: 'FOR PROFESSIONALS',
     title: 'I want to mentor.',
     description: 'Share the lived version of a career with someone a step behind you.',
@@ -31,7 +29,6 @@ const PATHS = [
   },
   {
     id: 'partner',
-    number: '03',
     eyebrow: 'FOR SCHOOLS & PARTNERS',
     title: 'I want to partner.',
     description: 'Host a session, open a career track, or support a cohort that needs a door opened.',
@@ -42,7 +39,6 @@ const PATHS = [
   },
   {
     id: 'general',
-    number: '04',
     eyebrow: 'EVERYTHING ELSE',
     title: 'I have another question.',
     description: 'Media, support, the organisation itself, or anything that does not fit a box.',
@@ -94,7 +90,6 @@ function PathCard({ path, active, onSelect, index }) {
         window.requestAnimationFrame(() => document.getElementById(`ct-path-${nextId}`)?.focus());
       }}
     >
-      <span className="ct-path-number">{path.number}</span>
       <span className="ct-path-copy">
         <span className="ct-path-eyebrow">{path.eyebrow}</span>
         <span className="ct-path-title">{path.title}</span>
@@ -135,7 +130,7 @@ function ContactForm({ path, selectedMentor, onSuccess }) {
   return (
     <form className="ct-form" onSubmit={submit} noValidate aria-labelledby="ct-form-title">
       <div className="ct-form-head">
-        <span className="ct-form-step">REPLY · {path.number}</span>
+        <span className="ct-form-step">YOUR MESSAGE</span>
         <h3 id="ct-form-title" tabIndex="-1">{path.messageLabel}</h3>
         <p>{path.messageHint}</p>
       </div>
@@ -181,7 +176,7 @@ function SuccessState({ path, mailtoHref, onChangePath }) {
   return (
     <div className="ct-success" role="status" aria-live="polite" tabIndex="-1">
       <span className="ct-success-mark" aria-hidden="true">✦</span>
-      <span className="ct-form-step">MESSAGE READY · {path.number}</span>
+      <span className="ct-form-step">MESSAGE READY</span>
       <h3>Your conversation has a starting point.</h3>
       <p>Your email app should open with the message addressed to CA360. If it did not, use the button below. We will reply to the email you shared.</p>
       <div className="ct-success-actions">
@@ -231,15 +226,11 @@ export function ContactPage() {
     <main className={'contact-page' + (reduced ? ' ct-reduced' : '')}>
       <section className="ct-hero" id="contact-top">
         <div className="ct-hero-left" data-reveal>
-          <RouteMarker index="04" label="Contact" context="Start here" />
+          <RouteMarker label="Contact" context="Start here" />
           <p className="ct-kicker">A NOTE, A QUESTION, A NEXT MOVE.</p>
           <h1>Start the <em>conversation</em>.</h1>
           <p className="ct-hero-dek">Have a question? Good. That is usually where the useful conversation starts.</p>
           <a className="ct-hero-email" href="mailto:hello@careerarcadia360.org">hello@careerarcadia360.org <ArrowRight color="currentColor" size={14} /></a>
-        </div>
-        <div className="ct-hero-index" data-reveal data-reveal-delay="1" aria-label="Contact page index">
-          <span className="ct-index-label">THE CONVERSATION INDEX</span>
-          {PATHS.map((item) => <span key={item.id} className={'ct-index-row' + (item.id === activeId ? ' is-active' : '')}><b>{item.number}</b>{item.eyebrow.replace('FOR ', '')}</span>)}
         </div>
       </section>
 
@@ -260,7 +251,7 @@ export function ContactPage() {
           <div className="ct-reply-top">
             <span className="ct-reply-label">CA360 REPLIES</span>
             <span className="ct-reply-line" aria-hidden="true" />
-            <span className="ct-reply-path">{path.number} / 04</span>
+            <span className="ct-reply-path">{path.eyebrow.replace('FOR ', '')}</span>
           </div>
           {!submitted ? (
             <>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { ArrowRight, ArrowDown, PinIcon } from '../shared/Icons';
+import { ArrowRight, PinIcon } from '../shared/Icons';
 import { PhotoPlaceholder, Portrait } from '../shared/Placeholders';
 import { RouteMarker } from '../shared/RouteMarker';
 import { useScrollProgress } from '../../hooks/ui-hooks';
@@ -87,17 +87,13 @@ const CATEGORIES = [
 ];
 
 /* ===== JOURNAL HERO ===== */
-function JournalHero({ onChoose }) {
-  const jump = (e) => {
-    e.preventDefault();
-    document.getElementById('journal-start')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+function JournalHero() {
 
   return (
     <section className="jh-hero" id="journal-top">
       <div className="jh-hero-sticky">
         <div className="jh-hero-top">
-          <RouteMarker index="02" label="Journal" context="stories, guides, honest takes" />
+          <RouteMarker label="Journal" context="stories, guides, honest takes" />
           <div className="jh-hero-side" data-reveal data-reveal-delay="1">
             A journal on mentorship,<br />
             <em>careers, and the life after SHS.</em>
@@ -128,76 +124,8 @@ function JournalHero({ onChoose }) {
             <p className="jh-hero-statement">
               Stories, guides, and honest takes for the path after <em>SHS</em> — from people who have already walked it.
             </p>
-            <a className="jh-hero-anchor" href="#journal-start" onClick={jump}>
-              <span>CHOOSE YOUR WAY IN</span>
-              <span className="jh-hero-anchor-arrow"><ArrowDown color="#fff" size={14} /></span>
-            </a>
           </div>
         </div>
-      </div>
-      <JournalStart onChoose={onChoose} />
-    </section>
-  );
-}
-
-
-const JOURNAL_PATHS = [
-  {
-    id: 'clarity',
-    label: 'IF YOU ARE CHOOSING',
-    title: 'I need career clarity.',
-    detail: 'Start with guides, admissions context, and the questions worth asking before you commit.',
-    filter: 'guide',
-    target: 'journal-grid',
-  },
-  {
-    id: 'stories',
-    label: 'IF YOU WANT THE REAL VERSION',
-    title: 'Show me the path.',
-    detail: 'Hear from mentors about the turns, doubts, and decisions behind the polished title.',
-    filter: 'mentor',
-    target: 'journal-grid',
-  },
-  {
-    id: 'wander',
-    label: 'IF YOU ARE JUST EXPLORING',
-    title: 'Start with what is new.',
-    detail: 'Begin with this month’s featured story, then keep wandering through the archive at your own pace.',
-    filter: 'all',
-    target: 'journal-featured',
-  },
-];
-
-function JournalStart({ onChoose }) {
-  return (
-    <section className="jstart-sec jstart-embedded" id="journal-start" aria-labelledby="journal-start-kicker">
-      <div className="jstart-head">
-        <div>
-          <p className="jstart-kicker" id="journal-start-kicker" data-reveal>START HERE · PICK A WAY IN</p>
-        </div>
-        <p className="jstart-intro" data-reveal>
-          Pick a path and go straight to a good first story.
-        </p>
-      </div>
-      <div className="jstart-paths">
-        {JOURNAL_PATHS.map((path, index) => (
-          <button
-            type="button"
-            className={'jstart-path' + (index === 0 ? ' is-primary' : '')}
-            key={path.id}
-            onClick={() => onChoose(path.filter, path.target)}
-            data-reveal
-          >
-            <span className="jstart-path-label">{path.label}</span>
-            <strong>{path.title}</strong>
-            <span className="jstart-path-detail">{path.detail}</span>
-            <span className="jstart-path-arrow"><ArrowRight color={index === 0 ? '#fff' : '#d68307'} size={15} /></span>
-          </button>
-        ))}
-      </div>
-      <div className="jstart-browse" data-reveal>
-        <span>Already know what you want?</span>
-        <a href="#journal-grid">Browse every story <ArrowRight color="#d68307" size={14} /></a>
       </div>
     </section>
   );
@@ -233,15 +161,6 @@ function JournalFeatured({ article, onOpen }) {
               <PhotoPlaceholder tone={article.tone} label={article.label} style={{ width: '100%', height: '100%' }} />
             </div>
             <span className="jf-img-cat">{article.catLabel}</span>
-            <span className="jf-img-corner" aria-hidden="true">
-              <svg viewBox="0 0 60 60" width="60" height="60">
-                <circle cx="30" cy="30" r="28" fill="none" stroke="#fff" strokeWidth="1" opacity="0.55" />
-                <text x="30" y="14" textAnchor="middle" fontSize="6" fill="#fff" fontFamily="JetBrains Mono" letterSpacing="0.2em">
-                  THE JOURNAL · CA360 · THE JOURNAL · CA360 ·
-                </text>
-                <text x="30" y="34" textAnchor="middle" fontSize="14" fill="#fff" fontFamily="Fraunces" fontStyle="italic">06</text>
-              </svg>
-            </span>
           </div>
 
           {/* Text body — meta + title then blurb then rest */}
@@ -596,13 +515,6 @@ export function JournalPage() {
   const [filter, setFilter] = useState('all');
   const [selectedArticle, setSelectedArticle] = useState(null);
 
-  const chooseJournalPath = (nextFilter, targetId) => {
-    setFilter(nextFilter);
-    window.requestAnimationFrame(() => {
-      document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  };
-
   const openArticle = (article) => {
     setSelectedArticle(article);
     window.history.replaceState(null, '', `/journal#${article.id}`);
@@ -628,7 +540,7 @@ export function JournalPage() {
   const sorted = rest.filter((a) => filter === 'all' || a.cat === filter);
   return (
     <main className="journal-page">
-      <JournalHero onChoose={chooseJournalPath} />
+      <JournalHero />
       <JournalFeatured article={featured} onOpen={openArticle} />
       <JournalGrid articles={sorted} filter={filter} onFilter={setFilter} onOpen={openArticle} />
 

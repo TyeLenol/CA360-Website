@@ -3,7 +3,6 @@
 import { useMemo, useState } from 'react';
 import { ArrowRight } from '../shared/Icons';
 import { PhotoPlaceholder, Portrait } from '../shared/Placeholders';
-import { RouteMarker } from '../shared/RouteMarker';
 import { FINDER_QUESTIONS, getFinderResults } from '../../data/mentor-finder';
 
 function FinderPortrait({ mentor }) {
@@ -15,29 +14,6 @@ function FinderPortrait({ mentor }) {
     >
       <Portrait seed={mentor.seed} bg="transparent" tone="#d68307" />
     </PhotoPlaceholder>
-  );
-}
-
-function FinderIntro({ onBegin }) {
-  return (
-    <section className="mf-intro" aria-labelledby="mf-title">
-      <div className="mf-intro-main">
-        <RouteMarker index="05 / FIND" label="Mentorship" context="Find your starting point" dark />
-        <p className="mf-kicker">A SHORT WAY IN · HONEST RECOMMENDATIONS · NO WRONG ANSWERS</p>
-        <h1 id="mf-title">Find the mentor who makes your next question <em>clearer.</em></h1>
-        <p className="mf-intro-dek">Answer four quick questions about where you are and what you need. We will suggest the people whose experience is closest to your question — and tell you why.</p>
-        <div className="mf-intro-actions">
-          <button className="btn btn-primary" type="button" onClick={onBegin}>Start the finder <ArrowRight color="#0a1f29" size={14} /></button>
-          <a className="mf-light-link" href="/mentorship">I would rather browse <ArrowRight color="currentColor" size={14} /></a>
-        </div>
-      </div>
-      <aside className="mf-intro-side" aria-label="How the finder works">
-        <span className="mf-intro-side-index">THE CA360 FINDER / 2026</span>
-        <div className="mf-intro-side-line" aria-hidden="true" />
-        <p>Four questions.<br /><em>A more useful first door.</em></p>
-        <span>About two minutes · you can start over</span>
-      </aside>
-    </section>
   );
 }
 
@@ -64,7 +40,7 @@ function FinderQuestion({ question, selectedId, onChoose }) {
   return (
     <section className="mf-question" aria-labelledby={`mf-question-${question.id}`}>
       <div className="mf-question-head">
-        <span className="mf-question-eyebrow">{question.eyebrow}</span>
+        <span className="mf-question-eyebrow">{question.eyebrow.split(' / ').pop()}</span>
         <h2 id={`mf-question-${question.id}`}>{question.title}</h2>
         <p>{question.intro}</p>
       </div>
@@ -141,14 +117,12 @@ function FinderResults({ answers, onRestart }) {
 }
 
 export default function MentorFinder() {
-  const [started, setStarted] = useState(false);
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
 
   const restart = () => {
     setAnswers({});
     setStep(0);
-    setStarted(true);
     window.requestAnimationFrame(() => document.getElementById('mf-finder')?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
   };
 
@@ -170,18 +144,14 @@ export default function MentorFinder() {
 
   return (
     <main className="mentor-finder-page">
-      {!started ? (
-        <FinderIntro onBegin={() => { setStarted(true); window.requestAnimationFrame(() => document.getElementById('mf-finder')?.scrollIntoView({ behavior: 'smooth', block: 'start' })); }} />
-      ) : (
-        <section className="mf-shell" id="mf-finder">
-          <Progress step={step} onBack={goBack} onRestart={restart} />
-          {step < FINDER_QUESTIONS.length ? (
-            <FinderQuestion question={FINDER_QUESTIONS[step]} selectedId={answers[FINDER_QUESTIONS[step].id]?.id} onChoose={choose} />
-          ) : (
-            <FinderResults answers={answers} onRestart={restart} />
-          )}
-        </section>
-      )}
+      <section className="mf-shell" id="mf-finder">
+        <Progress step={step} onBack={goBack} onRestart={restart} />
+        {step < FINDER_QUESTIONS.length ? (
+          <FinderQuestion question={FINDER_QUESTIONS[step]} selectedId={answers[FINDER_QUESTIONS[step].id]?.id} onChoose={choose} />
+        ) : (
+          <FinderResults answers={answers} onRestart={restart} />
+        )}
+      </section>
     </main>
   );
 }

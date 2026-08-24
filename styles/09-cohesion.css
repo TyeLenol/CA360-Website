@@ -227,7 +227,7 @@
 @media (max-width: 767px) {
   .route-marker { flex-wrap: wrap; gap: 8px; }
   .route-marker-rule { width: 28px; }
-  .route-marker-context { width: 100%; padding-left: 22px; }
+  .route-marker-context { width: auto; padding-left: 0; }
   .jload { align-items: flex-start; flex-direction: column; gap: 14px; }
   .jreader { padding: 14px; }
   .jreader-panel { max-height: calc(100vh - 28px); border-radius: 18px; box-shadow: 7px 7px 0 var(--c-orange); }
@@ -272,7 +272,7 @@
 .ab-tile-eyebrow span { color: var(--c-body); }
 .ab-vision .ab-tile-eyebrow,
 .ab-impact .ab-tile-eyebrow,
-.ab-map .ab-tile-eyebrow { color: var(--c-orange-soft); }
+.ab-start .ab-tile-eyebrow { color: var(--c-orange-soft); }
 .ab-vision-head em { color: var(--c-orange-soft); }
 .ab-mission-text em { color: var(--c-orange-deep); }
 .ab-mission-meta { color: var(--c-body); }
@@ -280,7 +280,6 @@
 .ab-track-state { color: rgba(254, 249, 238, 0.78); }
 .ab-stat-label { color: rgba(254, 249, 238, 0.84); }
 .ab-stat-detail { color: rgba(254, 249, 238, 0.86); }
-.ab-cta-num { color: var(--c-orange-soft); }
 
 /* Gallery labels and active controls */
 .gstrip-hint,
@@ -378,8 +377,6 @@
 .footer-handle { color: rgba(254, 249, 238, 0.86); }
 .footer-bottom span { color: rgba(254, 249, 238, 0.84); }
 
-.jstart-path-detail { color: var(--c-body); }
-.jstart-path.is-primary .jstart-path-detail { color: var(--c-cream); }
 .jgrid-header-copy p { color: rgba(254, 249, 238, 0.88); }
 .jgrid-count,
 .jgrid-count span { color: var(--c-cream) !important; }
@@ -406,6 +403,18 @@
    Contrast hardening — preserve the palette, remove low-contrast
    text/control pairings on light and orange surfaces.
    ============================================================ */
+
+/* Text links should look actionable without turning navigation pills or cards into underlined text. */
+.footer-col ul li a,
+.mt-card-profile,
+.mt-track-state a,
+.mt-trust-links a,
+.mt-back-link,
+.jreader-secondary {
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
 
 /* Semantic dark route markers in ink hero sections. */
 .route-marker-dark .route-marker-label,
@@ -441,8 +450,6 @@
 /* About light tiles and dark impact controls. */
 .ab-side-label--right,
 .ab-ask-mark,
-.ab-value-num,
-.ab-loop-num,
 .ab-member-role,
 .ab-founder-attr,
 .ab-mission-text em,
@@ -461,7 +468,7 @@
 .gh-hero-cue { color: var(--c-cream); }
 
 /* Mentorship light/dark card state corrections. */
-.mt-how-number,
+
 .mt-how .sec-eyebrow,
 .mt-profile-question span,
 .mt-profile-fit-label,
@@ -489,15 +496,11 @@
 /* Journal light/orange transitions and reader chrome. */
 .jcard-meta-sep { color: var(--c-orange-soft); }
 .jf-eyebrow-mark,
-.jstart-path-label,
-.jstart-browse,
-.jstart-path-detail,
 .jreader-topline,
 .jreader-kicker,
 .jreader-close span,
 .jreader-author { color: var(--c-teal-deep); }
-.jstart-path.is-primary .jstart-path-label,
-.jstart-path.is-primary .jstart-path-detail { color: var(--c-orange-soft); }
+
 .jnews-inset-title em,
 .jnews-inset-sub,
 .jnews-inset-side { color: var(--c-ink); }

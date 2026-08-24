@@ -7,31 +7,6 @@
   color: var(--c-ink);
 }
 
-.mf-intro {
-  min-height: 760px;
-  padding: 144px var(--gutter) 96px;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 0.3fr);
-  gap: 72px;
-  align-items: end;
-  background: var(--c-ink);
-  color: var(--c-cream);
-  position: relative;
-}
-.mf-intro::after {
-  content: '';
-  position: absolute;
-  left: var(--gutter);
-  right: var(--gutter);
-  bottom: 34px;
-  height: 1px;
-  background: rgba(254, 249, 238, 0.28);
-}
-.mf-intro-main { max-width: 940px; }
-.mf-intro-main .route-marker { margin-bottom: 46px; }
-.mf-kicker,
-.mf-intro-side-index,
-.mf-intro-side span,
 .mf-progress-topline,
 .mf-question-eyebrow,
 .mf-result-meta,
@@ -42,14 +17,6 @@
   letter-spacing: 0.15em;
   text-transform: uppercase;
 }
-.mf-kicker { margin-bottom: 22px; color: var(--c-orange-soft); }
-.mf-intro h1 {
-  max-width: 920px;
-  margin: 0;
-  font: 800 clamp(56px, 7.3vw, 116px)/0.92 var(--font-display);
-  letter-spacing: -0.065em;
-}
-.mf-intro h1 em,
 .mf-question h2 em,
 .mf-results h2 em {
   color: var(--c-orange);
@@ -57,20 +24,6 @@
   font-weight: 400;
   letter-spacing: -0.035em;
 }
-.mf-intro-dek {
-  max-width: 640px;
-  margin: 34px 0 0;
-  color: rgba(254, 249, 238, 0.8);
-  font: 400 17px/1.6 var(--font-ui);
-}
-.mf-intro-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 24px;
-  margin-top: 34px;
-}
-.mf-light-link,
 .mf-result-link {
   display: inline-flex;
   align-items: center;
@@ -83,21 +36,7 @@
   border-bottom: 1px solid currentColor;
   padding-bottom: 6px;
 }
-.mf-light-link { color: var(--c-cream); }
-.mf-light-link:hover,
 .mf-result-link:hover { color: var(--c-orange-soft); }
-.mf-intro-side {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding-bottom: 22px;
-}
-.mf-intro-side-index { color: var(--c-orange-soft); }
-.mf-intro-side-line { width: 1px; height: 210px; margin: 24px 0; background: rgba(254, 249, 238, 0.3); }
-.mf-intro-side p { margin: 0; font: 400 34px/1.04 var(--font-serif); }
-.mf-intro-side p em { color: var(--c-orange); }
-.mf-intro-side span:last-child { margin-top: 24px; color: rgba(254, 249, 238, 0.58); }
 
 .mf-shell {
   padding-top: 84px;
@@ -158,7 +97,7 @@
   align-items: start;
 }
 .mf-question-head { position: sticky; top: 120px; }
-.mf-question-eyebrow { color: var(--c-orange-deep); }
+.mf-question-eyebrow { color: var(--c-teal-deep); }
 .mf-question h2 {
   max-width: 560px;
   margin: 20px 0 0;
@@ -237,20 +176,11 @@
 .mf-results-footer > div { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 18px 24px; }
 
 @media (max-width: 1024px) {
-  .mf-intro { grid-template-columns: 1fr; min-height: 650px; }
-  .mf-intro-side { display: none; }
   .mf-question { gap: 48px; }
   .mf-results-head { gap: 42px; }
 }
 
 @media (max-width: 767px) {
-  .mf-intro { min-height: 0; padding: 104px var(--gutter) 72px; display: block; }
-  .mf-intro::after { bottom: 24px; }
-  .mf-intro-main .route-marker { margin-bottom: 34px; }
-  .mf-kicker { max-width: 280px; line-height: 1.4; }
-  .mf-intro h1 { font-size: clamp(48px, 14.5vw, 70px); }
-  .mf-intro-dek { margin-top: 26px; font-size: 15px; }
-  .mf-intro-actions { align-items: flex-start; flex-direction: column; gap: 18px; }
   .mf-progress-wrap { padding: 18px var(--gutter) 17px; }
   .mf-progress-topline { font-size: 9px; }
   .mf-question { display: block; min-height: 0; padding: 68px var(--gutter) 82px; }

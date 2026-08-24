@@ -40,7 +40,6 @@ function MentorCard({ mentor, selected, onSelect }) {
       >
         <span className="mt-card-photo">
           <MentorPortrait mentor={mentor} />
-          <span className="mt-card-index">{selected ? 'SELECTED' : `0${MENTORS.indexOf(mentor) + 1}`}</span>
         </span>
         <span className="mt-card-copy">
           <span className="mt-card-topline"><MentorStatus mentor={mentor} /><span>{mentor.specialty}</span></span>
@@ -59,9 +58,9 @@ function MentorCard({ mentor, selected, onSelect }) {
 
 function HowItWorks() {
   const steps = [
-    ['01', 'Look around.', 'Explore mentors by the questions and career paths they know.'],
-    ['02', 'Choose a starting point.', 'Open a profile, then request the person who feels closest to your question.'],
-    ['03', 'We make the connection carefully.', 'CA360 confirms the next step and helps set the relationship up well.'],
+    ['Look around.', 'Explore mentors by the questions and career paths they know.'],
+    ['Choose a starting point.', 'Open a profile, then request the person who feels closest to your question.'],
+    ['We make the connection carefully.', 'CA360 confirms the next step and helps set the relationship up well.'],
   ];
   return (
     <section className="mt-how" aria-labelledby="mt-how-title">
@@ -70,9 +69,8 @@ function HowItWorks() {
         <h2 id="mt-how-title">A person first.<br /><em>A process you can understand.</em></h2>
       </div>
       <div className="mt-how-grid">
-        {steps.map(([number, title, copy]) => (
-          <article className="mt-how-step" key={number}>
-            <span className="mt-how-number">{number}</span>
+        {steps.map(([title, copy]) => (
+          <article className="mt-how-step" key={title}>
             <h3>{title}</h3>
             <p>{copy}</p>
           </article>
@@ -102,7 +100,7 @@ function Spotlight({ mentor }) {
     <section className="mt-spotlight" aria-labelledby="mt-spotlight-title">
       <div className="mt-spotlight-media">
         <MentorPortrait mentor={mentor} />
-        <div className="mt-spotlight-mark">PATH / {String(MENTORS.indexOf(mentor) + 1).padStart(2, '0')} — {mentor.field.toUpperCase()}</div>
+        <div className="mt-spotlight-mark">PATH / {mentor.field.toUpperCase()}</div>
         <div className="mt-spotlight-stamp">A REAL<br />STARTING<br /><em>POINT.</em></div>
       </div>
       <div className="mt-spotlight-copy">
@@ -220,7 +218,7 @@ export function MentorshipPage({ initialMentorSlug = '' }) {
     <main className="mentorship-page">
       <section className="mt-hero" id="mentorship-top">
         <div className="mt-hero-main" data-reveal>
-          <RouteMarker index="05" label="Mentorship" context="Choose carefully" dark />
+          <RouteMarker label="Mentorship" context="Choose carefully" dark />
           <p className="mt-kicker">REAL PATHS · HONEST ANSWERS · A HUMAN INTRODUCTION</p>
           <h1>Meet the people behind the next version of <em>you.</em></h1>
           <p className="mt-hero-dek">A curated starting point for students carrying a career question. Browse a real mentor, read the honest version of their path, and ask CA360 to help make the connection carefully.</p>
@@ -230,7 +228,6 @@ export function MentorshipPage({ initialMentorSlug = '' }) {
           </div>
         </div>
         <div className="mt-hero-side" data-reveal data-reveal-delay="1">
-          <div className="mt-hero-side-label">THE INDEX / 2026</div>
           <div className="mt-hero-side-line" aria-hidden="true" />
           <p>Five people.<br /><em>Many ways in.</em></p>
           <span>Scroll to browse · tap to choose</span>

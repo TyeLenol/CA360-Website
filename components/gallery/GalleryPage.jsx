@@ -271,7 +271,7 @@ function GalleryHero() {
 
         <div className="gh-hero-inner">
           <div className="gh-hero-route-marker" style={isMobile ? {} : arrive(0.0, 0.22, 20)}>
-            <RouteMarker index="03" label="Gallery" context="real sessions, people, change" dark />
+            <RouteMarker label="Gallery" context="real sessions, people, change" dark />
           </div>
           <h1 className="gh-hero-title">The Moments.</h1>
           <p className="gh-hero-sub" style={isMobile ? {} : arrive(0.08, 0.30, 32)}>
@@ -317,7 +317,7 @@ function GalleryFilmstrip({ onAlbumClick }) {
     <section className="gstrip-wrap" ref={ref}>
       <div className="gstrip-sticky">
         <div className="gstrip-header">
-          <div className="gstrip-section-label" data-reveal>01 — THE ALBUMS</div>
+          <div className="gstrip-section-label" data-reveal>THE ALBUMS</div>
           <div className="gstrip-hint">Scroll to browse · click an album to open</div>
           <div className="gstrip-counter">
             <span className="gstrip-counter-active">{String(activeIdx + 1).padStart(2, '0')}</span>
@@ -341,7 +341,6 @@ function GalleryFilmstrip({ onAlbumClick }) {
                 >
                   <div className="gstrip-tile-photo">
                     <PhotoPlaceholder tone={album.tone} label={album.label} style={{ width: '100%', height: '100%' }} />
-                    <span className="gstrip-tile-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
                   </div>
                   <div className="gstrip-tile-foot">
                     <div className="gstrip-tile-albumname">{album.label}</div>

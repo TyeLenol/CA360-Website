@@ -17,14 +17,12 @@
   margin: 0 auto;
   padding: 150px var(--gutter) 88px;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 300px;
-  gap: 64px;
+  grid-template-columns: minmax(0, 1fr);
   align-items: end;
   border-bottom: 1px solid var(--c-rule);
 }
 .ct-hero-left .route-marker { margin-bottom: 52px; }
 .ct-kicker,
-.ct-index-label,
 .ct-reply-label,
 .ct-form-step,
 .ct-intro-label,
@@ -69,30 +67,6 @@
 .ct-hero-email:focus-visible,
 .ct-direct a:hover,
 .ct-direct a:focus-visible { color: var(--c-orange-deep); transform: translateX(3px); }
-.ct-hero-index {
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-  border-left: 1px solid var(--ct-border);
-  padding-left: 22px;
-}
-.ct-index-label { color: var(--c-muted); margin-bottom: 16px; }
-.ct-index-row {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 0;
-  border-top: 1px solid var(--ct-border);
-  color: var(--ct-soft-ink);
-  font: 700 11px var(--font-mono);
-  letter-spacing: 0.1em;
-  transition: color 180ms ease-out, padding-left 180ms ease-out;
-}
-.ct-index-row b { color: var(--c-orange-deep); font-weight: 700; }
-.ct-index-row.is-active { padding-left: 10px; color: var(--c-ink); }
-.ct-index-row.is-active::before { content: '→'; color: var(--c-orange-deep); margin-left: -20px; }
-
 .ct-intro {
   max-width: var(--max-w);
   margin: 0 auto;
@@ -141,8 +115,6 @@
 .ct-path:hover { transform: translateX(4px); border-color: var(--c-orange-deep); }
 .ct-path.is-active { background: var(--c-teal-deep); border-color: var(--c-teal-deep); color: var(--c-cream); transform: translateX(8px); }
 .ct-path:focus-visible { outline: 3px solid var(--c-orange); outline-offset: 4px; }
-.ct-path-number { color: var(--c-orange-deep); font: 700 12px var(--font-mono); }
-.ct-path.is-active .ct-path-number { color: var(--c-orange-soft); }
 .ct-path-copy { display: grid; gap: 9px; }
 .ct-path-eyebrow { color: var(--c-muted); }
 .ct-path.is-active .ct-path-eyebrow { color: var(--c-orange-soft); }
@@ -287,7 +259,7 @@
 .ct-close a { display: inline-flex; align-items: center; gap: 8px; color: var(--c-teal-deep); border-bottom: 2px solid var(--c-orange); padding-bottom: 5px; font: 700 11px var(--font-mono); }
 
 @media (max-width: 1024px) {
-  .ct-hero { grid-template-columns: 1fr 250px; gap: 34px; }
+  .ct-hero { grid-template-columns: 1fr; }
   .ct-workspace { grid-template-columns: 1fr; }
   .ct-paths { position: static; grid-template-columns: repeat(2, 1fr); }
   .ct-expect { grid-template-columns: 0.6fr 1.4fr; }
@@ -298,7 +270,6 @@
   .ct-hero-left .route-marker { margin-bottom: 36px; }
   .ct-hero h1 { font-size: clamp(56px, 16vw, 92px); }
   .ct-hero-dek { font-size: 21px; }
-  .ct-hero-index { margin-top: 50px; border-left: 0; border-top: 1px solid var(--ct-border); padding: 20px 0 0; }
   .ct-intro { display: block; padding: 56px 22px 28px; }
   .ct-intro-label { margin-bottom: 18px; }
   .ct-intro h2 { font-size: 40px; }
@@ -322,16 +293,11 @@
 
 
 /* Contrast-safe micro labels on the paper surface */
-.ct-kicker,
-.ct-index-label { color: var(--c-teal-deep); }
-.ct-index-row b { color: var(--c-teal-deep); }
-
+.ct-kicker { color: var(--c-teal-deep); }
 
 /* Contact paper-surface labels: readable at small sizes */
 .ct-intro-label,
-.ct-path-number,
 .ct-path-eyebrow { color: var(--c-teal-deep); }
-.ct-path.is-active .ct-path-number,
 .ct-path.is-active .ct-path-eyebrow { color: var(--c-orange-soft); }
 
 
