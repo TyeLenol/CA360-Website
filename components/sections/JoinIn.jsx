@@ -7,7 +7,7 @@ import { useScrollProgress } from '../../hooks/ui-hooks';
 
 const JOIN_PANELS = [
   {
-    n: '01', tag: 'FOR STUDENTS',
+    tag: 'FOR STUDENTS',
     title: 'Attend a session.', titleEm: 'session',
     body: "Free, online or on your campus. Bring a friend, bring a question, leave with a plan that actually fits your life — not someone else's.",
     bullets: ['Free for all SHS and undergrad students', 'Online and in-person formats', 'Recordings stay free forever'],
@@ -17,7 +17,7 @@ const JOIN_PANELS = [
     photoTone: 'teal', photoLabel: 'STUDENTS · SESSION 04',
   },
   {
-    n: '02', tag: 'FOR PROFESSIONALS',
+    tag: 'FOR PROFESSIONALS',
     title: 'Become a mentor.', titleEm: 'mentor',
     body: 'If you walked the path — medicine, law, engineering, business — share it with someone behind you. We match you with a student who started where you did.',
     bullets: ['3-month rolling commitment', 'Hand-matched within 14 days', 'Async or live, your call'],
@@ -27,7 +27,7 @@ const JOIN_PANELS = [
     photoTone: 'warm', photoLabel: 'MENTOR · WHITEBOARD',
   },
   {
-    n: '03', tag: 'FOR PARTNERS',
+    tag: 'FOR PARTNERS',
     title: 'Support the mission.', titleEm: 'mission',
     body: "Sponsor a session, partner with us as a school, or fund a cohort that wouldn't happen otherwise. Every cedi turns into a seat — guaranteed.",
     bullets: ['School and university partnerships', 'Per-session sponsorship', 'Annual cohort funding'],
@@ -64,7 +64,7 @@ export function JoinIn() {
 
             return (
               <div
-                key={'bg-' + p.n}
+                key={'bg-' + p.tag}
                 className="join-big-bg"
                 style={{
                   opacity,
@@ -99,7 +99,7 @@ export function JoinIn() {
             return (
               <article
                 id={i === 0 ? 'join-students' : i === 1 ? 'join-mentors' : 'join-partners'}
-                key={p.n}
+                key={p.tag}
                 className="join-small-card"
                 style={{
                   transform: `translateY(${y}px) rotate(${r}deg)`,
@@ -108,7 +108,6 @@ export function JoinIn() {
                   color: p.bg,
                 }}
               >
-                <div className="join-panel-num-small">{p.n}</div>
                 <div className="join-panel-tag-small">{p.tag}</div>
                 <h3 className="join-panel-title-small">
                   {p.title.split(p.titleEm)[0]}<em>{p.titleEm}</em>{p.title.split(p.titleEm)[1]}
@@ -138,16 +137,15 @@ export function JoinIn() {
         </div>
 
         <div className="join-rail" aria-hidden="true">
-          <div className="join-rail-label">JOIN IN · 26</div>
+          <div className="join-rail-label">JOIN IN</div>
           <div className="join-rail-steps">
             {JOIN_PANELS.map((p, i) => (
               <div
-                key={p.n}
+                key={p.tag}
                 className={'join-rail-step'
                   + (i === active ? ' is-active' : '')
                   + (i < active ? ' is-done' : '')}
               >
-                <span className="join-rail-num">{p.n}</span>
                 <span className="join-rail-name">{p.tag.replace('FOR ', '')}</span>
               </div>
             ))}

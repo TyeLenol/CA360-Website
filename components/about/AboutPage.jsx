@@ -42,7 +42,7 @@ const STATS = [
 
 const TRACKS = [
   { t: 'Medicine', s: 'LIVE NOW', live: true },
-  { t: 'Law', s: 'TRACK · 2026', live: false },
+  { t: 'Law', s: 'GROWING TRACK', live: false },
   { t: 'Engineering', s: 'COMING SOON', live: false },
   { t: 'Business', s: 'COMING SOON', live: false },
 ];

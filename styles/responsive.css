@@ -347,7 +347,6 @@
     width: min(400px, 84vw);
     padding: 28px 22px 24px;
   }
-  .join-panel-num-small { font-size: 56px; top: 18px; right: 22px; }
   .join-panel-title-small { font-size: 26px; line-height: 1.1; max-width: 100%; margin-bottom: 12px; }
   .join-panel-body-small { font-size: 13px; margin-bottom: 16px; }
   .join-panel-bullets-small { gap: 6px; margin-bottom: 20px; }
@@ -355,7 +354,7 @@
   .join-panel-cta-small { padding: 11px 18px; font-size: 13px; gap: 8px; }
   .join-rail { left: 16px; right: 16px; bottom: 14px; }
   .join-rail-steps { gap: 10px; overflow-x: auto; }
-  .join-rail-name { display: none; }
+  .join-rail-name { display: inline; }
   .join-overlay-head { top: 18px; left: 18px; }
   .join-overlay-title { font-size: 20px; }
   .join-overlay-title em { display: block; }
@@ -398,8 +397,7 @@
   .faq-answer { order: 1; min-height: 0; padding: 24px 20px; box-shadow: 6px 6px 0 var(--c-orange); }
   .faq-answer-q { font-size: 24px; }
   .faq-answer-a { font-size: 14px; }
-  .faq-item button { grid-template-columns: 40px 1fr 28px; gap: 10px; padding: 16px 14px; }
-  .faq-item-n { font-size: 22px; }
+  .faq-item button { grid-template-columns: 1fr 28px; gap: 10px; padding: 16px 14px; }
   .faq-item-q { font-size: 15px; }
 }
 
@@ -878,8 +876,7 @@
     gap: 8px;
     overflow: visible;
   }
-  .join-rail-step { font-size: 0; gap: 0; }
-  .join-rail-num { width: 30px; height: 30px; }
+  .join-rail-step { font-size: 11px; gap: 0; }
   .join-rail-progress { width: 100%; margin-top: 0; }
 
   /* SESSIONS: the active card is fully centered; inactive cards cannot

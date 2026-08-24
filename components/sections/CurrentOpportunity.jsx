@@ -17,7 +17,7 @@ export function CurrentOpportunity() {
         <div className="sec-eyebrow">Right now at CA360</div>
         <div className="opportunity-stamp">
           <Star size={11} color="#0a1f29" />
-          LIVE SIGNAL · 06
+          LIVE SIGNAL
         </div>
       </div>
 
@@ -44,7 +44,6 @@ export function CurrentOpportunity() {
 
         <div className="opportunity-signpost" aria-label="CA360 proof points">
           <span className="opportunity-signpost-label">THE SHORT VERSION</span>
-          <div className="opportunity-signpost-number">06</div>
           <div className="opportunity-signpost-status">
             <span className="opportunity-status-dot" aria-hidden="true" />
             COHORT OPEN

@@ -53,7 +53,7 @@ export function FAQ() {
       </div>
 
       <div className="faq-stage" data-reveal>
-        <ol className="faq-list" role="tablist" aria-label="Frequently asked questions">
+        <ul className="faq-list" role="tablist" aria-label="Frequently asked questions">
           {FAQS.map((f, i) => (
             <li
               key={f.id}
@@ -70,7 +70,6 @@ export function FAQ() {
                 onClick={() => setActive(i)}
                 onKeyDown={(event) => handleTabKeyDown(event, i)}
               >
-                <span className="faq-item-n">0{i + 1}</span>
                 <span className="faq-item-q">
                   {f.q}
                   <span className="faq-item-cat">{f.cat}</span>
@@ -81,7 +80,7 @@ export function FAQ() {
               </button>
             </li>
           ))}
-        </ol>
+        </ul>
 
         <div
           className="faq-answer"
@@ -91,7 +90,6 @@ export function FAQ() {
           tabIndex={0}
         >
           <div className="faq-answer-meta">
-            <span className="faq-answer-n">0{active + 1} / 0{FAQS.length}</span>
             <span className="faq-answer-cat">{m.cat}</span>
           </div>
           <h3 className="faq-answer-q" key={'q-' + m.id}>{m.q}</h3>
@@ -106,9 +104,6 @@ export function FAQ() {
             </span>
           </div>
 
-          <span className="faq-answer-deco" aria-hidden="true">
-            {('0' + (active + 1)).slice(-2)}
-          </span>
         </div>
       </div>
     </section>

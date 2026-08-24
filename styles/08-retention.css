@@ -68,16 +68,6 @@
   box-shadow: 10px 10px 0 var(--c-orange);
 }
 
-.opportunity-main::before {
-  content: '06';
-  position: absolute;
-  right: 34px;
-  bottom: -42px;
-  color: rgba(254, 249, 238, 0.08);
-  font: 800 220px/1 var(--font-display);
-  letter-spacing: -0.1em;
-  pointer-events: none;
-}
 
 .opportunity-kicker {
   position: relative;
@@ -178,12 +168,6 @@
 
 .opportunity-signpost-label { color: var(--c-muted); }
 
-.opportunity-signpost-number {
-  margin: 14px 0 2px;
-  color: var(--c-ink);
-  font: 800 clamp(84px, 10vw, 150px)/0.85 var(--font-display);
-  letter-spacing: -0.08em;
-}
 
 .opportunity-signpost-status {
   display: flex;
@@ -290,7 +274,7 @@
 }
 .chapter-bridge-link {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: 1fr auto;
   gap: 10px;
   align-items: center;
   min-height: 54px;
@@ -308,13 +292,6 @@
   box-shadow: 4px 4px 0 var(--c-orange);
   transform: translate(-2px, -2px);
 }
-.chapter-bridge-index {
-  color: var(--c-orange-deep);
-  font: 700 10px/1 var(--font-mono);
-}
-.chapter-bridge-link:hover .chapter-bridge-index,
-.chapter-bridge-link:focus-visible .chapter-bridge-index { color: var(--c-orange-soft); }
-
 @media (max-width: 900px) {
   .opportunity-sec { padding: 88px var(--gutter) 96px; }
   .opportunity-layout { grid-template-columns: 1fr; }
@@ -335,12 +312,10 @@
   .opportunity-head { align-items: flex-start; gap: 18px; }
   .opportunity-stamp { font-size: 9px; }
   .opportunity-main { padding: 34px 28px 36px; border-radius: 20px; box-shadow: 7px 7px 0 var(--c-orange); }
-  .opportunity-main::before { right: 12px; bottom: -25px; font-size: 150px; }
   .opportunity-main h2 { font-size: clamp(42px, 12vw, 68px); }
   .opportunity-main p { font-size: 18px; }
   .opportunity-actions { align-items: flex-start; flex-direction: column; gap: 18px; }
   .opportunity-signpost { padding: 30px 26px; transform: rotate(0); }
-  .opportunity-signpost-number { font-size: 92px; }
   .opportunity-paths { grid-template-columns: 1fr; gap: 10px; }
   .opportunity-path { padding: 17px 18px; }
 }

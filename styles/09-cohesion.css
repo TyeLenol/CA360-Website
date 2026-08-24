@@ -423,14 +423,8 @@
 .opportunity-head .sec-eyebrow::before,
 .ab-hero > .ab-hero-head > .sec-eyebrow::before { background: var(--c-teal-deep); }
 
-.chapter-bridge-kicker,
-.chapter-bridge-index { color: var(--c-teal-deep); }
+.chapter-bridge-kicker { color: var(--c-teal-deep); }
 .chapter-bridge-head p { color: var(--c-body); }
-.chapter-bridge-link:hover .chapter-bridge-index,
-.chapter-bridge-link:focus-visible .chapter-bridge-index { color: var(--c-orange-deep); }
-
-.join-rail-step.is-active .join-rail-num,
-.join-rail-step.is-done .join-rail-num { color: var(--c-ink); }
 
 .jload .jload-link {
   color: var(--c-ink);
@@ -443,16 +437,6 @@
 
 /* Final Lighthouse contrast cleanup. */
 .ab-hero-title em { color: var(--c-teal-deep); }
-
-.join-rail-num {
-  background: var(--c-orange-soft);
-  color: var(--c-ink);
-}
-.join-rail-step.is-active .join-rail-num,
-.join-rail-step.is-done .join-rail-num {
-  background: var(--c-cream);
-  color: var(--c-ink);
-}
 
 .opportunity-main p { color: var(--c-cream); }
 .faq-answer-link {
@@ -513,7 +497,6 @@
 /* Text-bearing orange controls: ink carries more contrast than white. */
 .hero-stamp,
 .opportunity-stamp,
-.programs-pin-num,
 .sessions-card-date,
 .mentors-feature-tag,
 .gcta-btn,
@@ -531,7 +514,6 @@
 .news-lab,
 .news-input-wrap button { color: var(--c-teal-deep); }
 .programs-tag { border-color: var(--c-teal-deep); }
-.faq-item-n { color: var(--c-teal-deep); }
 .faq-item-cat,
 .faq-item.is-active .faq-item-cat { color: var(--c-teal-deep); }
 .faq-item-chev { color: var(--c-teal-deep); }

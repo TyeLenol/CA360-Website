@@ -149,27 +149,26 @@
 
 .programs-pin {
   grid-column: 2;
-  width: 80px; height: 80px;
+  width: 28px; height: 28px;
   border-radius: 50%;
   background: var(--c-orange);
-  border: 3px solid var(--c-ink);
+  border: 2px solid var(--c-ink);
   display: flex; align-items: center; justify-content: center;
   position: relative;
   z-index: 3;
   justify-self: center;
-  box-shadow: 0 0 0 8px var(--c-paper);
+  box-shadow: 0 0 0 6px var(--c-paper);
   transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1.2) 0.3s;
   transform: scale(0);
 }
-[data-reveal].is-in .programs-pin { transform: scale(1); }
-
-.programs-pin-num {
-  font-family: var(--font-display);
-  font-weight: 800;
-  font-size: 28px;
-  color: #fff;
-  letter-spacing: -0.02em;
+.programs-pin::after {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-ink);
 }
+[data-reveal].is-in .programs-pin { transform: scale(1); }
 
 .programs-card {
   background: #fff;
