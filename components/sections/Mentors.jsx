@@ -65,7 +65,6 @@ export function Mentors() {
       onMouseLeave={() => setPaused(false)}
     >
       <div className="mentors-head">
-        <div className="sec-eyebrow" data-reveal>The people behind the guidance</div>
         <h2 className="mentors-title" data-reveal data-reveal-delay="1">
           Mentors who&apos;ve<br />walked your <em>exact</em> path.
         </h2>
@@ -81,7 +80,6 @@ export function Mentors() {
               <Portrait seed={m.seed} bg="transparent" tone="#d68307" />
             </PhotoPlaceholder>
             <span className="mentors-feature-tag">{m.tag}</span>
-            <span className="mentors-feature-idx">№ 0{active + 1} / 0{MENTORS.length}</span>
           </div>
 
           <div className="mentors-feature-body">
@@ -124,7 +122,7 @@ export function Mentors() {
           <div className="mentors-rail-head">
             <div className="mentors-rail-lab">ROSTER · {MENTORS.length} ACTIVE</div>
             <div className="mentors-rail-hint">
-              Tap a portrait
+              Select a mentor
               <svg width="32" height="14" viewBox="0 0 40 14" fill="none">
                 <path d="M2 8 C 12 2, 22 14, 38 4" stroke="#d68307" strokeWidth="2" strokeLinecap="round" />
                 <path d="M32 2 L 38 4 L 36 10" stroke="#d68307" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" />
@@ -140,20 +138,22 @@ export function Mentors() {
               >
                 <button
                   type="button"
-                  className="mentors-avatar"
+                  className="mentors-rail-select"
                   aria-label={'Select ' + mm.name}
                   aria-pressed={i === active}
                   onClick={() => setActive(i)}
                 >
-                  <PhotoPlaceholder tone={mm.tone} label="" style={{ width: '100%', height: '100%' }}>
-                    <Portrait seed={mm.seed} bg="transparent" tone="#d68307" />
-                  </PhotoPlaceholder>
-                  {i === active && <span className="mentors-avatar-ring" />}
+                  <span className="mentors-avatar">
+                    <PhotoPlaceholder tone={mm.tone} label="" style={{ width: '100%', height: '100%' }}>
+                      <Portrait seed={mm.seed} bg="transparent" tone="#d68307" />
+                    </PhotoPlaceholder>
+                    {i === active && <span className="mentors-avatar-ring" />}
+                  </span>
+                  <span className="mentors-rail-meta">
+                    <span className="mentors-rail-name">{mm.name}</span>
+                    <span className="mentors-rail-field">{mm.field}</span>
+                  </span>
                 </button>
-                <div className="mentors-rail-meta">
-                  <div className="mentors-rail-name">{mm.name}</div>
-                  <div className="mentors-rail-field">{mm.field}</div>
-                </div>
               </li>
             ))}
           </ul>

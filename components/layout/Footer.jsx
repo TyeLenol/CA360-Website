@@ -29,7 +29,7 @@ export function Footer() {
           <div className="sec-eyebrow" style={{ color: '#d68307' }}>Career Arcadia 360</div>
           <h3>Guiding futures,<br /><em>unlocking potential.</em></h3>
           <p>Honest career guidance and real mentors for students stepping into life after SHS.</p>
-          <a className="footer-newsletter" href="/#news">
+          <a className="footer-newsletter" href="/contact#newsletter">
             Get the monthly letter <ArrowRight color="#d68307" size={14} />
           </a>
         </div>

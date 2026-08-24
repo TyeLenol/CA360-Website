@@ -216,18 +216,6 @@
   flex-direction: column;
   overflow: hidden;
 }
-.jf-eyebrow {
-  display: flex; align-items: center; gap: 14px;
-  font: 700 12px var(--font-mono);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--c-orange);
-  margin-bottom: 28px;
-  flex-shrink: 0;
-}
-.jf-eyebrow-mark { color: var(--c-orange); }
-.jf-eyebrow-rule { flex: 1; height: 1px; background: var(--c-rule); }
-
 .jf-card {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
@@ -403,6 +391,7 @@
 
 /* === GRID SECTION — z-index 2 so it physically slides over the fixed scroll cue text === */
 .jgrid-sec {
+  scroll-margin-top: 96px;
   position: relative;
   z-index: 2;
   background: var(--c-teal-deep);
@@ -774,13 +763,6 @@
   flex-direction: column;
   justify-content: center;
 }
-.jnews-inset-tag {
-  font: 700 11px var(--font-mono);
-  letter-spacing: 0.22em;
-  color: var(--c-ink);
-  margin-bottom: 24px;
-  will-change: transform, opacity;
-}
 .jnews-inset-title {
   font-family: var(--font-display);
   font-weight: 800;
@@ -876,7 +858,7 @@
   height: 106vh;
   min-height: 760px;
 }
-.jf-sticky { padding-top: 30px; padding-bottom: 34px; }
+.jf-sticky { padding-top: 18px; padding-bottom: 34px; }
 .jf-card { gap: clamp(28px, 4vw, 56px); }
 .jf-title { font-size: clamp(34px, 4.4vw, 58px); }
 .jf-excerpt { font-size: 17px; line-height: 1.45; }
@@ -926,14 +908,6 @@
   justify-content: space-between;
   align-items: end;
   gap: 36px;
-}
-.jgrid-kicker {
-  display: block;
-  margin-bottom: 14px;
-  color: var(--c-orange-soft);
-  font: 700 10px/1 var(--font-mono);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
 }
 .jgrid-header-copy h2 {
   color: var(--c-cream);

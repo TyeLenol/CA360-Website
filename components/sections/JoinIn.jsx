@@ -34,7 +34,7 @@ const JOIN_PANELS = [
     cta: 'Partner with us',
     href: 'mailto:hello@careerarcadia360.org?subject=Partnership%20inquiry',
     bg: 'rgba(10, 31, 41, 1)', fg: '#fff',
-    photoTone: 'deep', photoLabel: 'PARTNER · HANDSHAKE',
+    photoTone: 'deep', photoLabel: 'PARTNER · OPEN DOOR',
   },
 ];
 
@@ -56,7 +56,7 @@ export function JoinIn() {
   return (
     <section id="join" className="join-sec" ref={wrapRef}>
       <div className="join-pin">
-        <div className="join-stage">
+        <div className="join-stage" aria-hidden="true">
           {JOIN_PANELS.map((p, i) => {
             const fadeProgress = Math.max(0, Math.min(1, (t - i) / 0.4));
             const outProgress = i < PANEL_COUNT - 1 ? Math.max(0, Math.min(1, (t - (i + 1)) / 0.4)) : 0;
@@ -66,20 +66,13 @@ export function JoinIn() {
               <div
                 key={'bg-' + p.tag}
                 className="join-big-bg"
-                style={{
-                  opacity,
-                  background: p.bg,
-                  pointerEvents: Math.round(opacity) === 1 ? 'auto' : 'none',
-                }}
-                aria-hidden={opacity < 0.5}
+                style={{ opacity, background: p.bg }}
               >
-                <div className="join-big-photo-wrap">
-                  <PhotoPlaceholder tone={p.photoTone} label={p.photoLabel} style={{ width: '100%', height: '100%' }} />
-                  <span className="join-panel-deco" />
-                </div>
+                <PhotoPlaceholder tone={p.photoTone} label={p.photoLabel} style={{ width: '100%', height: '100%' }} />
               </div>
             );
           })}
+          <div className="join-stage-shade" />
         </div>
 
         <div className="join-stack">
@@ -91,7 +84,6 @@ export function JoinIn() {
             const baseRot = i === 0 ? -1.5 : (i === 1 ? 2.5 : -2);
             const r = eased * baseRot + wobble;
             const op = raw > 0.02 ? 1 : 0;
-
             const ctaColor = p.bg === 'rgba(10, 31, 41, 1)' || p.bg === 'rgba(31, 74, 94, 1)'
               ? '#fef9ee'
               : '#0a1f29';
@@ -105,9 +97,12 @@ export function JoinIn() {
                   transform: `translateY(${y}px) rotate(${r}deg)`,
                   opacity: op,
                   zIndex: 10 + i,
-                  color: p.bg,
+                  '--join-accent': p.bg,
                 }}
               >
+                <div className="join-card-photo">
+                  <PhotoPlaceholder tone={p.photoTone} label={p.photoLabel} style={{ width: '100%', height: '100%' }} />
+                </div>
                 <div className="join-panel-tag-small">{p.tag}</div>
                 <h3 className="join-panel-title-small">
                   {p.title.split(p.titleEm)[0]}<em>{p.titleEm}</em>{p.title.split(p.titleEm)[1]}
@@ -124,10 +119,7 @@ export function JoinIn() {
                 <a
                   className="join-panel-cta-small"
                   href={p.href}
-                  style={{
-                    background: p.bg,
-                    color: ctaColor,
-                  }}
+                  style={{ background: p.bg, color: ctaColor }}
                 >
                   {p.cta} <ArrowRight color={ctaColor} size={16} />
                 </a>
@@ -137,17 +129,14 @@ export function JoinIn() {
         </div>
 
         <div className="join-rail" aria-hidden="true">
-          <div className="join-rail-label">JOIN IN</div>
-          <div className="join-rail-steps">
+          <div className="join-rail-dots">
             {JOIN_PANELS.map((p, i) => (
-              <div
+              <span
                 key={p.tag}
-                className={'join-rail-step'
+                className={'join-rail-dot'
                   + (i === active ? ' is-active' : '')
                   + (i < active ? ' is-done' : '')}
-              >
-                <span className="join-rail-name">{p.tag.replace('FOR ', '')}</span>
-              </div>
+              />
             ))}
           </div>
           <div className="join-rail-progress">
@@ -156,9 +145,8 @@ export function JoinIn() {
         </div>
 
         <div className="join-overlay-head" id="join-paths">
-          <div className="sec-eyebrow" style={{ color: '#fff' }}>Get involved</div>
           <h2 className="join-overlay-title">
-            Three ways to <em>show up</em>.
+            Ways to <em>show up</em>.
           </h2>
         </div>
       </div>

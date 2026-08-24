@@ -21,7 +21,6 @@ export function Fields() {
   return (
     <section id="fields" className="fields-sec">
       <div className="fields-head">
-        <div className="sec-eyebrow" data-reveal>What&apos;s happening</div>
         <h2 className="fields-title" data-reveal data-reveal-delay="1">
           Latest from <em>CA360</em>.
         </h2>

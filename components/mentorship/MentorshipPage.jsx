@@ -64,8 +64,7 @@ function HowItWorks() {
   ];
   return (
     <section className="mt-how" aria-labelledby="mt-how-title">
-      <div className="mt-how-head">
-        <span className="sec-eyebrow">HOW THE INTRODUCTION WORKS</span>
+              <div className="mt-how-head">
         <h2 id="mt-how-title">A person first.<br /><em>A process you can understand.</em></h2>
       </div>
       <div className="mt-how-grid">
@@ -100,8 +99,6 @@ function Spotlight({ mentor }) {
     <section className="mt-spotlight" aria-labelledby="mt-spotlight-title">
       <div className="mt-spotlight-media">
         <MentorPortrait mentor={mentor} />
-        <div className="mt-spotlight-mark">PATH / {mentor.field.toUpperCase()}</div>
-        <div className="mt-spotlight-stamp">A REAL<br />STARTING<br /><em>POINT.</em></div>
       </div>
       <div className="mt-spotlight-copy">
         <div className="mt-spotlight-kicker"><MentorStatus mentor={mentor} /> <TrackPill trackId={mentor.track} /></div>
@@ -124,7 +121,6 @@ function Directory({ filter, setFilter, mentors, selectedSlug, onSelect }) {
     <section className="mt-directory" id="mentor-directory" aria-labelledby="mt-directory-title">
       <div className="mt-directory-head">
         <div>
-          <span className="sec-eyebrow">THE MENTOR INDEX</span>
           <h2 id="mt-directory-title">Choose the question<br /><em>before the title.</em></h2>
           <p>Start with the kind of help you need. Then meet the person whose path can make the next step less abstract.</p>
         </div>
@@ -163,9 +159,7 @@ function Directory({ filter, setFilter, mentors, selectedSlug, onSelect }) {
 function TrustNote() {
   return (
     <section className="mt-trust" aria-labelledby="mt-trust-title">
-      <div className="mt-trust-index">BEFORE YOU ASK</div>
       <div className="mt-trust-copy">
-        <span className="sec-eyebrow">A CLEAR NEXT STEP</span>
         <h2 id="mt-trust-title">Choosing a mentor starts a <em>conversation</em>, not an instant match.</h2>
         <p>When you request someone, CA360 receives your preference and helps confirm the right next step, availability, programme fit, and the safest way to begin. This page is a starting point for a human introduction — not an unmoderated private connection.</p>
         <div className="mt-trust-links">
@@ -218,8 +212,7 @@ export function MentorshipPage({ initialMentorSlug = '' }) {
     <main className="mentorship-page">
       <section className="mt-hero" id="mentorship-top">
         <div className="mt-hero-main" data-reveal>
-          <RouteMarker label="Mentorship" context="Choose carefully" dark />
-          <p className="mt-kicker">REAL PATHS · HONEST ANSWERS · A HUMAN INTRODUCTION</p>
+          <RouteMarker label="Mentorship" dark />
           <h1>Meet the people behind the next version of <em>you.</em></h1>
           <p className="mt-hero-dek">A curated starting point for students carrying a career question. Browse a real mentor, read the honest version of their path, and ask CA360 to help make the connection carefully.</p>
           <div className="mt-hero-actions">
@@ -232,12 +225,6 @@ export function MentorshipPage({ initialMentorSlug = '' }) {
           <p>Five people.<br /><em>Many ways in.</em></p>
           <span>Scroll to browse · tap to choose</span>
         </div>
-      </section>
-
-      <section className="mt-intro-strip" aria-label="Mentorship promise">
-        <span>THE CA360 MENTOR INDEX</span>
-        <p>Not a leaderboard. Not a perfect-match machine. A thoughtful first door.</p>
-        <span>GHANA · PATHS · QUESTIONS</span>
       </section>
 
       <div ref={directoryRef}>
@@ -262,7 +249,6 @@ export function MentorProfilePage({ mentorSlug }) {
       <section className="mt-profile-hero">
         <div className="mt-profile-topline">
           <a className="mt-back-link" href="/mentorship"><ArrowRight size={14} style={{ transform: 'rotate(180deg)' }} /> Back to the mentor index</a>
-          <span>PROFILE / {String(MENTORS.indexOf(mentor) + 1).padStart(2, '0')}</span>
         </div>
         <div className="mt-profile-grid">
           <div className="mt-profile-photo"><MentorPortrait mentor={mentor} /></div>
@@ -278,7 +264,6 @@ export function MentorProfilePage({ mentorSlug }) {
 
       <section className="mt-request-panel mt-request-panel-priority" aria-labelledby="mt-request-title">
         <div>
-          <span className="sec-eyebrow">YOUR NEXT STEP</span>
           <h2 id="mt-request-title">Ask CA360 to make the <em>introduction.</em></h2>
           <p>Requesting {mentor.name} tells CA360 where you would like to begin. The team will confirm fit, availability, and the safest next step before any introduction is made.</p>
         </div>
@@ -290,7 +275,6 @@ export function MentorProfilePage({ mentorSlug }) {
 
       <section className="mt-profile-body">
         <div className="mt-profile-story">
-          <span className="sec-eyebrow">THE PATH</span>
           <h2>There is more than one way to get <em>here.</em></h2>
           <p>{mentor.path}</p>
           <blockquote>&ldquo;{mentor.quote}&rdquo;</blockquote>
@@ -309,7 +293,6 @@ export function MentorProfilePage({ mentorSlug }) {
       </section>
 
       <section className="mt-profile-conversation">
-        <div className="mt-profile-conversation-label">WHAT A FIRST CONVERSATION CAN COVER</div>
         <div>
           <h2>Start with the question that has been sitting <em>there.</em></h2>
           <p>{mentor.firstConversation}</p>
@@ -317,13 +300,12 @@ export function MentorProfilePage({ mentorSlug }) {
       </section>
 
       <section className="mt-profile-boundary">
-        <div className="mt-profile-boundary-mark">A USEFUL<br />BOUNDARY</div>
         <p>{mentor.boundary}</p>
       </section>
 
       {related.length > 0 && (
         <section className="mt-related" aria-labelledby="mt-related-title">
-          <div><span className="sec-eyebrow">KEEP EXPLORING</span><h2 id="mt-related-title">Another path<br /><em>might fit.</em></h2></div>
+          <div><h2 id="mt-related-title">Another path<br /><em>might fit.</em></h2></div>
           <div className="mt-related-grid">{related.map((item) => <a href={`/mentorship/${item.slug}`} className="mt-related-card" key={item.slug}><MentorPortrait mentor={item} /><span><strong>{item.name}</strong><small>{item.specialty} · {item.field} · {item.role}</small></span><ArrowRight size={15} /></a>)}</div>
         </section>
       )}

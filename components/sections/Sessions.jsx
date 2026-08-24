@@ -57,7 +57,6 @@ export function Sessions() {
       onMouseLeave={() => setPaused(false)}
     >
       <div className="sessions-head">
-        <div className="sec-eyebrow" data-reveal>From the field</div>
         <h2 className="sessions-title" data-reveal data-reveal-delay="1">
           Recent <em>sessions</em>,<br />from the journal.
         </h2>

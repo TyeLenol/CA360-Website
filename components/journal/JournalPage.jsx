@@ -70,7 +70,7 @@ const ARTICLES = [
     title: "Three mentors on the rejection they almost didn't recover from.",
     excerpt: "A residency that almost wasn't. A law school no. A grad scheme that came down to one phone call. Three stories, three reframes.",
     author: 'Esi Adjei', authorSeed: 6, authorRole: 'Paediatrics House Officer', date: 'DEC 12, 2025', readTime: '7 min',
-    tone: 'warm', label: 'INTERVIEWS · 03' },
+    tone: 'warm', label: 'INTERVIEWS' },
   { id: 'a8', cat: 'guide', catLabel: 'CAREER GUIDE',
     title: 'Five questions to ask before you commit to a course.',
     excerpt: 'The ones that would have saved a lot of people a lot of confusion — and the answers you should actually demand before signing anything.',
@@ -108,7 +108,7 @@ function JournalHero() {
     <section className="jh-hero" id="journal-top">
       <div className="jh-hero-sticky">
         <div className="jh-hero-top">
-          <RouteMarker label="Journal" context="stories, guides, honest takes" />
+          <RouteMarker label="Journal" />
           <div className="jh-hero-side" data-reveal data-reveal-delay="1">
             A journal on mentorship,<br />
             <em>careers, and the life after SHS.</em>
@@ -130,7 +130,6 @@ function JournalHero() {
         {/* Metric + statement — scroll-animated on desktop, always visible on mobile */}
         <div className="jh-hero-lower">
           <div className="jh-hero-metric">
-            <div className="jh-hero-metric-label">ON THE SHELF</div>
             <div className="jh-hero-metric-num">{ARTICLES.length}</div>
             <div className="jh-hero-metric-suf">articles</div>
           </div>
@@ -164,11 +163,6 @@ function JournalFeatured({ article, onOpen }) {
   return (
     <section className="jf-sec" id="journal-featured" ref={secRef}>
       <div className="jf-sticky">
-        <div className="jf-eyebrow" data-reveal>
-          <span className="jf-eyebrow-mark">★</span>
-          A good place to begin · Featured story
-          <span className="jf-eyebrow-rule" />
-        </div>
         <article className="jf-card">
           {/* Image arrives first */}
           <div className="jf-img">
@@ -380,7 +374,6 @@ function JournalGrid({ articles, filter, onFilter, onOpen }) {
       <div className="jgrid-header">
         <div className="jgrid-header-copy">
           <div>
-            <span className="jgrid-kicker">{filter === 'all' ? 'THE FULL SHELF' : 'FILTERED SHELF'}</span>
             <h2 id="journal-grid-title">The archive, <em>in full.</em></h2>
             <p>{filter === 'all' ? 'Browse every story, guide, and honest take.' : `Showing ${visibleCount} ${categoryLabel.toLowerCase()}.`}</p>
           </div>
@@ -497,8 +490,7 @@ function JournalLettersTransition() {
           aria-hidden={!newsletterReady}
         >
           <article className="jnews-inset" aria-labelledby="journal-letter-title">
-            <div className="jnews-inset-body">
-              <div className="jnews-inset-tag">DON&apos;T MISS AN ISSUE</div>
+              <div className="jnews-inset-body">
               <h3 className="jnews-inset-title" id="journal-letter-title">
                 One letter, <em>once a month</em>.
               </h3>
@@ -520,9 +512,6 @@ function JournalLettersTransition() {
                   {done ? '✓ SUBSCRIBED' : <><span>SUBSCRIBE</span> <ArrowRight color="#0a1f29" size={14} /></>}
                 </button>
               </form>
-            </div>
-            <div className="jnews-inset-side" aria-hidden="true">
-              Letters from the field, written by the people who&apos;ve walked it.
             </div>
           </article>
         </div>

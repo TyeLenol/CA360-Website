@@ -5,7 +5,7 @@
 /* === JOIN === */
 .join-sec {
   position: relative;
-  height: 480vh;     /* longer scroll space to slow it down */
+  height: 360vh;
   background: var(--c-ink);
 }
 .join-pin {
@@ -14,64 +14,60 @@
   height: 100vh;
   width: 100%;
   overflow: hidden;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  align-items: center;
 }
 .join-stage {
   position: absolute;
-  inset: 24px 24px 96px;
-  border-radius: 36px;
+  inset: 24px 24px 76px;
+  border-radius: 32px;
   overflow: hidden;
+  background: var(--c-teal-deep);
 }
 
-/* Big fading background boards */
+/* One scene: the relevant panel image fills the frame and fades between states. */
 .join-big-bg {
   position: absolute;
   inset: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
   transition: opacity 0.5s ease;
   will-change: opacity;
 }
-.join-big-photo-wrap {
-  position: relative;
-  grid-column: 2; /* right side */
+.join-big-bg > .ph {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
+  filter: saturate(0.82);
 }
-.join-panel-deco {
+.join-stage-shade {
   position: absolute;
-  bottom: 24px; right: 24px;
-  width: 120px; height: 120px;
-  border-radius: 50%;
-  border: 2px dashed rgba(255, 255, 255, 0.6);
-  animation: spin 22s linear infinite;
+  inset: 0;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(10, 31, 41, 0.18) 0%, rgba(10, 31, 41, 0.65) 100%);
   pointer-events: none;
 }
 
-/* Falling stack on the left */
+/* Falling cards share the same canvas as the image instead of splitting the scene. */
 .join-stack {
-  position: relative;
-  grid-column: 1; /* left side */
-  height: 100%;
+  position: absolute;
+  inset: 0;
+  z-index: 3;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-left: 24px;
+  padding: 96px 24px 70px;
 }
 
 .join-small-card {
   position: absolute;
-  width: 480px;
-  background: #fff;
-  padding: 48px;
-  border-radius: 24px;
-  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+  width: min(520px, calc(100% - 48px));
+  background: var(--c-cream);
+  padding: 38px 40px 34px;
+  border-radius: 20px;
+  box-shadow: 0 22px 54px rgba(10, 31, 41, 0.3);
   will-change: transform, opacity;
   display: flex;
   flex-direction: column;
 }
+.join-card-photo { display: none; }
 
 .join-panel-tag-small {
   font: 700 11px var(--font-mono);
@@ -134,45 +130,45 @@
   box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.15);
 }
 
-/* Persistent rail at bottom */
+/* Minimal progress cue: state dots plus a quiet progress line. */
 .join-rail {
   position: absolute;
-  bottom: 24px;
-  left: 48px;
-  right: 48px;
-  display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 32px;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(280px, calc(100% - 48px));
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   align-items: center;
   z-index: 5;
-  color: #fff;
 }
-.join-rail-label {
-  font: 700 11px var(--font-mono);
-  letter-spacing: 0.16em;
-  color: var(--c-orange);
-}
-.join-rail-steps {
+.join-rail-dots {
   display: flex;
   align-items: center;
-  gap: 28px;
+  gap: 8px;
 }
-.join-rail-step {
-  display: flex; align-items: center; gap: 10px;
-  font: 600 13px var(--font-display);
-  color: rgba(255, 255, 255, 0.5);
-  transition: color 0.4s;
+.join-rail-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: 1px solid rgba(254, 249, 238, 0.72);
+  background: transparent;
+  transition: width 0.35s ease, border-color 0.35s ease, background 0.35s ease;
 }
-.join-rail-step.is-active { color: #fff; }
-.join-rail-step.is-done { color: var(--c-orange); }
+.join-rail-dot.is-active {
+  width: 28px;
+  border-color: var(--c-orange);
+  background: var(--c-orange);
+  border-radius: 999px;
+}
+.join-rail-dot.is-done { background: rgba(254, 249, 238, 0.72); }
 .join-rail-progress {
-  grid-column: 1 / -1;
-  grid-row: 2;
+  width: 100%;
   height: 2px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(254, 249, 238, 0.2);
   border-radius: 999px;
   overflow: hidden;
-  margin-top: 4px;
 }
 .join-rail-progress-bar {
   height: 100%;
@@ -188,7 +184,7 @@
   color: #fff;
 }
 .join-overlay-title {
-  margin-top: 12px;
+  margin: 0;
   font-family: var(--font-display);
   font-weight: 800;
   font-size: 36px;
@@ -212,28 +208,11 @@
 }
 .news-grid {
   display: grid;
-  grid-template-columns: 160px 1fr 1fr;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   gap: 64px;
-  align-items: start;
+  align-items: end;
   max-width: 1280px;
   margin: 0 auto;
-}
-.news-folio {
-  font: 500 11px var(--font-mono);
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--c-teal);
-  line-height: 1.4;
-}
-.news-folio strong {
-  display: block;
-  font-family: var(--font-serif);
-  font-weight: 400;
-  font-style: italic;
-  font-size: 64px;
-  letter-spacing: -0.02em;
-  color: var(--c-orange);
-  margin-bottom: 8px;
 }
 .news-copy {}
 .news-title {
@@ -275,6 +254,7 @@
 .news-input-wrap.is-success { border-color: var(--c-orange); }
 .news-input-wrap input {
   flex: 1;
+  min-width: 0;
   border: 0;
   outline: 0;
   background: transparent;
@@ -285,6 +265,7 @@
 .news-input-wrap input::placeholder { color: var(--c-muted); }
 .news-input-wrap button {
   display: inline-flex; align-items: center; gap: 8px;
+  white-space: nowrap;
   font: 700 13px var(--font-display);
   letter-spacing: 0.1em;
   color: var(--c-orange);
@@ -295,7 +276,8 @@
 
 .news-foot {
   display: flex;
-  gap: 18px;
+  flex-wrap: wrap;
+  gap: 8px 18px;
   margin-top: 14px;
   font: 500 12px var(--font-mono);
   letter-spacing: 0.1em;

@@ -271,7 +271,7 @@ function GalleryHero() {
 
         <div className="gh-hero-inner">
           <div className="gh-hero-route-marker" style={isMobile ? {} : arrive(0.0, 0.22, 20)}>
-            <RouteMarker label="Gallery" context="real sessions, people, change" dark />
+            <RouteMarker label="Gallery" dark />
           </div>
           <h1 className="gh-hero-title">The Moments.</h1>
           <p className="gh-hero-sub" style={isMobile ? {} : arrive(0.08, 0.30, 32)}>
@@ -317,7 +317,6 @@ function GalleryFilmstrip({ onAlbumClick }) {
     <section className="gstrip-wrap" ref={ref}>
       <div className="gstrip-sticky">
         <div className="gstrip-header">
-          <div className="gstrip-section-label" data-reveal>THE ALBUMS</div>
           <div className="gstrip-hint">Scroll to browse · click an album to open</div>
           <div className="gstrip-counter">
             <span className="gstrip-counter-active">{String(activeIdx + 1).padStart(2, '0')}</span>
@@ -455,7 +454,6 @@ function GalleryStories() {
   return (
     <section className="gstories-section">
       <div className="gstories-header" data-reveal>
-        <div className="gstories-eyebrow">STORIES</div>
         <h2 className="gstories-title">Moments in context.</h2>
       </div>
       <div className="gstories-grid">
@@ -482,7 +480,6 @@ function GalleryCTA() {
   return (
     <section className="gcta-section">
       <div className="gcta-inner" data-reveal>
-        <div className="gcta-eyebrow">Join the story</div>
         <h2 className="gcta-title">Be in the next photo.</h2>
         <p className="gcta-sub">Attend a session. Become a mentor. Show up.</p>
         <a className="gcta-btn" href="/#opportunity">See how to get involved</a>

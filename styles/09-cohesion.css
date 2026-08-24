@@ -374,7 +374,6 @@
 
 /* Gallery labels and active controls */
 .gstrip-hint,
-.gstrip-section-label,
 .gstrip-tile-desc { color: var(--c-body); }
 .gstrip-tile-pair { color: var(--c-teal-deep); }
 .ggrid-filter-btn { color: rgba(254, 249, 238, 0.86); }
@@ -508,7 +507,7 @@
 .fields-bulletin-tag,
 .programs-tag,
 .programs-more,
-.gain-num,
+
 .gain-link,
 .sessions-read,
 .news-lab,
@@ -534,19 +533,14 @@
 .ggrid-filter-btn { color: rgba(254, 249, 238, 0.86); }
 .ggrid-filter-btn:hover { color: var(--c-orange-soft); }
 .ggrid-tile-desc { color: rgba(254, 249, 238, 0.82); }
-.gcta-eyebrow,
 .gcta-sub,
 .gh-hero-sub,
 .gh-hero-cue { color: var(--c-cream); }
 
 /* Mentorship light/dark card state corrections. */
 
-.mt-how .sec-eyebrow,
 .mt-profile-question span,
 .mt-profile-fit-label,
-.mt-profile-story .sec-eyebrow,
-.mt-related .sec-eyebrow,
-.mt-request-panel-priority .sec-eyebrow,
 .mt-spotlight-role,
 .mt-spotlight-actions .mt-text-link,
 .mt-request-panel-priority .mt-text-link,
@@ -567,15 +561,13 @@
 
 /* Journal light/orange transitions and reader chrome. */
 .jcard-meta-sep { color: var(--c-orange-soft); }
-.jf-eyebrow-mark,
 .jreader-topline,
 .jreader-kicker,
 .jreader-close span,
 .jreader-author { color: var(--c-teal-deep); }
 
 .jnews-inset-title em,
-.jnews-inset-sub,
-.jnews-inset-side { color: var(--c-ink); }
+.jnews-inset-sub { color: var(--c-ink); }
 .jnews-inset-form input::placeholder { color: rgba(10, 31, 41, 0.72); }
 
 /* Contact form support and required-field indicators. */

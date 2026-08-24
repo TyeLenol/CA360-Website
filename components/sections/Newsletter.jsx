@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import { ArrowRight } from '../shared/Icons';
 
-export function Newsletter() {
+export function NewsletterSignup({ contact = false }) {
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const inputId = contact ? 'contact-newsletter-email' : 'newsletter-email';
 
   const onSubmit = (e) => {
     e.preventDefault();
@@ -17,14 +18,35 @@ export function Newsletter() {
   };
 
   return (
+    <form className={'news-form' + (contact ? ' news-form--contact' : '')} onSubmit={onSubmit}>
+      <label className="news-lab" htmlFor={inputId}>YOUR EMAIL</label>
+      <div className={'news-input-wrap' + (submitted ? ' is-success' : '')}>
+        <input
+          id={inputId}
+          type="email"
+          placeholder="you@university.edu.gh"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <button type="submit" aria-label="Subscribe">
+          {submitted ? 'SUBSCRIBED' : <>SUBSCRIBE <ArrowRight size={14} color="#d68307" /></>}
+        </button>
+      </div>
+      <div className="news-foot">
+        <span>Free</span>
+        <span>No tracking</span>
+        <span>Once a month, max</span>
+      </div>
+    </form>
+  );
+}
+
+export function Newsletter() {
+  return (
     <section id="news" className="news-sec">
       <div className="news-grid">
-        <div className="news-folio" data-reveal>
-          <strong>10</strong>
-          STAY<br />IN TOUCH
-        </div>
-
-        <div className="news-copy" data-reveal data-reveal-delay="1">
+        <div className="news-copy" data-reveal>
           <h2 className="news-title">
             Once a month. One <em>letter</em>. No spam.
           </h2>
@@ -34,28 +56,20 @@ export function Newsletter() {
           </p>
         </div>
 
-        <form className="news-form" onSubmit={onSubmit} data-reveal data-reveal-delay="2">
-          <label className="news-lab" htmlFor="newsletter-email">YOUR EMAIL</label>
-          <div className={'news-input-wrap' + (submitted ? ' is-success' : '')}>
-            <input
-              id="newsletter-email"
-              type="email"
-              placeholder="you@university.edu.gh"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-            <button type="submit" aria-label="Subscribe">
-              {submitted ? '✓ SUBSCRIBED' : <>SUBSCRIBE <ArrowRight size={14} color="#d68307" /></>}
-            </button>
-          </div>
-          <div className="news-foot">
-            <span>· Free</span>
-            <span>· No tracking</span>
-            <span>· Once a month, max</span>
-          </div>
-        </form>
+        <NewsletterSignup />
       </div>
+    </section>
+  );
+}
+
+export function ContactNewsletter() {
+  return (
+    <section className="ct-newsletter" id="newsletter" data-reveal aria-labelledby="ct-newsletter-title">
+      <div className="ct-newsletter-copy">
+        <h2 id="ct-newsletter-title">Keep the useful things <em>coming.</em></h2>
+        <p>One calm email a month with session recaps, mentor notes, and practical career guidance.</p>
+      </div>
+      <NewsletterSignup contact />
     </section>
   );
 }

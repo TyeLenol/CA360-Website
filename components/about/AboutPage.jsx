@@ -84,7 +84,6 @@ function AboutDialogue() {
   return (
     <section className="ab-hero" id="about-top">
       <div className="ab-hero-head">
-        <span className="sec-eyebrow" data-reveal>About · Career Arcadia 360</span>
         <h1 className="ab-hero-title" data-reveal data-reveal-delay="1">
           Mentorship,<br />as a <em>conversation</em>.
         </h1>
@@ -144,8 +143,7 @@ function AboutLoop() {
 
   return (
     <section className="ab-loop" id="about-loop" aria-labelledby="about-loop-title">
-      <div className="ab-loop-intro" data-reveal>
-        <div className="ab-tile-eyebrow">THE CA360 LOOP</div>
+        <div className="ab-loop-intro" data-reveal>
         <p>Good mentorship does not choose your future for you. It makes the next choice less lonely.</p>
       </div>
       <div className="ab-loop-main">
@@ -223,7 +221,6 @@ function FounderTile() {
           </PhotoPlaceholder>
         </div>
         <div>
-          <div className="ab-tile-eyebrow">THEY ASK — WHY START THIS?</div>
           <h3 className="ab-founder-name">A letter from the founder</h3>
         </div>
       </div>
@@ -250,7 +247,6 @@ function FounderTile() {
 function StartTile() {
   return (
     <article className="ab-tile ab-start" data-reveal aria-labelledby="ab-start-title">
-      <div className="ab-tile-eyebrow">THE FIRST DOOR</div>
       <div className="ab-start-mark" aria-hidden="true">?</div>
       <h3 id="ab-start-title">Before the title, start with the <em>question.</em></h3>
       <p>Not sure what to study or who to ask? Tell CA360 where the uncertainty sits and we will help you find a useful first conversation.</p>
@@ -270,21 +266,15 @@ export function AboutPage() {
 
       <section className="ab-bento" aria-label="About Career Arcadia 360">
         <article className="ab-tile ab-mission" data-reveal>
-          <div className="ab-tile-eyebrow">THE SHORT VERSION</div>
           <h2 className="ab-mission-text">
             We bridge the gap between aspiring professionals and the{' '}
             <mark>knowledge</mark> they need to succeed — through honest mentorship,
             lived experience, and a community that <em>shows up</em>.
           </h2>
-          <div className="ab-mission-meta">
-            <span>SINCE 2024 · GHANA</span>
-            <span>FREE TO ATTEND</span>
-            <span>RUN BY YOUNG DOCTORS &amp; ALUMNI</span>
-          </div>
+          <p className="ab-mission-meta">Started in 2024 in Ghana · Free to attend · Run by young Ghanaian doctors &amp; alumni.</p>
         </article>
 
         <article className="ab-tile ab-vision" data-reveal data-reveal-delay="1">
-          <div className="ab-tile-eyebrow">THE FUTURE WE&apos;RE BUILDING</div>
           <h3 className="ab-vision-head">A Ghana where no one picks a future <em>blind</em>.</h3>
           <ul className="ab-tracks">
             {TRACKS.map((t) => (
@@ -304,7 +294,6 @@ export function AboutPage() {
         </div>
 
         <article className="ab-tile ab-impact" data-reveal>
-          <div className="ab-tile-eyebrow">THE PROOF <Star size={12} color="#d68307" /></div>
           <div className="ab-proof-note">Current programme snapshot</div>
           <div className="ab-impact-grid">
             {STATS.map((s) => <ImpactStat key={s.label} stat={s} />)}
@@ -315,7 +304,6 @@ export function AboutPage() {
         <StartTile />
 
         <article className="ab-tile ab-team" data-reveal>
-          <div className="ab-tile-eyebrow">THE PEOPLE BEHIND IT</div>
           <div className="ab-team-grid">
             {TEAM.map((m) => (
               <div className="ab-member" key={m.name}>
@@ -332,7 +320,6 @@ export function AboutPage() {
         </article>
 
         <article className="ab-tile ab-partners" data-reveal data-reveal-delay="1">
-          <div className="ab-tile-eyebrow">WORK WITH US</div>
           <p className="ab-partners-text">Good mentorship travels further when a school, hospital, or sponsor helps open the door.</p>
           <ul className="ab-partner-list">
             <li>Host a student session</li>

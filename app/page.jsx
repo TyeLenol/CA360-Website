@@ -1,6 +1,5 @@
 import { Hero } from '../components/sections/Hero';
 import { CurrentOpportunity } from '../components/sections/CurrentOpportunity';
-import { ChapterBridge } from '../components/sections/ChapterBridge';
 import { Mission } from '../components/sections/Mission';
 import { Origin } from '../components/sections/Origin';
 import { Fields } from '../components/sections/Fields';
@@ -23,7 +22,6 @@ export default function HomePage() {
     <main>
       <Hero />
       <CurrentOpportunity />
-      <ChapterBridge />
       <Mission />
       <Origin />
       <Fields />

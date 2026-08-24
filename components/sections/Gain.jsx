@@ -5,20 +5,17 @@ import { ArrowRight } from '../shared/Icons';
 import { useScrollProgress } from '../../hooks/ui-hooks';
 
 const cards = [
-  { num: '01',
-    title: 'Academic guidance.',
+  { title: 'Academic guidance.',
     desc: 'Course-by-course advice from people who passed the same papers, two or more years before you. No theory — only what worked.',
     tape: 'rgba(54, 114, 143, 0.55)',
     href: '/journal#journal-grid',
     x:  -120, rot: -3.5, startP: 0.08, endP: 0.34 },
-  { num: '02',
-    title: 'Career clarity.',
+  { title: 'Career clarity.',
     desc: 'A clear picture of what each profession actually looks like on a Tuesday morning — not just at graduation. The good and the boring.',
     tape: 'rgba(214, 131, 7, 0.55)',
     href: '#sessions',
     x:    0, rot:  2.5, startP: 0.34, endP: 0.62 },
-  { num: '03',
-    title: 'Personal growth.',
+  { title: 'Personal growth.',
     desc: "Leadership, stress management, work-life balance — and the permission to build an identity that isn't only your job title.",
         tape: 'rgba(54, 114, 143, 0.55)',
     href: '#mentors',
@@ -49,7 +46,6 @@ export function Gain() {
     <section id="gain" className={'gain-sec' + (isMobile ? ' gain-sec--mobile' : '')} ref={wrapRef}>
       <div className="gain-pin">
         <div className="gain-head">
-          <div className="sec-eyebrow" data-reveal>What you gain</div>
           <h2 className="gain-title" data-reveal data-reveal-delay="1">
             Three things you walk away with — <em>every time</em>.
           </h2>
@@ -64,14 +60,13 @@ export function Gain() {
             if (isMobile) {
               return (
                 <article
-                  key={c.num}
+                  key={c.title}
                   className={'gain-card gain-card-' + (i + 1)}
                   style={{ '--tape': c.tape }}
                   data-reveal
                   data-reveal-delay={String(i + 1)}
                 >
                   <span className="gain-tape" />
-                  <div className="gain-num">{c.num}</div>
                   <h3>{c.title}</h3>
                   <p>{c.desc}</p>
                   <a className="gain-link" href={c.href}>Explore {c.title.toLowerCase()} <ArrowRight size={14} color="#d68307" /></a>
@@ -88,7 +83,7 @@ export function Gain() {
 
             return (
               <article
-                key={c.num}
+                key={c.title}
                 className={'gain-card gain-card-' + (i + 1)}
                 style={{
                   '--tape': c.tape,
@@ -98,7 +93,6 @@ export function Gain() {
                 }}
               >
                 <span className="gain-tape" />
-                <div className="gain-num">{c.num}</div>
                 <h3>{c.title}</h3>
                 <p>{c.desc}</p>
                 <a className="gain-link" href={c.href}>Explore {c.title.toLowerCase()} <ArrowRight size={14} color="#d68307" /></a>

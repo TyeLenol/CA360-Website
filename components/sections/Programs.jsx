@@ -24,7 +24,6 @@ export function Programs() {
   return (
     <section id="programs" className="programs-sec">
       <div className="programs-head">
-        <div className="sec-eyebrow" data-reveal>What we do</div>
         <h2 className="programs-title" data-reveal data-reveal-delay="1">
           Three ways mentorship<br /><em>actually</em> happens.
         </h2>

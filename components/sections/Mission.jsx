@@ -3,10 +3,6 @@
 export function Mission() {
   return (
     <section id="mission" className="mission">
-      <div className="mission-label" data-reveal>
-        <span className="mission-num">01 / MISSION</span>
-        <span className="mission-tag">— What we exist for</span>
-      </div>
       <p className="mission-text" data-reveal data-reveal-delay="1">
         We bridge the gap between aspiring professionals and the{' '}
         <mark className="mission-mark">knowledge</mark>{' '}

@@ -5,6 +5,7 @@ import { ArrowRight } from '../shared/Icons';
 import { RouteMarker } from '../shared/RouteMarker';
 import { usePrefersReducedMotion } from '../../hooks/ui-hooks';
 import { getMentor } from '../../data/mentors';
+import { ContactNewsletter } from '../sections/Newsletter';
 
 const PATHS = [
   {
@@ -226,8 +227,7 @@ export function ContactPage() {
     <main className={'contact-page' + (reduced ? ' ct-reduced' : '')}>
       <section className="ct-hero" id="contact-top">
         <div className="ct-hero-left" data-reveal>
-          <RouteMarker label="Contact" context="Start here" />
-          <p className="ct-kicker">A NOTE, A QUESTION, A NEXT MOVE.</p>
+          <RouteMarker label="Contact" />
           <h1>Start the <em>conversation</em>.</h1>
           <p className="ct-hero-dek">Have a question? Good. That is usually where the useful conversation starts.</p>
           <a className="ct-hero-email" href="mailto:hello@careerarcadia360.org">hello@careerarcadia360.org <ArrowRight color="currentColor" size={14} /></a>
@@ -235,7 +235,6 @@ export function ContactPage() {
       </section>
 
       <section className="ct-intro" data-reveal aria-labelledby="ct-intro-title">
-        <div className="ct-intro-label">CHOOSE YOUR WAY IN</div>
         <div>
           <h2 id="ct-intro-title">Tell us what brought you here.</h2>
           <p>Students, mentors, schools, partners, and curious people all start in a different place. Choose the closest one and we will keep the next step useful.</p>
@@ -265,7 +264,6 @@ export function ContactPage() {
       </section>
 
       <section className="ct-expect" data-reveal aria-labelledby="ct-expect-title">
-        <div className="ct-expect-sign">WHAT HAPPENS NEXT?</div>
         <div className="ct-expect-copy">
           <h2 id="ct-expect-title">You send the question.<br /><em>We find the right door.</em></h2>
           <p>We read every message. When the team confirms the response window, this is where the honest timing will live. Until then, we will not promise a reply time we cannot guarantee.</p>
@@ -275,6 +273,8 @@ export function ContactPage() {
           <a href="mailto:hello@careerarcadia360.org">Email hello@careerarcadia360.org <ArrowRight color="currentColor" size={14} /></a>
         </div>
       </section>
+
+      <ContactNewsletter />
 
       <section className="ct-close" data-reveal>
         <p>Every good path starts with a question.</p>

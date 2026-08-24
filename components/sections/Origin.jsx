@@ -6,8 +6,6 @@ export function Origin() {
   return (
     <section id="origin" className="origin">
       <div className="origin-inner">
-        <div className="sec-eyebrow" data-reveal>Origin</div>
-
         <div className="origin-grid">
           <div className="origin-photo-wrap" data-reveal data-reveal-delay="1">
             <div className="origin-photo">

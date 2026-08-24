@@ -37,11 +37,6 @@ export function Impact() {
     <section id="impact" className="impact-sec" ref={wrapRef}>
       <div className="impact-pin">
         <div className="impact-inner" ref={innerRef}>
-          <div className="impact-tag">
-            <span className="impact-tag-pulse" />
-            PROOF / 24 MONTHS OF WORK
-          </div>
-
           <div
             className="impact-num"
             style={{
