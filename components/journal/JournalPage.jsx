@@ -317,7 +317,7 @@ function JournalReader({ article, onClose }) {
       <button className="jreader-backdrop" aria-label="Close article" onClick={onClose} />
       <article className="jreader-panel" ref={panelRef}>
         <div className="jreader-topline">
-          <span>STORY PREVIEW · {article.catLabel}</span>
+          <span>CA360 JOURNAL · {article.catLabel}</span>
           <button ref={closeRef} className="jreader-close" onClick={onClose} aria-label="Close article">
             CLOSE <span aria-hidden="true">×</span>
           </button>
