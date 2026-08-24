@@ -338,6 +338,11 @@ function JournalReader({ article, onClose }) {
           </button>
         </div>
         <div className="jreader-body">
+          <div className="jreader-paperhead" aria-label="Career Arcadia 360 Journal editorial preview">
+            <span>CAREER ARCADIA 360</span>
+            <strong>THE JOURNAL</strong>
+            <span>FIELD NOTES</span>
+          </div>
           <div className="jreader-kicker">{article.date} · {article.readTime}</div>
           <h2 id="jreader-title">{article.title}</h2>
           <div className="jreader-author">

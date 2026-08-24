@@ -76,8 +76,8 @@
   color: var(--c-ink);
   background: var(--c-cream);
   border: 1px solid var(--c-ink);
-  border-radius: 4px;
-  box-shadow: 11px 11px 0 var(--c-orange);
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .jreader-topline {
@@ -107,10 +107,29 @@
 .jreader-close:hover { color: var(--c-orange-deep); }
 
 .jreader-body {
-  padding: 54px clamp(28px, 7vw, 84px) 64px;
-  background:
-    linear-gradient(90deg, transparent 0, transparent 23px, rgba(10, 31, 41, 0.08) 23px, rgba(10, 31, 41, 0.08) 24px, transparent 24px) top left / 100% 100% no-repeat;
+  padding: 42px clamp(28px, 7vw, 84px) 64px;
+  background: var(--c-cream);
 }
+.jreader-paperhead {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 34px;
+  border-top: 3px double var(--c-ink);
+  border-bottom: 1px solid var(--c-ink);
+  padding: 10px 0 9px;
+  color: var(--c-teal-deep);
+  font: 700 9px/1 var(--font-mono);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.jreader-paperhead strong {
+  color: var(--c-ink);
+  font: 700 18px/1 var(--font-serif);
+  letter-spacing: 0.08em;
+}
+.jreader-paperhead span:last-child { text-align: right; }
 .jreader-kicker {
   margin-bottom: 20px;
   color: var(--c-orange-deep);
@@ -174,8 +193,8 @@
 .jreader-next strong {
   display: block;
   color: var(--c-ink);
-  font: 800 clamp(24px, 3.5vw, 38px)/1 var(--font-display);
-  letter-spacing: -0.04em;
+  font: 400 clamp(26px, 3.5vw, 42px)/0.98 var(--font-serif);
+  letter-spacing: -0.045em;
 }
 
 .jreader-next p {
@@ -235,7 +254,7 @@
 .jreader-recommendation strong {
   max-width: 320px;
   color: var(--c-ink);
-  font: 700 clamp(21px, 2.4vw, 30px)/1.03 var(--font-display);
+  font: 400 clamp(22px, 2.4vw, 31px)/1.02 var(--font-serif);
   letter-spacing: -0.04em;
 }
 
@@ -296,9 +315,12 @@
   .route-marker-context { width: auto; padding-left: 0; }
   .jload { align-items: flex-start; flex-direction: column; gap: 14px; }
   .jreader { padding: 14px; }
-  .jreader-panel { max-height: calc(100vh - 28px); border-radius: 18px; box-shadow: 7px 7px 0 var(--c-orange); }
+  .jreader-panel { max-height: calc(100vh - 28px); border-radius: 0; box-shadow: none; }
   .jreader-topline { padding: 16px 18px; font-size: 9px; }
-  .jreader-body { padding: 36px 22px 42px; }
+  .jreader-body { padding: 30px 22px 42px; }
+  .jreader-paperhead { grid-template-columns: 1fr auto; gap: 10px; margin-bottom: 28px; font-size: 8px; }
+  .jreader-paperhead span:last-child { display: none; }
+  .jreader-paperhead strong { font-size: 15px; }
   .jreader-body h2 { font-size: clamp(38px, 11vw, 62px); }
   .jreader-excerpt { font-size: 17px; }
   .jreader-next { padding: 24px 0 0; }
