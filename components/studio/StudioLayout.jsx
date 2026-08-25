@@ -8,15 +8,15 @@ import { StudioPermissionsProvider } from './StudioPermissions';
 
 const NAV_ITEMS = [
   { href: '/studio', label: 'Today', note: 'Overview' },
-  { href: '/studio/requests', label: 'Requests', note: 'Mentor introductions' },
-  { href: '/studio/inbox', label: 'Inbox', note: 'Messages' },
-  { href: '/studio/mentors', label: 'Mentors', note: 'People & specialties' },
-  { href: '/studio/sessions', label: 'Sessions', note: 'Events & attendance' },
+  { href: '/studio/requests', label: 'Requests', note: 'Mentor queue' },
+  { href: '/studio/inbox', label: 'Inbox', note: 'Shared messages' },
+  { href: '/studio/mentors', label: 'Mentors', note: 'People' },
+  { href: '/studio/sessions', label: 'Sessions', note: 'Events' },
 ];
 
 const COMING_ITEMS = [
-  { href: '/studio/journal', label: 'Journal', note: 'Editorial desk' },
-  { href: '/studio/content', label: 'Site content', note: 'Controlled copy' },
+  { href: '/studio/journal', label: 'Journal', note: 'Articles' },
+  { href: '/studio/content', label: 'Site content', note: 'Page copy' },
   { href: '/studio/media', label: 'Media', note: 'Approved assets' },
 ];
 
@@ -53,35 +53,41 @@ export function StudioLayout({ children, member }) {
         <div className="studio-sidebar-head">
           <a className="studio-brand" href="/studio" onClick={closeMenu}>
             <span className="studio-brand-mark"><LogoMark color="#fef9ee" accent="#d68307" size={24} /></span>
-            <span><strong>CA360</strong><small>STUDIO / CONTROL ROOM</small></span>
+            <span><small>CA360</small><strong>Studio</strong></span>
           </a>
-          <span className="studio-status-line"><i aria-hidden="true" /> Workspace live</span>
+          <div className="studio-workspace-meta"><span aria-hidden="true" /><span>OPERATIONS / GHANA</span></div>
         </div>
 
         <nav className="studio-nav" aria-label="Control room sections">
-          <span className="studio-nav-label">WORKSPACE</span>
-          {NAV_ITEMS.map((item) => (
-            <a key={item.href} href={item.href} className={`studio-nav-item${isActive(pathname, item.href) ? ' is-active' : ''}`} onClick={closeMenu}>
-              <span className="studio-nav-marker" aria-hidden="true" />
-              <span><strong>{item.label}</strong><small>{item.note}</small></span>
-              <ArrowRight size={14} />
-            </a>
-          ))}
-          <span className="studio-nav-label studio-nav-label--later">BUILDING NEXT</span>
-          {COMING_ITEMS.map((item) => (
-            <a key={item.href} href={item.href} className={`studio-nav-item studio-nav-item--later${isActive(pathname, item.href) ? ' is-active' : ''}`} onClick={closeMenu}>
-              <span className="studio-nav-marker" aria-hidden="true" />
-              <span><strong>{item.label}</strong><small>{item.note}</small></span>
-              <span className="studio-nav-soon">SOON</span>
-            </a>
-          ))}
+          <div className="studio-nav-heading"><span>Workspace</span><span>01—05</span></div>
+          {NAV_ITEMS.map((item, index) => {
+            const active = isActive(pathname, item.href);
+            return (
+              <a key={item.href} href={item.href} className={`studio-nav-item${active ? ' is-active' : ''}`} onClick={closeMenu} aria-current={active ? 'page' : undefined}>
+                <span className="studio-nav-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                <span><strong>{item.label}</strong><small>{item.note}</small></span>
+                <ArrowRight size={14} />
+              </a>
+            );
+          })}
+          <div className="studio-nav-divider"><span>Next on the desk</span><span>Later</span></div>
+          {COMING_ITEMS.map((item) => {
+            const active = isActive(pathname, item.href);
+            return (
+              <a key={item.href} href={item.href} className={`studio-nav-item studio-nav-item--later${active ? ' is-active' : ''}`} onClick={closeMenu} aria-current={active ? 'page' : undefined}>
+                <span className="studio-nav-number" aria-hidden="true">—</span>
+                <span><strong>{item.label}</strong><small>{item.note}</small></span>
+                <span className="studio-nav-soon">SOON</span>
+              </a>
+            );
+          })}
         </nav>
 
         <div className="studio-sidebar-foot">
-          <a className="studio-public-link" href="/" target="_blank" rel="noreferrer">View public site <ArrowRight size={14} /></a>
+          <a className="studio-public-link" href="/" target="_blank" rel="noreferrer"><span><small>PUBLIC EXIT</small>View public site</span><ArrowRight size={14} /></a>
           <div className="studio-operator">
             <span className="studio-avatar" aria-hidden="true">{(member?.display_name || 'O').slice(0, 1).toUpperCase()}</span>
-            <span><strong>{member?.display_name || 'CA360 operator'}</strong><small>{role}</small></span>
+            <span><small>Signed in as</small><strong>{member?.display_name || 'CA360 operator'}</strong><em>{role}</em></span>
             <button type="button" onClick={logout} aria-label="Sign out">↗</button>
           </div>
         </div>
