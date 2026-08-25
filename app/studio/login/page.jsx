@@ -15,6 +15,7 @@ export default function StudioLoginPage() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     if (params.get('error') === 'access') setError('Your account is signed in but does not have Studio access yet. Ask an admin to add you.');
+    if (params.get('error') === 'config') setError('Studio sign-in is not configured on this deployment. Add the Supabase public variables in Vercel and redeploy.');
   }, []);
 
   const submit = async (event) => {
@@ -23,6 +24,11 @@ export default function StudioLoginPage() {
     setNotice('');
     if (!email.trim() || !password) {
       setError('Enter the email and password assigned to your Studio account.');
+      return;
+    }
+
+    if (!supabase) {
+      setError('Studio sign-in is not configured on this deployment. Add the Supabase public variables in Vercel and redeploy.');
       return;
     }
 

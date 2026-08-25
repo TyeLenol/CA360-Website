@@ -4,6 +4,8 @@ import { createSupabaseServerClient } from '../../../lib/supabase/server';
 
 export default async function StudioWorkspaceLayout({ children }) {
   const supabase = await createSupabaseServerClient();
+  if (!supabase) redirect('/studio/login?error=config');
+
   const { data: claimsData } = await supabase.auth.getClaims();
   const claims = claimsData?.claims;
 
