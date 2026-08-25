@@ -11,13 +11,17 @@ import { Sessions } from '../components/sections/Sessions';
 import { JoinIn } from '../components/sections/JoinIn';
 import { Newsletter } from '../components/sections/Newsletter';
 import { FAQ } from '../components/sections/FAQ';
+import { getPublicMentors, getPublicSessions } from '../lib/public-content';
+
+export const revalidate = 60;
 
 export const metadata = {
   title: 'Mentorship that shows up',
   description: 'Real guidance. Real mentors. Real clarity — for SHS graduates stepping into medicine, law, engineering and business.',
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [liveMentors, liveSessions] = await Promise.all([getPublicMentors(), getPublicSessions()]);
   return (
     <main>
       <Hero />
@@ -27,9 +31,9 @@ export default function HomePage() {
       <Fields />
       <Programs />
       <Gain />
-      <Mentors />
+      <Mentors initialMentors={liveMentors} />
       <Impact />
-      <Sessions />
+      <Sessions initialSessions={liveSessions} />
       <JoinIn />
       <Newsletter />
       <FAQ />

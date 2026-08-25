@@ -144,25 +144,27 @@ function Directory({ filter, setFilter, mentors, selectedSlug, onSelect }) {
   );
 }
 
-export function MentorshipPage({ initialMentorSlug = '' }) {
+export function MentorshipPage({ initialMentorSlug = '', initialMentors = MENTORS }) {
+  const availableMentors = initialMentors?.length ? initialMentors : MENTORS;
+  const [mentors] = useState(availableMentors);
   const [filter, setFilter] = useState('all');
-  const [selectedSlug, setSelectedSlug] = useState(initialMentorSlug || MENTORS[0].slug);
+  const [selectedSlug, setSelectedSlug] = useState(initialMentorSlug || availableMentors[0]?.slug || MENTORS[0].slug);
   const directoryRef = useRef(null);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const requestedMentor = params.get('mentor');
     const requestedTrack = params.get('track');
-    if (requestedMentor && getMentor(requestedMentor)) setSelectedSlug(requestedMentor);
+    if (requestedMentor && mentors.some((mentor) => mentor.slug === requestedMentor)) setSelectedSlug(requestedMentor);
     if (requestedTrack && (requestedTrack === 'all' || getTrack(requestedTrack))) setFilter(requestedTrack);
-  }, []);
+  }, [mentors]);
 
-  const selected = getMentor(selectedSlug) || MENTORS[0];
-  const filteredMentors = useMemo(() => filter === 'all' ? MENTORS : MENTORS.filter((mentor) => mentor.track === filter), [filter]);
+  const selected = mentors.find((mentor) => mentor.slug === selectedSlug) || mentors[0] || MENTORS[0];
+  const filteredMentors = useMemo(() => filter === 'all' ? mentors : mentors.filter((mentor) => mentor.track === filter), [filter, mentors]);
 
   const selectMentor = (slug) => {
     setSelectedSlug(slug);
-    const mentor = getMentor(slug);
+    const mentor = mentors.find((item) => item.slug === slug);
     if (mentor && typeof window !== 'undefined') {
       const url = new URL(window.location.href);
       url.searchParams.set('mentor', mentor.slug);
@@ -205,10 +207,11 @@ export function MentorshipPage({ initialMentorSlug = '' }) {
   );
 }
 
-export function MentorProfilePage({ mentorSlug }) {
-  const mentor = getMentor(mentorSlug);
+export function MentorProfilePage({ mentorSlug, initialMentor, initialMentors = MENTORS }) {
+  const mentor = initialMentor || initialMentors.find((item) => item.slug === mentorSlug) || getMentor(mentorSlug);
   if (!mentor) return null;
-  const related = MENTORS.filter((item) => item.slug !== mentor.slug && item.track === mentor.track).slice(0, 2);
+  const mentorList = initialMentors?.length ? initialMentors : MENTORS;
+  const related = mentorList.filter((item) => item.slug !== mentor.slug && item.track === mentor.track).slice(0, 2);
 
   return (
     <main className="mentorship-page mt-profile-page">
