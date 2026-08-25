@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight } from '../shared/Icons';
 import { createSupabaseBrowserClient } from '../../lib/supabase/client';
 import { EmptyState, ErrorState, formatStudioDateTime, LoadingState, StatusBadge, StudioPage, StudioPageHeader } from './StudioShared';
+import { useStudioPermissions } from './StudioPermissions';
 
 const supabase = createSupabaseBrowserClient();
 const FILTERS = [
@@ -15,6 +16,7 @@ const FILTERS = [
 ];
 
 export function StudioRequests() {
+  const { canManageRequests, canAddNotes, roleLabel } = useStudioPermissions();
   const [requests, setRequests] = useState([]);
   const [mentors, setMentors] = useState([]);
   const [activity, setActivity] = useState([]);
@@ -56,6 +58,10 @@ export function StudioRequests() {
 
   const updateStatus = async (status) => {
     if (!selected) return;
+    if (!canManageRequests) {
+      setError('Your Studio role is read-only for request status. Ask an admin for coordinator access.');
+      return;
+    }
     setSaving(true);
     setNotice('');
     const { error: updateError } = await supabase.from('mentor_requests').update({ status }).eq('id', selected.id);
@@ -69,7 +75,7 @@ export function StudioRequests() {
 
   const addNote = async (event) => {
     event.preventDefault();
-    if (!selected || !note.trim()) return;
+    if (!selected || !note.trim() || !canAddNotes) return;
     setSaving(true);
     const { data: { user } } = await supabase.auth.getUser();
     const { error: insertError } = await supabase.from('request_activity').insert({ request_id: selected.id, actor_user_id: user?.id, activity_type: 'note', body: note.trim() });
@@ -88,7 +94,7 @@ export function StudioRequests() {
 
   return (
     <StudioPage className="studio-queue-page">
-      <StudioPageHeader kicker="THE HUMAN QUEUE" title={<>Requests, with<br /><em>care.</em></>} description="A student’s first question should never disappear into a crowded inbox. Move each request to its next useful step." action={<span className="studio-count-note">{requests.length} total records</span>} />
+      <StudioPageHeader kicker="THE HUMAN QUEUE" title={<>Requests, with<br /><em>care.</em></>} description="A student’s first question should never disappear into a crowded inbox. Move each request to its next useful step." action={<span className="studio-count-note">{requests.length} total records{!canManageRequests ? ` · read-only ${roleLabel}` : ''}</span>} />
       <div className="studio-filter-row" role="group" aria-label="Filter mentor requests">{FILTERS.map((item) => <button key={item.value} className={filter === item.value ? 'is-active' : ''} type="button" onClick={() => setFilter(item.value)}>{item.label}<span>{item.value === 'all' ? requests.length : requests.filter((request) => request.status === item.value).length}</span></button>)}</div>
 
       {visibleRequests.length === 0 ? <EmptyState title="No requests in this view." description={filter === 'all' ? 'The queue is clear. That is a good quiet moment.' : 'Try another status filter to find the next conversation.'} /> : <div className="studio-split-layout">
@@ -98,8 +104,8 @@ export function StudioRequests() {
           <div className="studio-detail-meta"><div><span>FIELD OF INTEREST</span><strong>{selected.field_interest || 'Not specified'}</strong></div><div><span>REFERRED MENTOR</span><strong>{selectedMentor ? `${selectedMentor.name} · ${selectedMentor.field}` : 'CA360 to recommend'}</strong></div></div>
           <div className="studio-detail-block"><span className="studio-panel-kicker">WHAT THEY WANT HELP WITH</span><p>{selected.goals}</p></div>
           {selected.recommendation_reason && <div className="studio-detail-callout"><span className="studio-panel-kicker">MATCHING NOTE</span><p>{selected.recommendation_reason}</p></div>}
-          <div className="studio-status-actions"><span className="studio-panel-kicker">MOVE THIS REQUEST</span><div>{['new', 'reviewing', 'matched', 'closed'].map((status) => <button key={status} className={selected.status === status ? 'is-current' : ''} type="button" disabled={saving} onClick={() => updateStatus(status)}>{status.replace('_', ' ')}</button>)}</div></div>
-          <div className="studio-detail-activity"><div className="studio-panel-head"><div><span className="studio-panel-kicker">PRIVATE TIMELINE</span><h3>Notes for the team.</h3></div><span>{activity.length} entries</span></div>{activity.length ? <div className="studio-activity-list">{activity.map((entry) => <div className="studio-activity-item" key={entry.id}><span className="studio-activity-dot" /><div><p>{entry.body}</p><small>{entry.activity_type} · {formatStudioDateTime(entry.created_at)}</small></div></div>)}</div> : <p className="studio-inline-empty">No notes yet. Add the context that will help the next person pick this up well.</p>}<form className="studio-note-form" onSubmit={addNote}><label className="sr-only" htmlFor="studio-request-note">Add a private note</label><textarea id="studio-request-note" rows="3" value={note} onChange={(event) => setNote(event.target.value)} placeholder="Add a private note for the team…" /><button type="submit" disabled={saving || !note.trim()}>Add note <ArrowRight size={14} /></button></form></div>
+          <div className="studio-status-actions"><span className="studio-panel-kicker">MOVE THIS REQUEST</span><div>{['new', 'reviewing', 'matched', 'closed'].map((status) => <button key={status} className={selected.status === status ? 'is-current' : ''} type="button" disabled={saving || !canManageRequests} onClick={() => updateStatus(status)}>{status.replace('_', ' ')}</button>)}</div></div>
+          <div className="studio-detail-activity"><div className="studio-panel-head"><div><span className="studio-panel-kicker">PRIVATE TIMELINE</span><h3>Notes for the team.</h3></div><span>{activity.length} entries</span></div>{activity.length ? <div className="studio-activity-list">{activity.map((entry) => <div className="studio-activity-item" key={entry.id}><span className="studio-activity-dot" /><div><p>{entry.body}</p><small>{entry.activity_type} · {formatStudioDateTime(entry.created_at)}</small></div></div>)}</div> : <p className="studio-inline-empty">No notes yet. Add the context that will help the next person pick this up well.</p>}{canAddNotes ? <form className="studio-note-form" onSubmit={addNote}><label className="sr-only" htmlFor="studio-request-note">Add a private note</label><textarea id="studio-request-note" rows="3" value={note} onChange={(event) => setNote(event.target.value)} placeholder="Add a private note for the team…" /><button type="submit" disabled={saving || !note.trim()}>Add note <ArrowRight size={14} /></button></form> : <p className="studio-permission-note studio-permission-note--inline">Read-only access: private notes can be added by coordinators and admins.</p>}</div>
           {error && <p className="studio-inline-error" role="alert">{error}</p>}{notice && <p className="studio-inline-notice" role="status">{notice}</p>}
         </section>}
       </div>}

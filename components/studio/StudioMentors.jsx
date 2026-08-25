@@ -4,7 +4,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight } from '../shared/Icons';
 import { createSupabaseBrowserClient } from '../../lib/supabase/client';
 import { revalidatePublicContent } from '../../lib/studio/revalidate';
-import { EmptyState, ErrorState, LoadingState, normalizeSlug, StatusBadge, StudioPage, StudioPageHeader } from './StudioShared';
+import { EmptyState, ErrorState, FieldError, formatStudioSaveTime, LoadingState, normalizeSlug, StatusBadge, StudioPage, StudioPageHeader } from './StudioShared';
+import { useStudioPermissions } from './StudioPermissions';
 
 const supabase = createSupabaseBrowserClient();
 
@@ -29,15 +30,25 @@ const COMMON_FIELDS = ['Medicine', 'Law', 'Engineering', 'Technology', 'Business
 const COMMON_ROLES = ['Founder & Lead Mentor', 'Medical Student', 'House Officer', 'Resident Doctor', 'Law Student', 'Engineer', 'Researcher', 'Entrepreneur', 'Teacher / Educator'];
 const COMMON_SPECIALTIES = ['Study systems', 'Medical school', 'Career direction', 'Exam preparation', 'Applications', 'Public speaking', 'Research pathways', 'Interview preparation', 'Entrepreneurship', 'Work-life balance'];
 
+function getVisibilityMessage(form) {
+  if (!form.is_public) return 'Draft / private — this mentor is not visible on the public site.';
+  if (form.status === 'application_only') return 'Needs attention — an application-only mentor should stay private until the profile is ready.';
+  return `Published — visible on the public site${form.accepting_requests ? ' and open to introductions.' : '; introductions are currently closed.'}`;
+}
+
 function cloneForm(form) {
   return { ...form };
 }
 
 export function StudioMentors() {
+  const { canManageMentors, roleLabel } = useStudioPermissions();
+  const mentorReadOnly = !canManageMentors;
   const [mentors, setMentors] = useState([]);
   const [selectedId, setSelectedId] = useState('');
   const [form, setForm] = useState(EMPTY_FORM);
   const [savedForm, setSavedForm] = useState(EMPTY_FORM);
+  const [lastSavedAt, setLastSavedAt] = useState(null);
+  const [fieldErrors, setFieldErrors] = useState({});
   const [imageFile, setImageFile] = useState(null);
   const [localImagePreview, setLocalImagePreview] = useState('');
   const [loading, setLoading] = useState(true);
@@ -88,6 +99,8 @@ export function StudioMentors() {
       const nextForm = { ...selected, specialties: (data || []).map((row) => row.specialty).join(', ') };
       setForm(nextForm);
       setSavedForm(cloneForm(nextForm));
+      setLastSavedAt(selected.updated_at || null);
+      setFieldErrors({});
       setImageFile(null);
       setLocalImagePreview('');
     });
@@ -122,15 +135,39 @@ export function StudioMentors() {
   const startNew = () => {
     if (!confirmDiscard()) return;
     setSelectedId('');
-    setForm(EMPTY_FORM);
-    setSavedForm(EMPTY_FORM);
-    setImageFile(null);
+      setForm(EMPTY_FORM);
+      setSavedForm(EMPTY_FORM);
+      setLastSavedAt(null);
+      setFieldErrors({});
+      setImageFile(null);
     setLocalImagePreview('');
     setError('');
     setNotice('');
   };
 
-  const updateField = (field) => (event) => setForm((current) => ({ ...current, [field]: event.target.type === 'checkbox' ? event.target.checked : event.target.value }));
+  const updateField = (field) => (event) => {
+    setForm((current) => ({ ...current, [field]: event.target.type === 'checkbox' ? event.target.checked : event.target.value }));
+    setFieldErrors((current) => {
+      if (!current[field]) return current;
+      const next = { ...current };
+      delete next[field];
+      return next;
+    });
+    setError('');
+    setNotice('');
+  };
+
+  const validate = () => {
+    const nextErrors = {};
+    if (!form.name.trim()) nextErrors.name = 'Enter the mentor’s full name.';
+    if (!form.role_label.trim()) nextErrors.role_label = 'Add the mentor’s role or current place.';
+    if (!form.field.trim()) nextErrors.field = 'Choose or enter a field.';
+    if (!form.positioning.trim()) nextErrors.positioning = 'Add one clear reason this mentor may be useful.';
+    if (!form.path_summary.trim()) nextErrors.path_summary = 'Add the lived path before saving the profile.';
+    if (form.is_public && form.status === 'application_only') nextErrors.visibility = 'Choose Active or Paused before publishing. Application-only profiles should stay private.';
+    setFieldErrors(nextErrors);
+    return nextErrors;
+  };
 
   const chooseFieldPreset = (event) => {
     const value = event.target.value;
@@ -164,12 +201,17 @@ export function StudioMentors() {
 
   const save = async (event) => {
     event.preventDefault();
+    if (!canManageMentors) {
+      setError('Your Studio role is read-only for mentor records. Ask an admin for editing access.');
+      return;
+    }
     if (!supabase) {
       setError('Supabase is not configured for this deployment.');
       return;
     }
-    if (!form.name.trim() || !form.role_label.trim() || !form.field.trim() || !form.positioning.trim() || !form.path_summary.trim()) {
-      setError('Add the name, role, field, positioning, and path summary before saving.');
+    const errors = validate();
+    if (Object.keys(errors).length) {
+      setError('Fix the highlighted fields before saving.');
       return;
     }
 
@@ -236,6 +278,8 @@ export function StudioMentors() {
     const nextForm = { ...mentor, specialties: specialties.join(', ') };
     setForm(nextForm);
     setSavedForm(cloneForm(nextForm));
+    setLastSavedAt(mentor.updated_at || new Date().toISOString());
+    setFieldErrors({});
     setImageFile(null);
     setLocalImagePreview('');
     setNotice(`${form.id ? 'Mentor profile saved.' : 'Mentor added as a draft.'}${specialtyError ? ' Profile saved, but specialties could not be updated.' : ''}${uploadMessage}`);
@@ -250,44 +294,45 @@ export function StudioMentors() {
 
   return (
     <StudioPage className="studio-management-page">
-      <StudioPageHeader kicker="PEOPLE & SPECIALTIES" title={<>Care for the<br /><em>people.</em></>} description="Keep each profile honest, useful, and easy for a student to understand. Publishing is always an explicit choice." action={<button className="studio-primary-button" type="button" onClick={startNew}>Add a mentor <ArrowRight size={15} /></button>} />
+      <StudioPageHeader kicker="PEOPLE & SPECIALTIES" title={<>Care for the<br /><em>people.</em></>} description="Keep each profile honest, useful, and easy for a student to understand. Publishing is always an explicit choice." action={canManageMentors ? <button className="studio-primary-button" type="button" onClick={startNew}>Add a mentor <ArrowRight size={15} /></button> : <span className="studio-permission-note">Read-only view · {roleLabel}</span>} />
       <div className="studio-mini-stats"><span><strong>{statusCounts.all}</strong> total profiles</span><span><strong>{statusCounts.public}</strong> public</span><span><strong>{statusCounts.drafts}</strong> drafts / hidden</span></div>
       <div className="studio-management-grid studio-management-grid--mentors">
-        <section className="studio-entity-list" aria-label="Mentor profiles">{mentors.length ? mentors.map((mentor) => <button type="button" className={`studio-entity-row${mentor.id === selectedId ? ' is-selected' : ''}`} key={mentor.id} onClick={() => selectMentor(mentor)}><span className="studio-entity-initial studio-entity-initial--photo">{mentor.image_url ? <img src={mentor.image_url} alt="" /> : mentor.name.slice(0, 1)}</span><span><strong>{mentor.name}</strong><small>{mentor.field} · {mentor.role_label}</small></span><span className="studio-entity-state"><StatusBadge status={mentor.is_public ? 'published' : 'draft'} /></span><ArrowRight size={14} /></button>) : <EmptyState title="No mentor profiles yet." description="Add the first person whose lived experience should be visible to students." action={<button className="studio-secondary-button" type="button" onClick={startNew}>Add the first mentor</button>} />}</section>
-        <section className="studio-editor-card studio-mentor-editor-card" aria-labelledby="studio-mentor-editor-title">
+        <section className="studio-entity-list" aria-label="Mentor profiles">{mentors.length ? mentors.map((mentor) => <button type="button" className={`studio-entity-row${mentor.id === selectedId ? ' is-selected' : ''}`} key={mentor.id} onClick={() => selectMentor(mentor)}><span className="studio-entity-initial studio-entity-initial--photo">{mentor.image_url ? <img src={mentor.image_url} alt="" /> : mentor.name.slice(0, 1)}</span><span><strong>{mentor.name}</strong><small>{mentor.field} · {mentor.role_label}</small></span><span className="studio-entity-state"><StatusBadge status={mentor.is_public ? 'published' : 'draft'} /></span><ArrowRight size={14} /></button>) : <EmptyState title="No mentor profiles yet." description="Add the first person whose lived experience should be visible to students." action={canManageMentors ? <button className="studio-secondary-button" type="button" onClick={startNew}>Add the first mentor</button> : null} />}</section>
+        <section className={`studio-editor-card studio-mentor-editor-card${mentorReadOnly ? ' studio-editor-card--readonly' : ''}`} aria-labelledby="studio-mentor-editor-title">
           <div className="studio-editor-head"><div><span className="studio-panel-kicker">{form.id ? 'EDIT PROFILE' : 'NEW PROFILE'}</span><h2 id="studio-mentor-editor-title">{form.id ? form.name : 'A new person, carefully.'}</h2></div>{form.id && <a className="studio-inline-action" href={`/mentorship/${form.slug}`} target="_blank" rel="noreferrer">Open live profile <ArrowRight size={14} /></a>}</div>
+          <div className="studio-save-state" role="status"><span className={saving ? 'is-saving' : isDirty ? 'is-unsaved' : 'is-saved'}>{saving ? 'Saving…' : isDirty ? 'Unsaved changes' : lastSavedAt ? `Saved at ${formatStudioSaveTime(lastSavedAt)}` : 'Not saved yet'}</span><span>{mentorReadOnly ? 'You can view records, but your role cannot change them.' : 'Save deliberately before leaving this record.'}</span></div>
           <form className="studio-editor-form" onSubmit={save}>
               <section className="studio-editor-section">
                 <div className="studio-editor-section-head"><span>01 / Identity</span><p>Make it easy to understand who this person is at a glance.</p></div>
-                <div className="studio-form-grid"><label>Full name<span className="studio-required">Required</span><input value={form.name} onChange={updateField('name')} placeholder="e.g. Dr. A. Asare" autoComplete="name" /></label><label>URL slug<span className="studio-field-help">Leave blank to generate it from the name.</span><input value={form.slug} onChange={updateField('slug')} placeholder="dr-a-asare" /></label><label>Role / current place<span className="studio-field-example">Example: Founder &amp; Lead Mentor · Korle Bu</span><input list="mentor-role-suggestions" value={form.role_label} onChange={updateField('role_label')} placeholder="Founder & Lead Mentor" /><datalist id="mentor-role-suggestions">{COMMON_ROLES.map((role) => <option value={role} key={role} />)}</datalist></label><label>Field<span className="studio-field-help">Choose a common field or use Other for a custom one.</span><select value={fieldSelectValue} onChange={chooseFieldPreset}><option value="">Choose a field</option>{COMMON_FIELDS.map((field) => <option value={field} key={field}>{field}</option>)}<option value="__custom">Other / custom field</option></select>{!fieldIsPreset && <input value={form.field} onChange={updateField('field')} placeholder="e.g. Architecture" />}</label></div>
+                <div className="studio-form-grid"><label>Full name<span className="studio-required">Required</span><input aria-invalid={Boolean(fieldErrors.name)} aria-describedby={fieldErrors.name ? 'mentor-name-error' : undefined} disabled={mentorReadOnly} value={form.name} onChange={updateField('name')} placeholder="e.g. Dr. A. Asare" autoComplete="name" />{fieldErrors.name && <FieldError id="mentor-name-error">{fieldErrors.name}</FieldError>}</label><label>URL slug<span className="studio-field-help">Leave blank to generate it from the name.</span><input disabled={mentorReadOnly} value={form.slug} onChange={updateField('slug')} placeholder="dr-a-asare" /></label><label>Role / current place<span className="studio-field-example">Example: Founder &amp; Lead Mentor · Korle Bu</span><input aria-invalid={Boolean(fieldErrors.role_label)} aria-describedby={fieldErrors.role_label ? 'mentor-role-error' : undefined} disabled={mentorReadOnly} list="mentor-role-suggestions" value={form.role_label} onChange={updateField('role_label')} placeholder="Founder & Lead Mentor" />{fieldErrors.role_label && <FieldError id="mentor-role-error">{fieldErrors.role_label}</FieldError>}<datalist id="mentor-role-suggestions">{COMMON_ROLES.map((role) => <option value={role} key={role} />)}</datalist></label><label>Field<span className="studio-field-help">Choose a common field or use Other for a custom one.</span><select aria-invalid={Boolean(fieldErrors.field)} aria-describedby={fieldErrors.field ? 'mentor-field-error' : undefined} disabled={mentorReadOnly} value={fieldSelectValue} onChange={chooseFieldPreset}><option value="">Choose a field</option>{COMMON_FIELDS.map((field) => <option value={field} key={field}>{field}</option>)}<option value="__custom">Other / custom field</option></select>{!fieldIsPreset && <input aria-invalid={Boolean(fieldErrors.field)} aria-describedby={fieldErrors.field ? 'mentor-field-error' : undefined} disabled={mentorReadOnly} value={form.field} onChange={updateField('field')} placeholder="e.g. Architecture" />}{fieldErrors.field && <FieldError id="mentor-field-error">{fieldErrors.field}</FieldError>}</label></div>
               </section>
 
               <section className="studio-editor-section">
                 <div className="studio-editor-section-head"><span>02 / The useful story</span><p>Write for a student making a decision, not for a résumé.</p></div>
-                <label>Positioning sentence<span className="studio-field-help">One clear reason this mentor may be the right starting point.</span><span className="studio-field-example">Example: For students weighing medicine and wanting the honest version of the route.</span><textarea rows="3" value={form.positioning} onChange={updateField('positioning')} placeholder="For the student who…" /></label>
-                <label>The honest path<span className="studio-field-help">Explain the route, turns, and reality behind the role in a human paragraph.</span><span className="studio-field-example">Example: I started with a very certain plan, then discovered that the day-to-day work mattered more than the title. The useful part was learning how to test the path before committing years to it.</span><textarea rows="6" value={form.path_summary} onChange={updateField('path_summary')} placeholder="Tell the lived version of the path…" /></label>
-                <label>Quote<span className="studio-field-help">A short line that sounds like the person, not a generic inspirational quote.</span><span className="studio-field-example">Example: You do not need the whole map before you take the next useful step.</span><textarea rows="3" value={form.quote} onChange={updateField('quote')} placeholder="A line worth carrying forward…" /></label>
+                <label>Positioning sentence<span className="studio-field-help">One clear reason this mentor may be the right starting point.</span><span className="studio-field-example">Example: For students weighing medicine and wanting the honest version of the route.</span><textarea aria-invalid={Boolean(fieldErrors.positioning)} aria-describedby={fieldErrors.positioning ? 'mentor-positioning-error' : undefined} disabled={mentorReadOnly} rows="3" value={form.positioning} onChange={updateField('positioning')} placeholder="For the student who…" />{fieldErrors.positioning && <FieldError id="mentor-positioning-error">{fieldErrors.positioning}</FieldError>}</label>
+                <label>The honest path<span className="studio-field-help">Explain the route, turns, and reality behind the role in a human paragraph.</span><span className="studio-field-example">Example: I started with a very certain plan, then discovered that the day-to-day work mattered more than the title. The useful part was learning how to test the path before committing years to it.</span><textarea aria-invalid={Boolean(fieldErrors.path_summary)} aria-describedby={fieldErrors.path_summary ? 'mentor-path-error' : undefined} disabled={mentorReadOnly} rows="6" value={form.path_summary} onChange={updateField('path_summary')} placeholder="Tell the lived version of the path…" />{fieldErrors.path_summary && <FieldError id="mentor-path-error">{fieldErrors.path_summary}</FieldError>}</label>
+                <label>Quote<span className="studio-field-help">A short line that sounds like the person, not a generic inspirational quote.</span><span className="studio-field-example">Example: You do not need the whole map before you take the next useful step.</span><textarea disabled={mentorReadOnly} rows="3" value={form.quote} onChange={updateField('quote')} placeholder="A line worth carrying forward…" /></label>
               </section>
 
               <section className="studio-editor-section">
                 <div className="studio-editor-section-head"><span>03 / Fit &amp; discoverability</span><p>Use consistent tags so students can compare profiles without guesswork.</p></div>
-                <label>Specialties<span className="studio-field-help">Separate with commas. Use the quick picks or type your own.</span><span className="studio-field-example">Example: Medical school, study systems, applications</span><input list="mentor-specialty-suggestions" value={form.specialties} onChange={updateField('specialties')} placeholder="Medicine, study systems" /><datalist id="mentor-specialty-suggestions">{COMMON_SPECIALTIES.map((specialty) => <option value={specialty} key={specialty} />)}</datalist></label>
-                <div className="studio-quick-picks" aria-label="Common specialty quick picks">{COMMON_SPECIALTIES.slice(0, 6).map((specialty) => <button type="button" key={specialty} onClick={() => setForm((current) => ({ ...current, specialties: Array.from(new Set([...current.specialties.split(',').map((item) => item.trim()).filter(Boolean), specialty])).join(', ') }))}>{specialty} +</button>)}</div>
-                <label>Fallback profile label<span className="studio-field-help">Used only when no photo is uploaded.</span><input value={form.avatar_label} onChange={updateField('avatar_label')} placeholder="MENTOR · MEDICINE" /></label>
+                <label>Specialties<span className="studio-field-help">Separate with commas. Use the quick picks or type your own.</span><span className="studio-field-example">Example: Medical school, study systems, applications</span><input disabled={mentorReadOnly} list="mentor-specialty-suggestions" value={form.specialties} onChange={updateField('specialties')} placeholder="Medicine, study systems" /><datalist id="mentor-specialty-suggestions">{COMMON_SPECIALTIES.map((specialty) => <option value={specialty} key={specialty} />)}</datalist></label>
+                <div className="studio-quick-picks" aria-label="Common specialty quick picks">{COMMON_SPECIALTIES.slice(0, 6).map((specialty) => <button disabled={mentorReadOnly} type="button" key={specialty} onClick={() => setForm((current) => ({ ...current, specialties: Array.from(new Set([...current.specialties.split(',').map((item) => item.trim()).filter(Boolean), specialty])).join(', ') }))}>{specialty} +</button>)}</div>
+                <label>Fallback profile label<span className="studio-field-help">Used only when no photo is uploaded.</span><input disabled={mentorReadOnly} value={form.avatar_label} onChange={updateField('avatar_label')} placeholder="MENTOR · MEDICINE" /></label>
               </section>
 
               <section className="studio-editor-section studio-editor-media-section">
                 <div className="studio-editor-section-head"><span>04 / Profile image</span><p>One clear, well-lit portrait makes the profile feel like a person rather than a record.</p></div>
-                <div className="studio-image-upload"><div className="studio-image-upload-preview">{imageSrc ? <img src={imageSrc} alt="Selected mentor portrait preview" /> : <span>PHOTO<br />OPTIONAL</span>}</div><div className="studio-image-upload-copy"><label className="studio-upload-button">{imageSrc ? 'Replace portrait' : 'Choose portrait'}<input type="file" accept="image/jpeg,image/png,image/webp" onChange={chooseImage} /></label><p>JPG, PNG, or WebP. Keep it under 6MB. A new file path is used each time so the public CDN does not serve an old replacement.</p>{imageSrc && <button type="button" className="studio-quiet-button studio-remove-image" onClick={removeImage}>Remove portrait</button>}</div></div>
+                <div className="studio-image-upload"><div className="studio-image-upload-preview">{imageSrc ? <img src={imageSrc} alt="Selected mentor portrait preview" /> : <span>PHOTO<br />OPTIONAL</span>}</div><div className="studio-image-upload-copy"><label className="studio-upload-button">{imageSrc ? 'Replace portrait' : 'Choose portrait'}<input disabled={mentorReadOnly} type="file" accept="image/jpeg,image/png,image/webp" onChange={chooseImage} /></label><p>JPG, PNG, or WebP. Keep it under 6MB. A new file path is used each time so the public CDN does not serve an old replacement.</p>{imageSrc && <button disabled={mentorReadOnly} type="button" className="studio-quiet-button studio-remove-image" onClick={removeImage}>Remove portrait</button>}</div></div>
               </section>
 
               <section className="studio-editor-section">
                 <div className="studio-editor-section-head"><span>05 / Visibility</span><p>Save freely while drafting. Publishing stays deliberate.</p></div>
-                <div className="studio-editor-controls"><label>Status<select value={form.status} onChange={updateField('status')}><option value="application_only">Application only</option><option value="active">Active</option><option value="paused">Paused</option></select></label><label className="studio-check"><input type="checkbox" checked={form.is_public} onChange={updateField('is_public')} /> <span><strong>Show on public mentor index</strong><small>Keep off while this profile is being reviewed.</small></span></label><label className="studio-check"><input type="checkbox" checked={form.accepting_requests} onChange={updateField('accepting_requests')} /> <span><strong>Accepting introductions</strong><small>Allow this person to be selected for new requests.</small></span></label></div>
+                <div className="studio-editor-controls"><label>Status<select disabled={mentorReadOnly} value={form.status} onChange={updateField('status')}><option value="application_only">Application only</option><option value="active">Active</option><option value="paused">Paused</option></select></label><label className="studio-check"><input disabled={mentorReadOnly} type="checkbox" checked={form.is_public} onChange={updateField('is_public')} /> <span><strong>Show on public mentor index</strong><small>Keep off while this profile is being reviewed.</small></span></label><label className="studio-check"><input disabled={mentorReadOnly} type="checkbox" checked={form.accepting_requests} onChange={updateField('accepting_requests')} /> <span><strong>Accepting introductions</strong><small>Allow this person to be selected for new requests.</small></span></label></div><p className={`studio-visibility-summary${fieldErrors.visibility ? ' has-warning' : ''}`} aria-live="polite">{getVisibilityMessage(form)}</p>{fieldErrors.visibility && <FieldError id="mentor-visibility-error">{fieldErrors.visibility}</FieldError>}
               </section>
 
               {error && <p className="studio-inline-error" role="alert">{error}</p>}{notice && <p className="studio-inline-notice" role="status">{notice}</p>}
-              <div className="studio-editor-actions"><button className="studio-primary-button" type="submit" disabled={saving}>{saving ? 'Saving…' : form.id ? 'Save profile' : 'Save as draft'} <ArrowRight size={15} /></button>{form.id && <button className="studio-quiet-button" type="button" onClick={startNew}>Clear editor</button>}{isDirty && <span className="studio-unsaved-note">Unsaved changes</span>}</div>
+              <div className="studio-editor-actions">{canManageMentors ? <button className="studio-primary-button" type="submit" disabled={saving}>{saving ? 'Saving…' : form.id ? 'Save profile' : 'Save as draft'} <ArrowRight size={15} /></button> : <span className="studio-readonly-lock">Read-only access · no changes can be saved</span>}{canManageMentors && form.id && <button className="studio-quiet-button" type="button" onClick={startNew}>Clear editor</button>}{isDirty && <span className="studio-unsaved-note">Unsaved changes</span>}</div>
           </form>
         </section>
       </div>

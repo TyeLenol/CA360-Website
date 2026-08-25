@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight } from '../shared/Icons';
 import { createSupabaseBrowserClient } from '../../lib/supabase/client';
 import { EmptyState, ErrorState, formatStudioDateTime, LoadingState, StatusBadge, StudioPage, StudioPageHeader } from './StudioShared';
+import { useStudioPermissions } from './StudioPermissions';
 
 const supabase = createSupabaseBrowserClient();
 const FILTERS = [
@@ -15,6 +16,7 @@ const FILTERS = [
 ];
 
 export function StudioInbox() {
+  const { canManageInbox, roleLabel } = useStudioPermissions();
   const [messages, setMessages] = useState([]);
   const [selectedId, setSelectedId] = useState('');
   const [filter, setFilter] = useState('all');
@@ -39,6 +41,10 @@ export function StudioInbox() {
 
   const updateStatus = async (status) => {
     if (!selected) return;
+    if (!canManageInbox) {
+      setError('Your Studio role is read-only for inbox status. Ask an admin for coordinator access.');
+      return;
+    }
     setSaving(true);
     setNotice('');
     const { error: updateError } = await supabase.from('contact_messages').update({ status }).eq('id', selected.id);
@@ -55,7 +61,7 @@ export function StudioInbox() {
 
   return (
     <StudioPage className="studio-queue-page">
-      <StudioPageHeader kicker="THE OPEN DOOR" title={<>A message is<br /><em>someone reaching.</em></>} description="Keep the first reply human. Sort the queue, open the context, and make the next response easy to own." action={<a className="studio-primary-button" href="mailto:hello@careerarcadia360.org">Open email <ArrowRight size={15} /></a>} />
+      <StudioPageHeader kicker="THE OPEN DOOR" title={<>A message is<br /><em>someone reaching.</em></>} description="Keep the first reply human. Sort the queue, open the context, and make the next response easy to own." action={canManageInbox ? <a className="studio-primary-button" href="mailto:hello@careerarcadia360.org">Open email <ArrowRight size={15} /></a> : <span className="studio-permission-note">Read-only view · {roleLabel}</span>} />
       <div className="studio-filter-row" role="group" aria-label="Filter contact messages">{FILTERS.map((item) => <button key={item.value} className={filter === item.value ? 'is-active' : ''} type="button" onClick={() => setFilter(item.value)}>{item.label}<span>{item.value === 'all' ? messages.length : messages.filter((message) => message.status === item.value).length}</span></button>)}</div>
 
       {visibleMessages.length === 0 ? <EmptyState title="Nothing in this view." description="The inbox is quiet here. Try another status filter or return when the next question arrives." /> : <div className="studio-split-layout">
@@ -64,8 +70,8 @@ export function StudioInbox() {
           <div className="studio-detail-head"><div><span className="studio-panel-kicker">MESSAGE DETAIL</span><h2 id="studio-inbox-detail-title">{selected.name}</h2><p><a href={`mailto:${selected.email}`}>{selected.email}</a>{selected.phone ? ` · ${selected.phone}` : ''}</p></div><StatusBadge status={selected.status} /></div>
           <div className="studio-detail-meta"><div><span>REASON</span><strong>{selected.topic.replace('_', ' ')}</strong></div><div><span>RECEIVED</span><strong>{formatStudioDateTime(selected.created_at)}</strong></div></div>
           <div className="studio-detail-block studio-detail-block--message"><span className="studio-panel-kicker">THE QUESTION</span><p>{selected.message}</p></div>
-          <div className="studio-status-actions"><span className="studio-panel-kicker">MOVE THIS MESSAGE</span><div>{['new', 'reviewing', 'replied', 'closed'].map((status) => <button key={status} className={selected.status === status ? 'is-current' : ''} type="button" disabled={saving} onClick={() => updateStatus(status)}>{status}</button>)}</div></div>
-          <div className="studio-detail-footer"><a className="studio-primary-button" href={`mailto:${selected.email}?subject=${encodeURIComponent('Re: CA360 enquiry')}`}>Reply by email <ArrowRight size={15} /></a><span>Updates are saved to the shared inbox.</span></div>
+          <div className="studio-status-actions"><span className="studio-panel-kicker">MOVE THIS MESSAGE</span><div>{['new', 'reviewing', 'replied', 'closed'].map((status) => <button key={status} className={selected.status === status ? 'is-current' : ''} type="button" disabled={saving || !canManageInbox} onClick={() => updateStatus(status)}>{status}</button>)}</div></div>
+          <div className="studio-detail-footer"><a className="studio-primary-button" href={`mailto:${selected.email}?subject=${encodeURIComponent('Re: CA360 enquiry')}`}>Reply by email <ArrowRight size={15} /></a><span>{canManageInbox ? 'Updates are saved to the shared inbox.' : 'Read-only access: reply by email is available, but status changes require coordinator access.'}</span></div>
           {error && <p className="studio-inline-error" role="alert">{error}</p>}{notice && <p className="studio-inline-notice" role="status">{notice}</p>}
         </section>}
       </div>}

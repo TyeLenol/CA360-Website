@@ -57,6 +57,18 @@ export function formatStudioDateTime(value) {
   return formatStudioDate(value, { hour: 'numeric', minute: '2-digit' });
 }
 
+export function formatStudioSaveTime(value) {
+  if (!value) return '';
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return '';
+  return new Intl.DateTimeFormat('en-GH', { hour: 'numeric', minute: '2-digit' }).format(date);
+}
+
+export function FieldError({ id, children }) {
+  if (!children) return null;
+  return <span className="studio-field-error" id={id} role="alert">{children}</span>;
+}
+
 export function StudioLinkAction({ href, children }) {
   return <a className="studio-inline-action" href={href}>{children}<ArrowRight size={14} /></a>;
 }

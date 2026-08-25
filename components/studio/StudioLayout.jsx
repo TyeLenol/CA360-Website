@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { ArrowRight, LogoMark } from '../shared/Icons';
 import { createSupabaseBrowserClient } from '../../lib/supabase/client';
+import { StudioPermissionsProvider } from './StudioPermissions';
 
 const NAV_ITEMS = [
   { href: '/studio', label: 'Today', note: 'Overview' },
@@ -38,7 +39,8 @@ export function StudioLayout({ children, member }) {
   const role = member?.role?.replace('_', ' ') || 'operator';
 
   return (
-    <div className={`studio-app${menuOpen ? ' studio-app--menu-open' : ''}`}>
+    <StudioPermissionsProvider member={member}>
+      <div className={`studio-app${menuOpen ? ' studio-app--menu-open' : ''}`}>
       <div className="studio-mobile-bar">
         <button type="button" className="studio-menu-button" onClick={() => setMenuOpen((open) => !open)} aria-expanded={menuOpen} aria-controls="studio-sidebar">
           <span className="studio-menu-icon" aria-hidden="true"><i /><i /></span>
@@ -93,6 +95,7 @@ export function StudioLayout({ children, member }) {
         </header>
         {children}
       </div>
-    </div>
+      </div>
+    </StudioPermissionsProvider>
   );
 }
