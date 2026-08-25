@@ -2,7 +2,6 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight } from '../shared/Icons';
-import { PhotoPlaceholder, Portrait } from '../shared/Placeholders';
 import { createSupabaseBrowserClient } from '../../lib/supabase/client';
 import { revalidatePublicContent } from '../../lib/studio/revalidate';
 import { EmptyState, ErrorState, LoadingState, normalizeSlug, StatusBadge, StudioPage, StudioPageHeader } from './StudioShared';
@@ -32,60 +31,6 @@ const COMMON_SPECIALTIES = ['Study systems', 'Medical school', 'Career direction
 
 function cloneForm(form) {
   return { ...form };
-}
-
-function MentorPreviewImage({ form, imageSrc }) {
-  if (imageSrc) return <img className="mentor-real-photo" src={imageSrc} alt="" />;
-  return (
-    <PhotoPlaceholder tone="teal" label={`MENTOR · ${(form.field || 'PREVIEW').toUpperCase()}`} style={{ width: '100%', height: '100%' }}>
-      <Portrait seed={3} bg="transparent" tone="#d68307" />
-    </PhotoPlaceholder>
-  );
-}
-
-function MentorProfilePreview({ form, imageSrc }) {
-  const specialties = form.specialties.split(',').map((item) => item.trim()).filter(Boolean).slice(0, 5);
-  const statusLabel = form.status === 'active' ? 'ACTIVE' : form.status === 'paused' ? 'PAUSED' : 'APPLICATION ONLY';
-
-  return (
-    <aside className="studio-mentor-preview" aria-label="Live mentor profile preview">
-      <div className="studio-preview-head">
-        <div>
-          <span className="studio-panel-kicker">PUBLIC PROFILE PREVIEW</span>
-          <h3>What a student will see.</h3>
-        </div>
-        <span className="studio-preview-live"><i /> Updates as you type</span>
-      </div>
-      <div className="studio-preview-browserbar"><span>CA360 / mentorship / {normalizeSlug(form.slug || form.name) || 'new-mentor'}</span><span>PREVIEW</span></div>
-      <div className="studio-preview-hero">
-        <div className="studio-preview-photo"><MentorPreviewImage form={form} imageSrc={imageSrc} /></div>
-        <div className="studio-preview-heading">
-          <div className="studio-preview-tags"><span>{statusLabel}</span><span>{form.field || 'FIELD'}</span></div>
-          <h4>{form.name || 'Mentor name'}</h4>
-          <p>{form.role_label || 'Role and current place'}</p>
-          <strong>{form.positioning || 'A clear sentence that helps a student decide if this person fits.'}</strong>
-        </div>
-      </div>
-      <div className="studio-preview-request">
-        <div><span>START HERE</span><strong>Ask CA360 to make the introduction.</strong></div>
-        <button type="button" disabled>Request this mentor <ArrowRight size={13} /></button>
-      </div>
-      <div className="studio-preview-body">
-        <div>
-          <span className="studio-preview-label">THE HONEST PATH</span>
-          <p>{form.path_summary || 'The lived version of the route, including the turns and realities that a student would not find in a brochure.'}</p>
-          <blockquote>&ldquo;{form.quote || 'A short line worth carrying forward.'}&rdquo;</blockquote>
-        </div>
-        <div className="studio-preview-fit">
-          <span className="studio-preview-label">SPECIALTIES</span>
-          <div className="studio-preview-chips">{(specialties.length ? specialties : ['Add specialties']).map((item) => <span key={item}>{item}</span>)}</div>
-          <span className="studio-preview-label">INTRODUCTIONS</span>
-          <p>{form.accepting_requests ? 'Currently open to new introductions.' : 'Available by request or review.'}</p>
-        </div>
-      </div>
-      <p className="studio-preview-note">This preview uses the same hierarchy as the public mentor profile. It is not public until you save and enable the visibility switch.</p>
-    </aside>
-  );
 }
 
 export function StudioMentors() {
@@ -311,8 +256,7 @@ export function StudioMentors() {
         <section className="studio-entity-list" aria-label="Mentor profiles">{mentors.length ? mentors.map((mentor) => <button type="button" className={`studio-entity-row${mentor.id === selectedId ? ' is-selected' : ''}`} key={mentor.id} onClick={() => selectMentor(mentor)}><span className="studio-entity-initial studio-entity-initial--photo">{mentor.image_url ? <img src={mentor.image_url} alt="" /> : mentor.name.slice(0, 1)}</span><span><strong>{mentor.name}</strong><small>{mentor.field} · {mentor.role_label}</small></span><span className="studio-entity-state"><StatusBadge status={mentor.is_public ? 'published' : 'draft'} /></span><ArrowRight size={14} /></button>) : <EmptyState title="No mentor profiles yet." description="Add the first person whose lived experience should be visible to students." action={<button className="studio-secondary-button" type="button" onClick={startNew}>Add the first mentor</button>} />}</section>
         <section className="studio-editor-card studio-mentor-editor-card" aria-labelledby="studio-mentor-editor-title">
           <div className="studio-editor-head"><div><span className="studio-panel-kicker">{form.id ? 'EDIT PROFILE' : 'NEW PROFILE'}</span><h2 id="studio-mentor-editor-title">{form.id ? form.name : 'A new person, carefully.'}</h2></div>{form.id && <a className="studio-inline-action" href={`/mentorship/${form.slug}`} target="_blank" rel="noreferrer">Open live profile <ArrowRight size={14} /></a>}</div>
-          <div className="studio-mentor-workbench">
-            <form className="studio-editor-form" onSubmit={save}>
+          <form className="studio-editor-form" onSubmit={save}>
               <section className="studio-editor-section">
                 <div className="studio-editor-section-head"><span>01 / Identity</span><p>Make it easy to understand who this person is at a glance.</p></div>
                 <div className="studio-form-grid"><label>Full name<span className="studio-required">Required</span><input value={form.name} onChange={updateField('name')} placeholder="e.g. Dr. A. Asare" autoComplete="name" /></label><label>URL slug<span className="studio-field-help">Leave blank to generate it from the name.</span><input value={form.slug} onChange={updateField('slug')} placeholder="dr-a-asare" /></label><label>Role / current place<span className="studio-field-example">Example: Founder &amp; Lead Mentor · Korle Bu</span><input list="mentor-role-suggestions" value={form.role_label} onChange={updateField('role_label')} placeholder="Founder & Lead Mentor" /><datalist id="mentor-role-suggestions">{COMMON_ROLES.map((role) => <option value={role} key={role} />)}</datalist></label><label>Field<span className="studio-field-help">Choose a common field or use Other for a custom one.</span><select value={fieldSelectValue} onChange={chooseFieldPreset}><option value="">Choose a field</option>{COMMON_FIELDS.map((field) => <option value={field} key={field}>{field}</option>)}<option value="__custom">Other / custom field</option></select>{!fieldIsPreset && <input value={form.field} onChange={updateField('field')} placeholder="e.g. Architecture" />}</label></div>
@@ -344,9 +288,7 @@ export function StudioMentors() {
 
               {error && <p className="studio-inline-error" role="alert">{error}</p>}{notice && <p className="studio-inline-notice" role="status">{notice}</p>}
               <div className="studio-editor-actions"><button className="studio-primary-button" type="submit" disabled={saving}>{saving ? 'Saving…' : form.id ? 'Save profile' : 'Save as draft'} <ArrowRight size={15} /></button>{form.id && <button className="studio-quiet-button" type="button" onClick={startNew}>Clear editor</button>}{isDirty && <span className="studio-unsaved-note">Unsaved changes</span>}</div>
-            </form>
-            <MentorProfilePreview form={form} imageSrc={imageSrc} />
-          </div>
+          </form>
         </section>
       </div>
     </StudioPage>
