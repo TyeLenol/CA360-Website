@@ -1,7 +1,5 @@
 import './globals.css';
-import { StickyNav } from '../components/layout/StickyNav';
-import { Footer } from '../components/layout/Footer';
-import { GlobalReveal } from '../components/GlobalReveal';
+import { SiteChrome } from '../components/layout/SiteChrome';
 
 export const metadata = {
   title: {
@@ -28,12 +26,7 @@ export default function RootLayout({ children }) {
         />
       </head>
       <body>
-        <div id="root" className="app-root">
-          <GlobalReveal />
-          <StickyNav />
-          {children}
-          <Footer />
-        </div>
+        <SiteChrome>{children}</SiteChrome>
       </body>
     </html>
   );
