@@ -2,11 +2,13 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight } from '../shared/Icons';
+import { PhotoPlaceholder, Portrait } from '../shared/Placeholders';
 import { createSupabaseBrowserClient } from '../../lib/supabase/client';
 import { revalidatePublicContent } from '../../lib/studio/revalidate';
 import { EmptyState, ErrorState, LoadingState, normalizeSlug, StatusBadge, StudioPage, StudioPageHeader } from './StudioShared';
 
 const supabase = createSupabaseBrowserClient();
+
 const EMPTY_FORM = {
   id: '',
   name: '',
@@ -17,24 +19,98 @@ const EMPTY_FORM = {
   path_summary: '',
   quote: '',
   avatar_label: '',
+  image_url: '',
   specialties: '',
   status: 'application_only',
   is_public: false,
   accepting_requests: false,
 };
 
+const COMMON_FIELDS = ['Medicine', 'Law', 'Engineering', 'Technology', 'Business', 'Public Health', 'Education', 'Research', 'Finance', 'Creative Arts'];
+const COMMON_ROLES = ['Founder & Lead Mentor', 'Medical Student', 'House Officer', 'Resident Doctor', 'Law Student', 'Engineer', 'Researcher', 'Entrepreneur', 'Teacher / Educator'];
+const COMMON_SPECIALTIES = ['Study systems', 'Medical school', 'Career direction', 'Exam preparation', 'Applications', 'Public speaking', 'Research pathways', 'Interview preparation', 'Entrepreneurship', 'Work-life balance'];
+
+function cloneForm(form) {
+  return { ...form };
+}
+
+function MentorPreviewImage({ form, imageSrc }) {
+  if (imageSrc) return <img className="mentor-real-photo" src={imageSrc} alt="" />;
+  return (
+    <PhotoPlaceholder tone="teal" label={`MENTOR · ${(form.field || 'PREVIEW').toUpperCase()}`} style={{ width: '100%', height: '100%' }}>
+      <Portrait seed={3} bg="transparent" tone="#d68307" />
+    </PhotoPlaceholder>
+  );
+}
+
+function MentorProfilePreview({ form, imageSrc }) {
+  const specialties = form.specialties.split(',').map((item) => item.trim()).filter(Boolean).slice(0, 5);
+  const statusLabel = form.status === 'active' ? 'ACTIVE' : form.status === 'paused' ? 'PAUSED' : 'APPLICATION ONLY';
+
+  return (
+    <aside className="studio-mentor-preview" aria-label="Live mentor profile preview">
+      <div className="studio-preview-head">
+        <div>
+          <span className="studio-panel-kicker">PUBLIC PROFILE PREVIEW</span>
+          <h3>What a student will see.</h3>
+        </div>
+        <span className="studio-preview-live"><i /> Updates as you type</span>
+      </div>
+      <div className="studio-preview-browserbar"><span>CA360 / mentorship / {normalizeSlug(form.slug || form.name) || 'new-mentor'}</span><span>PREVIEW</span></div>
+      <div className="studio-preview-hero">
+        <div className="studio-preview-photo"><MentorPreviewImage form={form} imageSrc={imageSrc} /></div>
+        <div className="studio-preview-heading">
+          <div className="studio-preview-tags"><span>{statusLabel}</span><span>{form.field || 'FIELD'}</span></div>
+          <h4>{form.name || 'Mentor name'}</h4>
+          <p>{form.role_label || 'Role and current place'}</p>
+          <strong>{form.positioning || 'A clear sentence that helps a student decide if this person fits.'}</strong>
+        </div>
+      </div>
+      <div className="studio-preview-request">
+        <div><span>START HERE</span><strong>Ask CA360 to make the introduction.</strong></div>
+        <button type="button" disabled>Request this mentor <ArrowRight size={13} /></button>
+      </div>
+      <div className="studio-preview-body">
+        <div>
+          <span className="studio-preview-label">THE HONEST PATH</span>
+          <p>{form.path_summary || 'The lived version of the route, including the turns and realities that a student would not find in a brochure.'}</p>
+          <blockquote>&ldquo;{form.quote || 'A short line worth carrying forward.'}&rdquo;</blockquote>
+        </div>
+        <div className="studio-preview-fit">
+          <span className="studio-preview-label">SPECIALTIES</span>
+          <div className="studio-preview-chips">{(specialties.length ? specialties : ['Add specialties']).map((item) => <span key={item}>{item}</span>)}</div>
+          <span className="studio-preview-label">INTRODUCTIONS</span>
+          <p>{form.accepting_requests ? 'Currently open to new introductions.' : 'Available by request or review.'}</p>
+        </div>
+      </div>
+      <p className="studio-preview-note">This preview uses the same hierarchy as the public mentor profile. It is not public until you save and enable the visibility switch.</p>
+    </aside>
+  );
+}
+
 export function StudioMentors() {
   const [mentors, setMentors] = useState([]);
   const [selectedId, setSelectedId] = useState('');
   const [form, setForm] = useState(EMPTY_FORM);
+  const [savedForm, setSavedForm] = useState(EMPTY_FORM);
+  const [imageFile, setImageFile] = useState(null);
+  const [localImagePreview, setLocalImagePreview] = useState('');
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
 
+  const imageSrc = localImagePreview || form.image_url;
+  const isDirty = useMemo(() => JSON.stringify(form) !== JSON.stringify(savedForm) || Boolean(imageFile), [form, savedForm, imageFile]);
+
   const load = async () => {
+    if (!supabase) {
+      setError('Supabase is not configured for this deployment. Add the public Supabase variables in Vercel and redeploy.');
+      setLoading(false);
+      return;
+    }
     setLoading(true);
-    const { data, error: loadError } = await supabase.from('mentors').select('id, name, slug, role_label, field, positioning, path_summary, quote, avatar_label, status, is_public, accepting_requests, updated_at').order('updated_at', { ascending: false }).limit(100);
+    const { data, error: loadError } = await supabase.from('mentors').select('id, name, slug, role_label, field, positioning, path_summary, quote, avatar_label, image_url, status, is_public, accepting_requests, updated_at').order('updated_at', { ascending: false }).limit(100);
     if (loadError) setError('Mentors could not be loaded. Check your Studio access and try again.');
     const rows = data || [];
     setMentors(rows);
@@ -44,41 +120,118 @@ export function StudioMentors() {
 
   useEffect(() => { load(); }, []);
 
+  useEffect(() => {
+    return () => {
+      if (localImagePreview) URL.revokeObjectURL(localImagePreview);
+    };
+  }, [localImagePreview]);
+
   const selected = mentors.find((mentor) => mentor.id === selectedId);
   useEffect(() => {
-    if (!selected) return;
+    if (!supabase) return undefined;
+    if (!selected) {
+      if (!selectedId) {
+        setForm(EMPTY_FORM);
+        setSavedForm(EMPTY_FORM);
+      }
+      return undefined;
+    }
+
     let active = true;
     supabase.from('mentor_specialties').select('specialty').eq('mentor_id', selected.id).order('specialty', { ascending: true }).limit(30).then(({ data }) => {
-      if (active) setForm({ ...selected, specialties: (data || []).map((row) => row.specialty).join(', ') });
+      if (!active) return;
+      const nextForm = { ...selected, specialties: (data || []).map((row) => row.specialty).join(', ') };
+      setForm(nextForm);
+      setSavedForm(cloneForm(nextForm));
+      setImageFile(null);
+      setLocalImagePreview('');
     });
     return () => { active = false; };
   }, [selectedId]);
 
-  const statusCounts = useMemo(() => ({ all: mentors.length, public: mentors.filter((mentor) => mentor.is_public).length, drafts: mentors.filter((mentor) => !mentor.is_public).length }), [mentors]);
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (!isDirty) return;
+      event.preventDefault();
+      event.returnValue = '';
+    };
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [isDirty]);
+
+  const statusCounts = useMemo(() => ({
+    all: mentors.length,
+    public: mentors.filter((mentor) => mentor.is_public).length,
+    drafts: mentors.filter((mentor) => !mentor.is_public).length,
+  }), [mentors]);
+
+  const confirmDiscard = () => !isDirty || window.confirm('You have unsaved mentor changes. Discard them?');
 
   const selectMentor = (mentor) => {
+    if (!confirmDiscard()) return;
     setSelectedId(mentor.id);
     setError('');
     setNotice('');
   };
 
   const startNew = () => {
+    if (!confirmDiscard()) return;
     setSelectedId('');
     setForm(EMPTY_FORM);
+    setSavedForm(EMPTY_FORM);
+    setImageFile(null);
+    setLocalImagePreview('');
     setError('');
     setNotice('');
   };
 
   const updateField = (field) => (event) => setForm((current) => ({ ...current, [field]: event.target.type === 'checkbox' ? event.target.checked : event.target.value }));
 
+  const chooseFieldPreset = (event) => {
+    const value = event.target.value;
+    setForm((current) => ({ ...current, field: value === '__custom' ? '' : value }));
+  };
+
+  const chooseImage = (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) {
+      setError('Use a JPG, PNG, or WebP image.');
+      return;
+    }
+    if (file.size > 6 * 1024 * 1024) {
+      setError('Keep mentor images under 6MB for a reliable upload.');
+      return;
+    }
+    setError('');
+    setNotice('Photo selected. Save the profile to upload it securely.');
+    setImageFile(file);
+    setLocalImagePreview(URL.createObjectURL(file));
+  };
+
+  const removeImage = () => {
+    setImageFile(null);
+    setLocalImagePreview('');
+    setForm((current) => ({ ...current, image_url: '' }));
+    setNotice('Photo removed from this draft. Save to remove it from the public profile.');
+  };
+
   const save = async (event) => {
     event.preventDefault();
+    if (!supabase) {
+      setError('Supabase is not configured for this deployment.');
+      return;
+    }
     if (!form.name.trim() || !form.role_label.trim() || !form.field.trim() || !form.positioning.trim() || !form.path_summary.trim()) {
       setError('Add the name, role, field, positioning, and path summary before saving.');
       return;
     }
+
     setSaving(true);
     setError('');
+    setNotice('');
+    const specialties = form.specialties.split(',').map((item) => item.trim()).filter(Boolean);
     const payload = {
       name: form.name.trim(),
       slug: normalizeSlug(form.slug || form.name),
@@ -92,45 +245,108 @@ export function StudioMentors() {
       is_public: form.is_public,
       accepting_requests: form.accepting_requests,
     };
-    const result = form.id ? await supabase.from('mentors').update(payload).eq('id', form.id).select('id, name, slug, role_label, field, positioning, path_summary, quote, avatar_label, status, is_public, accepting_requests, updated_at').single() : await supabase.from('mentors').insert(payload).select('id, name, slug, role_label, field, positioning, path_summary, quote, avatar_label, status, is_public, accepting_requests, updated_at').single();
+    if (!imageFile) payload.image_url = form.image_url.trim() || null;
+
+    const columns = 'id, name, slug, role_label, field, positioning, path_summary, quote, avatar_label, image_url, status, is_public, accepting_requests, updated_at';
+    const result = form.id
+      ? await supabase.from('mentors').update(payload).eq('id', form.id).select(columns).single()
+      : await supabase.from('mentors').insert(payload).select(columns).single();
+
     if (result.error) {
       setError(result.error.code === '23505' ? 'That slug is already in use. Choose a different one.' : 'Mentor could not be saved. Check your role and try again.');
       setSaving(false);
       return;
     }
-    const mentor = result.data;
-    await supabase.from('mentor_specialties').delete().eq('mentor_id', mentor.id);
-    const specialties = form.specialties.split(',').map((item) => item.trim()).filter(Boolean);
-    if (specialties.length) await supabase.from('mentor_specialties').insert(specialties.map((specialty) => ({ mentor_id: mentor.id, specialty })));
+
+    let mentor = result.data;
+    let uploadMessage = '';
+    if (imageFile) {
+      const extension = imageFile.name.split('.').pop()?.toLowerCase() || 'jpg';
+      const token = typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      const path = `mentors/${mentor.id}/${token}.${extension}`;
+      const upload = await supabase.storage.from('mentor-images').upload(path, imageFile, {
+        cacheControl: '31536000',
+        contentType: imageFile.type,
+        upsert: false,
+      });
+      if (upload.error) {
+        uploadMessage = ' Profile saved, but the photo could not be uploaded; try the photo again.';
+      } else {
+        const publicUrl = supabase.storage.from('mentor-images').getPublicUrl(path).data.publicUrl;
+        const imageUpdate = await supabase.from('mentors').update({ image_url: publicUrl }).eq('id', mentor.id).select(columns).single();
+        if (imageUpdate.error) uploadMessage = ' Profile saved, but the photo link could not be saved; try the photo again.';
+        else mentor = imageUpdate.data;
+      }
+    }
+
+    const specialtyDelete = await supabase.from('mentor_specialties').delete().eq('mentor_id', mentor.id);
+    const specialtyInsert = specialties.length
+      ? await supabase.from('mentor_specialties').insert(specialties.map((specialty) => ({ mentor_id: mentor.id, specialty })))
+      : { error: null };
+    const specialtyError = specialtyDelete.error || specialtyInsert.error;
+
     void revalidatePublicContent();
     setMentors((current) => form.id ? current.map((item) => item.id === mentor.id ? mentor : item) : [mentor, ...current]);
     setSelectedId(mentor.id);
-    setForm({ ...mentor, specialties: specialties.join(', ') });
-    setNotice(form.id ? 'Mentor profile saved.' : 'Mentor added as a draft.');
+    const nextForm = { ...mentor, specialties: specialties.join(', ') };
+    setForm(nextForm);
+    setSavedForm(cloneForm(nextForm));
+    setImageFile(null);
+    setLocalImagePreview('');
+    setNotice(`${form.id ? 'Mentor profile saved.' : 'Mentor added as a draft.'}${specialtyError ? ' Profile saved, but specialties could not be updated.' : ''}${uploadMessage}`);
     setSaving(false);
   };
 
   if (loading) return <StudioPage><LoadingState label="Loading mentors…" /></StudioPage>;
   if (error && !mentors.length && !form.name) return <StudioPage><ErrorState message={error} /></StudioPage>;
 
+  const fieldIsPreset = COMMON_FIELDS.includes(form.field);
+  const fieldSelectValue = form.field ? (fieldIsPreset ? form.field : '__custom') : '';
+
   return (
     <StudioPage className="studio-management-page">
       <StudioPageHeader kicker="PEOPLE & SPECIALTIES" title={<>Care for the<br /><em>people.</em></>} description="Keep each profile honest, useful, and easy for a student to understand. Publishing is always an explicit choice." action={<button className="studio-primary-button" type="button" onClick={startNew}>Add a mentor <ArrowRight size={15} /></button>} />
       <div className="studio-mini-stats"><span><strong>{statusCounts.all}</strong> total profiles</span><span><strong>{statusCounts.public}</strong> public</span><span><strong>{statusCounts.drafts}</strong> drafts / hidden</span></div>
-      <div className="studio-management-grid">
-        <section className="studio-entity-list" aria-label="Mentor profiles">{mentors.length ? mentors.map((mentor) => <button type="button" className={`studio-entity-row${mentor.id === selectedId ? ' is-selected' : ''}`} key={mentor.id} onClick={() => selectMentor(mentor)}><span className="studio-entity-initial">{mentor.name.slice(0, 1)}</span><span><strong>{mentor.name}</strong><small>{mentor.field} · {mentor.role_label}</small></span><span className="studio-entity-state"><StatusBadge status={mentor.is_public ? 'published' : 'draft'} /></span><ArrowRight size={14} /></button>) : <EmptyState title="No mentor profiles yet." description="Add the first person whose lived experience should be visible to students." action={<button className="studio-secondary-button" type="button" onClick={startNew}>Add the first mentor</button>} />}</section>
-        <section className="studio-editor-card" aria-labelledby="studio-mentor-editor-title">
-          <div className="studio-editor-head"><div><span className="studio-panel-kicker">{form.id ? 'EDIT PROFILE' : 'NEW PROFILE'}</span><h2 id="studio-mentor-editor-title">{form.id ? form.name : 'A new person, carefully.'}</h2></div>{form.id && <a className="studio-inline-action" href={`/mentorship/${form.slug}`} target="_blank" rel="noreferrer">Preview profile <ArrowRight size={14} /></a>}</div>
-          <form className="studio-editor-form" onSubmit={save}>
-            <div className="studio-form-grid"><label>Full name<input value={form.name} onChange={updateField('name')} placeholder="e.g. Dr. A. Asare" /></label><label>URL slug<input value={form.slug} onChange={updateField('slug')} placeholder="dr-a-asare" /></label><label>Role / current place<input value={form.role_label} onChange={updateField('role_label')} placeholder="Founder & Lead Mentor" /></label><label>Field<input value={form.field} onChange={updateField('field')} placeholder="Medicine" /></label></div>
-            <label>Positioning sentence<span className="studio-field-help">The short line that helps a student decide if this person fits.</span><textarea rows="3" value={form.positioning} onChange={updateField('positioning')} placeholder="For the student who…" /></label>
-            <label>The honest path<span className="studio-field-help">A paragraph about the route, turns, and reality behind the role.</span><textarea rows="5" value={form.path_summary} onChange={updateField('path_summary')} placeholder="Tell the lived version of the path…" /></label>
-            <div className="studio-form-grid"><label>Specialties<span className="studio-field-help">Separate with commas.</span><input value={form.specialties} onChange={updateField('specialties')} placeholder="Medicine, study systems" /></label><label>Profile label<span className="studio-field-help">Used by the abstract portrait system until media is approved.</span><input value={form.avatar_label} onChange={updateField('avatar_label')} placeholder="MENTOR · MEDICINE" /></label></div>
-            <label>Quote <textarea rows="3" value={form.quote} onChange={updateField('quote')} placeholder="A line worth carrying forward…" /></label>
-            <div className="studio-editor-controls"><label>Status<select value={form.status} onChange={updateField('status')}><option value="application_only">Application only</option><option value="active">Active</option><option value="paused">Paused</option></select></label><label className="studio-check"><input type="checkbox" checked={form.is_public} onChange={updateField('is_public')} /> <span><strong>Show on public mentor index</strong><small>Keep off while this profile is being reviewed.</small></span></label><label className="studio-check"><input type="checkbox" checked={form.accepting_requests} onChange={updateField('accepting_requests')} /> <span><strong>Accepting introductions</strong><small>Allow this person to be selected for new requests.</small></span></label></div>
-            {error && <p className="studio-inline-error" role="alert">{error}</p>}{notice && <p className="studio-inline-notice" role="status">{notice}</p>}
-            <div className="studio-editor-actions"><button className="studio-primary-button" type="submit" disabled={saving}>{saving ? 'Saving…' : form.id ? 'Save profile' : 'Save as draft'} <ArrowRight size={15} /></button>{form.id && <button className="studio-quiet-button" type="button" onClick={startNew}>Clear editor</button>}</div>
-          </form>
+      <div className="studio-management-grid studio-management-grid--mentors">
+        <section className="studio-entity-list" aria-label="Mentor profiles">{mentors.length ? mentors.map((mentor) => <button type="button" className={`studio-entity-row${mentor.id === selectedId ? ' is-selected' : ''}`} key={mentor.id} onClick={() => selectMentor(mentor)}><span className="studio-entity-initial studio-entity-initial--photo">{mentor.image_url ? <img src={mentor.image_url} alt="" /> : mentor.name.slice(0, 1)}</span><span><strong>{mentor.name}</strong><small>{mentor.field} · {mentor.role_label}</small></span><span className="studio-entity-state"><StatusBadge status={mentor.is_public ? 'published' : 'draft'} /></span><ArrowRight size={14} /></button>) : <EmptyState title="No mentor profiles yet." description="Add the first person whose lived experience should be visible to students." action={<button className="studio-secondary-button" type="button" onClick={startNew}>Add the first mentor</button>} />}</section>
+        <section className="studio-editor-card studio-mentor-editor-card" aria-labelledby="studio-mentor-editor-title">
+          <div className="studio-editor-head"><div><span className="studio-panel-kicker">{form.id ? 'EDIT PROFILE' : 'NEW PROFILE'}</span><h2 id="studio-mentor-editor-title">{form.id ? form.name : 'A new person, carefully.'}</h2></div>{form.id && <a className="studio-inline-action" href={`/mentorship/${form.slug}`} target="_blank" rel="noreferrer">Open live profile <ArrowRight size={14} /></a>}</div>
+          <div className="studio-mentor-workbench">
+            <form className="studio-editor-form" onSubmit={save}>
+              <section className="studio-editor-section">
+                <div className="studio-editor-section-head"><span>01 / Identity</span><p>Make it easy to understand who this person is at a glance.</p></div>
+                <div className="studio-form-grid"><label>Full name<span className="studio-required">Required</span><input value={form.name} onChange={updateField('name')} placeholder="e.g. Dr. A. Asare" autoComplete="name" /></label><label>URL slug<span className="studio-field-help">Leave blank to generate it from the name.</span><input value={form.slug} onChange={updateField('slug')} placeholder="dr-a-asare" /></label><label>Role / current place<span className="studio-field-example">Example: Founder &amp; Lead Mentor · Korle Bu</span><input list="mentor-role-suggestions" value={form.role_label} onChange={updateField('role_label')} placeholder="Founder & Lead Mentor" /><datalist id="mentor-role-suggestions">{COMMON_ROLES.map((role) => <option value={role} key={role} />)}</datalist></label><label>Field<span className="studio-field-help">Choose a common field or use Other for a custom one.</span><select value={fieldSelectValue} onChange={chooseFieldPreset}><option value="">Choose a field</option>{COMMON_FIELDS.map((field) => <option value={field} key={field}>{field}</option>)}<option value="__custom">Other / custom field</option></select>{!fieldIsPreset && <input value={form.field} onChange={updateField('field')} placeholder="e.g. Architecture" />}</label></div>
+              </section>
+
+              <section className="studio-editor-section">
+                <div className="studio-editor-section-head"><span>02 / The useful story</span><p>Write for a student making a decision, not for a résumé.</p></div>
+                <label>Positioning sentence<span className="studio-field-help">One clear reason this mentor may be the right starting point.</span><span className="studio-field-example">Example: For students weighing medicine and wanting the honest version of the route.</span><textarea rows="3" value={form.positioning} onChange={updateField('positioning')} placeholder="For the student who…" /></label>
+                <label>The honest path<span className="studio-field-help">Explain the route, turns, and reality behind the role in a human paragraph.</span><span className="studio-field-example">Example: I started with a very certain plan, then discovered that the day-to-day work mattered more than the title. The useful part was learning how to test the path before committing years to it.</span><textarea rows="6" value={form.path_summary} onChange={updateField('path_summary')} placeholder="Tell the lived version of the path…" /></label>
+                <label>Quote<span className="studio-field-help">A short line that sounds like the person, not a generic inspirational quote.</span><span className="studio-field-example">Example: You do not need the whole map before you take the next useful step.</span><textarea rows="3" value={form.quote} onChange={updateField('quote')} placeholder="A line worth carrying forward…" /></label>
+              </section>
+
+              <section className="studio-editor-section">
+                <div className="studio-editor-section-head"><span>03 / Fit &amp; discoverability</span><p>Use consistent tags so students can compare profiles without guesswork.</p></div>
+                <label>Specialties<span className="studio-field-help">Separate with commas. Use the quick picks or type your own.</span><span className="studio-field-example">Example: Medical school, study systems, applications</span><input list="mentor-specialty-suggestions" value={form.specialties} onChange={updateField('specialties')} placeholder="Medicine, study systems" /><datalist id="mentor-specialty-suggestions">{COMMON_SPECIALTIES.map((specialty) => <option value={specialty} key={specialty} />)}</datalist></label>
+                <div className="studio-quick-picks" aria-label="Common specialty quick picks">{COMMON_SPECIALTIES.slice(0, 6).map((specialty) => <button type="button" key={specialty} onClick={() => setForm((current) => ({ ...current, specialties: Array.from(new Set([...current.specialties.split(',').map((item) => item.trim()).filter(Boolean), specialty])).join(', ') }))}>{specialty} +</button>)}</div>
+                <label>Fallback profile label<span className="studio-field-help">Used only when no photo is uploaded.</span><input value={form.avatar_label} onChange={updateField('avatar_label')} placeholder="MENTOR · MEDICINE" /></label>
+              </section>
+
+              <section className="studio-editor-section studio-editor-media-section">
+                <div className="studio-editor-section-head"><span>04 / Profile image</span><p>One clear, well-lit portrait makes the profile feel like a person rather than a record.</p></div>
+                <div className="studio-image-upload"><div className="studio-image-upload-preview">{imageSrc ? <img src={imageSrc} alt="Selected mentor portrait preview" /> : <span>PHOTO<br />OPTIONAL</span>}</div><div className="studio-image-upload-copy"><label className="studio-upload-button">{imageSrc ? 'Replace portrait' : 'Choose portrait'}<input type="file" accept="image/jpeg,image/png,image/webp" onChange={chooseImage} /></label><p>JPG, PNG, or WebP. Keep it under 6MB. A new file path is used each time so the public CDN does not serve an old replacement.</p>{imageSrc && <button type="button" className="studio-quiet-button studio-remove-image" onClick={removeImage}>Remove portrait</button>}</div></div>
+              </section>
+
+              <section className="studio-editor-section">
+                <div className="studio-editor-section-head"><span>05 / Visibility</span><p>Save freely while drafting. Publishing stays deliberate.</p></div>
+                <div className="studio-editor-controls"><label>Status<select value={form.status} onChange={updateField('status')}><option value="application_only">Application only</option><option value="active">Active</option><option value="paused">Paused</option></select></label><label className="studio-check"><input type="checkbox" checked={form.is_public} onChange={updateField('is_public')} /> <span><strong>Show on public mentor index</strong><small>Keep off while this profile is being reviewed.</small></span></label><label className="studio-check"><input type="checkbox" checked={form.accepting_requests} onChange={updateField('accepting_requests')} /> <span><strong>Accepting introductions</strong><small>Allow this person to be selected for new requests.</small></span></label></div>
+              </section>
+
+              {error && <p className="studio-inline-error" role="alert">{error}</p>}{notice && <p className="studio-inline-notice" role="status">{notice}</p>}
+              <div className="studio-editor-actions"><button className="studio-primary-button" type="submit" disabled={saving}>{saving ? 'Saving…' : form.id ? 'Save profile' : 'Save as draft'} <ArrowRight size={15} /></button>{form.id && <button className="studio-quiet-button" type="button" onClick={startNew}>Clear editor</button>}{isDirty && <span className="studio-unsaved-note">Unsaved changes</span>}</div>
+            </form>
+            <MentorProfilePreview form={form} imageSrc={imageSrc} />
+          </div>
         </section>
       </div>
     </StudioPage>

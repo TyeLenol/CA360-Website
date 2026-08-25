@@ -94,10 +94,11 @@ function scoreMentor(mentor, answers) {
   return { mentor, score, reasons: reasons.slice(0, 3) };
 }
 
-export function getFinderResults(answers) {
-  const ranked = MENTORS
+export function getFinderResults(answers, mentors = MENTORS) {
+  const roster = mentors?.length ? mentors : MENTORS;
+  const ranked = roster
     .map((mentor) => scoreMentor(mentor, answers))
-    .sort((a, b) => b.score - a.score || MENTORS.indexOf(a.mentor) - MENTORS.indexOf(b.mentor));
+    .sort((a, b) => b.score - a.score || roster.indexOf(a.mentor) - roster.indexOf(b.mentor));
 
   const lead = ranked[0];
   const second = ranked[1];

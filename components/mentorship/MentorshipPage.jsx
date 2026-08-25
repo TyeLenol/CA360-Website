@@ -7,6 +7,10 @@ import { RouteMarker } from '../shared/RouteMarker';
 import { getMentor, getTrack, MENTORS, MENTOR_TRACKS } from '../../data/mentors';
 
 function MentorPortrait({ mentor, className = '' }) {
+  if (mentor.imageUrl) {
+    return <img className={`mentor-real-photo ${className}`} src={mentor.imageUrl} alt="" loading="lazy" />;
+  }
+
   return (
     <PhotoPlaceholder
       tone={mentor.tone}

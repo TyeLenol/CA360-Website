@@ -6,6 +6,8 @@ import { PhotoPlaceholder, Portrait } from '../shared/Placeholders';
 import { FINDER_QUESTIONS, getFinderResults } from '../../data/mentor-finder';
 
 function FinderPortrait({ mentor }) {
+  if (mentor.imageUrl) return <img className="mentor-real-photo" src={mentor.imageUrl} alt="" loading="lazy" />;
+
   return (
     <PhotoPlaceholder
       tone={mentor.tone}
@@ -87,8 +89,8 @@ function RecommendationCard({ result, index, answers }) {
   );
 }
 
-function FinderResults({ answers, onRestart }) {
-  const { selected } = useMemo(() => getFinderResults(answers), [answers]);
+function FinderResults({ answers, mentors, onRestart }) {
+  const { selected } = useMemo(() => getFinderResults(answers, mentors), [answers, mentors]);
   return (
     <section className="mf-results" aria-labelledby="mf-results-title" aria-live="polite">
       <div className="mf-results-head">
@@ -116,7 +118,8 @@ function FinderResults({ answers, onRestart }) {
   );
 }
 
-export default function MentorFinder() {
+export default function MentorFinder({ initialMentors = null }) {
+  const mentors = initialMentors?.length ? initialMentors : undefined;
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
 
@@ -149,7 +152,7 @@ export default function MentorFinder() {
         {step < FINDER_QUESTIONS.length ? (
           <FinderQuestion question={FINDER_QUESTIONS[step]} selectedId={answers[FINDER_QUESTIONS[step].id]?.id} onChoose={choose} />
         ) : (
-          <FinderResults answers={answers} onRestart={restart} />
+          <FinderResults answers={answers} mentors={mentors} onRestart={restart} />
         )}
       </section>
     </main>

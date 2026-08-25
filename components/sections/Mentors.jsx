@@ -5,6 +5,11 @@ import { ArrowLeft, ArrowRight } from '../shared/Icons';
 import { PhotoPlaceholder, Portrait } from '../shared/Placeholders';
 import { useInView } from '../../hooks/ui-hooks';
 
+function MentorImage({ mentor, className = '' }) {
+  if (mentor.imageUrl) return <img className={`mentor-real-photo ${className}`} src={mentor.imageUrl} alt="" loading="lazy" />;
+  return <PhotoPlaceholder tone={mentor.tone} label={'MENTOR · ' + mentor.field.toUpperCase()} style={{ width: '100%', height: '100%' }}><Portrait seed={mentor.seed} bg="transparent" tone="#d68307" /></PhotoPlaceholder>;
+}
+
 const MENTORS = [
   { id: 'm1', slug: 'dr-a-asare', name: 'Dr. A. Asare', field: 'Medicine', tone: 'warm', role: 'Founder & Lead Mentor', bio: 'Founded CA360 in 2024 after entering medical school and realising how different the reality was from what she had imagined — and how unfair it was that only students with family in the field got to know the truth in advance. Built this to close that gap for everyone.', quote: 'No one should have to figure it out blindly. That\'s not ambition — that\'s luck. And luck isn\'t a strategy.', stats: [['Since', '2024'], ['Students reached', '2K+'], ['Sessions led', '5']], tag: 'LEAD MENTOR', seed: 1 },
   { id: 'm2', slug: 'dr-k-mensah', name: 'Dr. K. Mensah', field: 'Medicine', tone: 'teal', role: 'Surgery Resident · KATH', bio: 'Second-year surgical resident at Komfo Anokye Teaching Hospital. Joined CA360 to mentor SHS students considering specialised tracks — and to keep his bedside teaching sharp.', quote: 'Surgery wasn\'t a straight line for me — and that\'s the most useful thing I tell my mentees.', stats: [['Years', '6+'], ['Mentees', '18'], ['Sessions led', '2']], tag: 'ACTIVE', seed: 2 },
@@ -54,7 +59,7 @@ export function Mentors({ initialMentors = null }) {
 
       <div className="mentors-stage" data-reveal data-reveal-delay="2">
         <article className="mentors-feature" key={mentor.id}>
-          <div className="mentors-feature-photo"><PhotoPlaceholder tone={mentor.tone} label={'MENTOR · ' + mentor.field.toUpperCase()} style={{ width: '100%', height: '100%' }}><Portrait seed={mentor.seed} bg="transparent" tone="#d68307" /></PhotoPlaceholder><span className="mentors-feature-tag">{mentor.tag}</span></div>
+          <div className="mentors-feature-photo"><MentorImage mentor={mentor} /><span className="mentors-feature-tag">{mentor.tag}</span></div>
           <div className="mentors-feature-body">
             <div className="mentors-feature-field">{mentor.field.toUpperCase()} · {mentor.role.toUpperCase()}</div>
             <h3 className="mentors-feature-name">{mentor.name}</h3>
@@ -67,7 +72,7 @@ export function Mentors({ initialMentors = null }) {
 
         <aside className="mentors-rail">
           <div className="mentors-rail-head"><div className="mentors-rail-lab">ROSTER · {roster.length} ACTIVE</div><div className="mentors-rail-hint">Select a mentor<svg width="32" height="14" viewBox="0 0 40 14" fill="none"><path d="M2 8 C 12 2, 22 14, 38 4" stroke="#d68307" strokeWidth="2" strokeLinecap="round" /><path d="M32 2 L 38 4 L 36 10" stroke="#d68307" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="none" /></svg></div></div>
-          <ul className="mentors-rail-list">{roster.map((item, index) => <li key={item.id || item.slug} className={'mentors-rail-item' + (index === active ? ' is-active' : '')}><button type="button" className="mentors-rail-select" aria-label={'Select ' + item.name} aria-pressed={index === active} onClick={() => setActive(index)}><span className="mentors-avatar"><PhotoPlaceholder tone={item.tone} label="" style={{ width: '100%', height: '100%' }}><Portrait seed={item.seed} bg="transparent" tone="#d68307" /></PhotoPlaceholder>{index === active && <span className="mentors-avatar-ring" />}</span><span className="mentors-rail-meta"><span className="mentors-rail-name">{item.name}</span><span className="mentors-rail-field">{item.field}</span></span></button></li>)}</ul>
+          <ul className="mentors-rail-list">{roster.map((item, index) => <li key={item.id || item.slug} className={'mentors-rail-item' + (index === active ? ' is-active' : '')}><button type="button" className="mentors-rail-select" aria-label={'Select ' + item.name} aria-pressed={index === active} onClick={() => setActive(index)}><span className="mentors-avatar"><MentorImage mentor={item} />{index === active && <span className="mentors-avatar-ring" />}</span><span className="mentors-rail-meta"><span className="mentors-rail-name">{item.name}</span><span className="mentors-rail-field">{item.field}</span></span></button></li>)}</ul>
           <a className="mentors-join" href="/contact?type=mentor">Become a mentor <ArrowRight size={14} color="#0a1f29" /></a>
         </aside>
       </div>
