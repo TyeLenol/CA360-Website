@@ -3,7 +3,8 @@ import { MentorProfilePage } from '../../../components/mentorship/MentorshipPage
 import { getMentor, MENTORS } from '../../../data/mentors';
 import { getPublicMentors } from '../../../lib/public-content';
 
-export const revalidate = 60;
+// Keep individual mentor edits visible immediately during Studio testing.
+export const revalidate = 0;
 
 export function generateStaticParams() {
   return MENTORS.map((mentor) => ({ slug: mentor.slug }));

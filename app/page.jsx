@@ -13,7 +13,8 @@ import { Newsletter } from '../components/sections/Newsletter';
 import { FAQ } from '../components/sections/FAQ';
 import { getPublicMentors, getPublicSessions } from '../lib/public-content';
 
-export const revalidate = 60;
+// Live mentor and session data should be immediately testable while Studio is being populated.
+export const revalidate = 0;
 
 export const metadata = {
   title: 'Mentorship that shows up',
