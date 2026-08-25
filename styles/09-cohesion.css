@@ -627,3 +627,22 @@
   object-fit: cover;
   object-position: 50% 35%;
 }
+
+/* Editorial body copy for live Journal articles and inline newsletter feedback. */
+.jreader-copy {
+  max-width: 680px;
+  margin-top: 26px;
+  color: var(--c-body);
+  font: 400 17px/1.75 var(--font-ui);
+}
+.jreader-copy p { margin: 0 0 1.15em; }
+.jreader-copy p:last-child { margin-bottom: 0; }
+.jnews-error {
+  margin-top: 12px;
+  color: var(--c-orange-deep);
+  font: 700 11px/1.4 var(--font-mono);
+  letter-spacing: 0.04em;
+}
+@media (max-width: 767px) {
+  .jreader-copy { font-size: 16px; line-height: 1.65; }
+}

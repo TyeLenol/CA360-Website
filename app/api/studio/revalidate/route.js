@@ -27,6 +27,7 @@ export async function POST() {
   revalidatePath('/', 'page');
   revalidatePath('/mentorship', 'page');
   revalidatePath('/mentorship/[slug]', 'page');
+  revalidatePath('/journal', 'page');
 
   return NextResponse.json({ revalidated: true });
 }

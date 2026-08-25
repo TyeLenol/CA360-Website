@@ -1,7 +1,7 @@
-import { StudioComingSoon } from '../../../../components/studio/StudioComingSoon';
+import { StudioMedia } from '../../../../components/studio/StudioMedia';
 
 export const metadata = { title: 'Media' };
 
 export default function StudioMediaRoute() {
-  return <StudioComingSoon section="MEDIA" description="Approved mentor portraits, session imagery, article covers, credits, and accessibility copy will be managed here." />;
+  return <StudioMedia />;
 }

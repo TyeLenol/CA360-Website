@@ -11,7 +11,7 @@ import { Sessions } from '../components/sections/Sessions';
 import { JoinIn } from '../components/sections/JoinIn';
 import { Newsletter } from '../components/sections/Newsletter';
 import { FAQ } from '../components/sections/FAQ';
-import { getPublicMentors, getPublicSessions } from '../lib/public-content';
+import { getPublicMentors, getPublicSessions, getPublicSiteContent, getPublicFaqs } from '../lib/public-content';
 
 // Live mentor and session data should be immediately testable while Studio is being populated.
 export const revalidate = 0;
@@ -22,11 +22,16 @@ export const metadata = {
 };
 
 export default async function HomePage() {
-  const [liveMentors, liveSessions] = await Promise.all([getPublicMentors(), getPublicSessions()]);
+  const [liveMentors, liveSessions, opportunityContent, liveFaqs] = await Promise.all([
+    getPublicMentors(),
+    getPublicSessions(),
+    getPublicSiteContent('current_opportunity'),
+    getPublicFaqs(),
+  ]);
   return (
     <main>
       <Hero />
-      <CurrentOpportunity />
+      <CurrentOpportunity content={opportunityContent} />
       <Mission />
       <Origin />
       <Fields />
@@ -37,7 +42,7 @@ export default async function HomePage() {
       <Sessions initialSessions={liveSessions} />
       <JoinIn />
       <Newsletter />
-      <FAQ />
+      <FAQ initialFaqs={liveFaqs} />
     </main>
   );
 }

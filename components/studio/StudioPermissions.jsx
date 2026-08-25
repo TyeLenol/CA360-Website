@@ -10,6 +10,9 @@ const StudioPermissionsContext = createContext({
   canManageInbox: false,
   canManageMentors: false,
   canManageSessions: false,
+  canManageMedia: false,
+  canManageJournal: false,
+  canManageContent: false,
   canAddNotes: false,
 });
 
@@ -26,6 +29,9 @@ export function StudioPermissionsProvider({ member, children }) {
       canManageInbox: canCoordinate,
       canManageMentors: canCoordinate,
       canManageSessions: canEditSessions,
+      canManageMedia: canEditSessions,
+      canManageJournal: canEditSessions,
+      canManageContent: canEditSessions,
       canAddNotes: canCoordinate,
     };
   }, [member]);

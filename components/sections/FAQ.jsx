@@ -27,9 +27,10 @@ const FAQS = [
     cat: 'GENERAL' },
 ];
 
-export function FAQ() {
+export function FAQ({ initialFaqs }) {
+  const faqs = initialFaqs?.length ? initialFaqs : FAQS;
   const [active, setActive] = useState(0);
-  const m = FAQS[active];
+  const m = faqs[active] || faqs[0];
 
   const handleTabKeyDown = (event, index) => {
     const direction = event.key === 'ArrowDown' || event.key === 'ArrowRight' ? 1
@@ -37,9 +38,9 @@ export function FAQ() {
       : 0;
     if (!direction) return;
     event.preventDefault();
-    const nextIndex = (index + direction + FAQS.length) % FAQS.length;
+    const nextIndex = (index + direction + faqs.length) % faqs.length;
     setActive(nextIndex);
-    document.getElementById(`faq-tab-${FAQS[nextIndex].id}`)?.focus();
+    document.getElementById(`faq-tab-${faqs[nextIndex].id}`)?.focus();
   };
 
   return (
@@ -53,7 +54,7 @@ export function FAQ() {
 
       <div className="faq-stage" data-reveal>
         <ul className="faq-list" role="tablist" aria-label="Frequently asked questions">
-          {FAQS.map((f, i) => (
+          {faqs.map((f, i) => (
             <li
               key={f.id}
               className={'faq-item' + (i === active ? ' is-active' : '')}

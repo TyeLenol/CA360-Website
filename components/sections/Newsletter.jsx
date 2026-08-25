@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ArrowRight } from '../shared/Icons';
-import { supabase } from '../../lib/supabase';
+import { subscribeToNewsletter } from '../../lib/newsletter';
 
 export function NewsletterSignup({ contact = false }) {
   const [email, setEmail] = useState('');
@@ -19,26 +19,11 @@ export function NewsletterSignup({ contact = false }) {
     setSaving(true);
     setError('');
 
-    if (supabase) {
-      const { error: insertError } = await supabase
-        .from('newsletter_subscribers')
-        .insert({
-          email: normalizedEmail,
-          source: contact ? 'contact' : 'homepage',
-          is_subscribed: true,
-          subscribed_at: new Date().toISOString(),
-        });
-
-      // A duplicate means the address is already subscribed. Treat that as success
-      // while keeping unexpected database errors visible to the person submitting.
-      if (insertError && insertError.code !== '23505') {
-        console.error('Newsletter signup failed:', insertError);
-        setError('We could not save that just now. Please try again in a moment.');
-        setSaving(false);
-        return;
-      }
-    } else {
-      console.warn('Newsletter signup skipped: Supabase environment variables are missing.');
+    const result = await subscribeToNewsletter(normalizedEmail, contact ? 'contact' : 'homepage');
+    if (!result.ok) {
+      setError(result.message);
+      setSaving(false);
+      return;
     }
 
     setSubmitted(true);

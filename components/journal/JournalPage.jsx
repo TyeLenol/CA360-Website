@@ -5,6 +5,8 @@ import { ArrowRight, PinIcon } from '../shared/Icons';
 import { PhotoPlaceholder, Portrait } from '../shared/Placeholders';
 import { RouteMarker } from '../shared/RouteMarker';
 import { useScrollProgress } from '../../hooks/ui-hooks';
+import { JOURNAL_ARTICLES } from '../../data/journal';
+import { subscribeToNewsletter } from '../../lib/newsletter';
 
 /* ===== LOCAL HOOK — element-relative scroll progress ===== */
 function useElementScroll(ref) {
@@ -35,51 +37,17 @@ function useElementScroll(ref) {
 }
 
 /* ===== DATA ===== */
-const ARTICLES = [
-  { id: 'a1', featured: true, cat: 'mentor', catLabel: 'MENTOR STORY',
-    title: 'The white coat, unmasked: a year inside the ward.',
-    excerpt: 'Three house officers walked our biggest cohort yet through their first 12 months on the ward — the wins, the burnout, and the moments they almost quit. Plus the seven questions that broke the room.',
-    author: 'Dr. A. Asare', authorSeed: 1, authorRole: 'Founder · CA360', date: 'FEB 28, 2026', readTime: '8 min read',
-    venue: 'University of Ghana Medical School · Korle Bu', tone: 'teal', label: 'INTERVIEW · KORLE BU' },
-  { id: 'a2', cat: 'mentor', catLabel: 'FOUNDER ESSAY',
-    title: 'A letter to the SHS-3 girl I was.',
-    excerpt: "On picking a career by elimination, the older sister I didn't have, and the kind of advice I would have actually heard at 17.",
-    author: 'Dr. A. Asare', authorSeed: 1, authorRole: 'Founder · CA360', date: 'FEB 14, 2026', readTime: '5 min',
-    tone: 'warm', label: 'ESSAY' },
-  { id: 'a3', cat: 'news', catLabel: 'NEWS & UPDATES',
-    title: 'Why we delayed the Law track — and what that taught us.',
-    excerpt: "We almost shipped a Law cohort before we had the mentors to back it up. Here's why we pulled the plug, and the rule we made afterwards.",
-    author: 'CA360 Team', authorSeed: 7, authorRole: 'CA360 Editorial', date: 'JAN 30, 2026', readTime: '3 min',
-    tone: 'orange', label: 'INTERNAL' },
-  { id: 'a4', cat: 'student', catLabel: 'STUDENT STORY',
-    title: 'How Akua got into UG Law without a debate coach.',
-    excerpt: 'Six rejections, one acceptance, and a lot of YouTube debate replays. A first-person account from one of our SHS alumni.',
-    author: 'Akua Boateng', authorSeed: 3, authorRole: 'CA360 Alumna', date: 'JAN 18, 2026', readTime: '6 min',
-    tone: 'deep', label: 'CLASS OF 2025' },
-  { id: 'a5', cat: 'guide', catLabel: 'CAREER GUIDE',
-    title: 'The four books Dr. Mensah wishes someone gave him at 17.',
-    excerpt: 'Two on career navigation, one on self-awareness, one that has nothing to do with work. With links and a one-paragraph reason for each.',
-    author: 'Dr. K. Mensah', authorSeed: 2, authorRole: 'Surgery Resident · KATH', date: 'JAN 09, 2026', readTime: '4 min',
-    tone: 'cream', label: 'READING LIST' },
-  { id: 'a6', cat: 'guide', catLabel: 'CAREER GUIDE',
-    title: 'Medicine, by the numbers: who actually gets in?',
-    excerpt: "A look at admissions data across UGMS, KNUST and UCC over the last five intake cycles — and what it means for next year's applicants.",
-    author: 'CA360 Research', authorSeed: 4, authorRole: 'CA360 Research', date: 'DEC 21, 2025', readTime: '9 min',
-    tone: 'teal', label: 'DATA · ANNUAL' },
-  { id: 'a7', cat: 'mentor', catLabel: 'MENTOR STORY',
-    title: "Three mentors on the rejection they almost didn't recover from.",
-    excerpt: "A residency that almost wasn't. A law school no. A grad scheme that came down to one phone call. Three stories, three reframes.",
-    author: 'Esi Adjei', authorSeed: 6, authorRole: 'Paediatrics House Officer', date: 'DEC 12, 2025', readTime: '7 min',
-    tone: 'warm', label: 'INTERVIEWS' },
-  { id: 'a8', cat: 'guide', catLabel: 'CAREER GUIDE',
-    title: 'Five questions to ask before you commit to a course.',
-    excerpt: 'The ones that would have saved a lot of people a lot of confusion — and the answers you should actually demand before signing anything.',
-    author: 'CA360 Team', authorSeed: 7, authorRole: 'CA360 Editorial', date: 'NOV 28, 2025', readTime: '5 min',
-    tone: 'orange', label: 'CAREER PREP' },
-];
+const ARTICLES = JOURNAL_ARTICLES;
 
-function getRelatedArticles(article) {
-  return ARTICLES
+function JournalCover({ article, className = '', style, eager = false }) {
+  if (article.coverUrl) {
+    return <img className={`journal-cover ${className}`.trim()} src={article.coverUrl} alt={article.title} loading={eager ? 'eager' : 'lazy'} fetchPriority={eager ? 'high' : 'auto'} decoding="async" style={style} />;
+  }
+  return <PhotoPlaceholder tone={article.tone} label={article.label} style={style} />;
+}
+
+function getRelatedArticles(article, articles = ARTICLES) {
+  return articles
     .filter((candidate) => candidate.id !== article.id)
     .map((candidate, index) => ({
       candidate,
@@ -167,7 +135,7 @@ function JournalFeatured({ article, onOpen }) {
           {/* Image arrives first */}
           <div className="jf-img">
             <div className="jf-img-inner" style={{ transform: `translate3d(0, ${imgY.toFixed(1)}px, 0)` }}>
-              <PhotoPlaceholder tone={article.tone} label={article.label} style={{ width: '100%', height: '100%' }} />
+              <JournalCover article={article} eager style={{ width: '100%', height: '100%' }} />
             </div>
             <span className="jf-img-cat">{article.catLabel}</span>
           </div>
@@ -264,7 +232,7 @@ function ArticleCard({ article, index, onOpen }) {
         onClick={(e) => { e.preventDefault(); onOpen(article); }}
       >
         <div className="jcard-img">
-          <PhotoPlaceholder tone={article.tone} label={article.label} style={{ width: '100%', height: '100%' }} />
+          <JournalCover article={article} style={{ width: '100%', height: '100%' }} />
         </div>
         <div className="jcard-body">
           <div className="jcard-label">{article.catLabel}</div>
@@ -288,7 +256,7 @@ function ArticleCard({ article, index, onOpen }) {
 }
 
 /* ===== READING ROOM ===== */
-function JournalReader({ article, onClose }) {
+function JournalReader({ article, onClose, articles }) {
   const closeRef = useRef(null);
   const panelRef = useRef(null);
 
@@ -344,12 +312,13 @@ function JournalReader({ article, onClose }) {
             <span>{article.author} · {article.authorRole}</span>
           </div>
           <p className="jreader-excerpt">{article.excerpt}</p>
+          {article.body && article.body !== article.excerpt && <div className="jreader-copy">{article.body.split(/\n+/).filter(Boolean).map((paragraph, index) => <p key={`${article.id}-paragraph-${index}`}>{paragraph}</p>)}</div>}
           <div className="jreader-next">
             <span className="jreader-next-label">RECOMMENDED</span>
             <strong>Other articles you might like.</strong>
             <p>Keep reading from a related question, path, or point of view.</p>
             <div className="jreader-recommendations">
-              {getRelatedArticles(article).map((story) => (
+              {getRelatedArticles(article, articles).map((story) => (
                 <a className="jreader-recommendation" href={`/journal#${story.id}`} key={story.id}>
                   <span className="jreader-recommendation-meta">{story.catLabel} <em>{story.readTime}</em></span>
                   <strong>{story.title}</strong>
@@ -396,6 +365,8 @@ function JournalLettersTransition() {
   const [planePos, setPlanePos] = useState({ x: 0, y: 0, angle: 0, len: 1 });
   const [email, setEmail] = useState('');
   const [done, setDone] = useState(false);
+  const [newsletterError, setNewsletterError] = useState('');
+  const [newsletterSaving, setNewsletterSaving] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
   const [deepLinked, setDeepLinked] = useState(false);
 
@@ -443,13 +414,20 @@ function JournalLettersTransition() {
   const titleY = (1 - lettersP) * -32;
   const newsletterY = (1 - newsletterP) * 22;
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    if (/^[^@]+@[^@]+\.[^@]+$/.test(email)) {
-      setDone(true);
-      setEmail('');
-      setTimeout(() => setDone(false), 4000);
+    setNewsletterSaving(true);
+    setNewsletterError('');
+    const result = await subscribeToNewsletter(email, 'journal');
+    if (!result.ok) {
+      setNewsletterError(result.message);
+      setNewsletterSaving(false);
+      return;
     }
+    setDone(true);
+    setEmail('');
+    setNewsletterSaving(false);
+    setTimeout(() => setDone(false), 4000);
   };
 
   return (
@@ -504,14 +482,16 @@ function JournalLettersTransition() {
                   type="email"
                   placeholder="your@email.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) => { setEmail(e.target.value); setNewsletterError(''); }}
                   tabIndex={newsletterReady ? undefined : -1}
+                  disabled={!newsletterReady || newsletterSaving}
                   required
                 />
-                <button type="submit" tabIndex={newsletterReady ? undefined : -1}>
-                  {done ? '✓ SUBSCRIBED' : <><span>SUBSCRIBE</span> <ArrowRight color="#0a1f29" size={14} /></>}
+                <button type="submit" tabIndex={newsletterReady ? undefined : -1} disabled={!newsletterReady || newsletterSaving}>
+                  {newsletterSaving ? 'SAVING…' : done ? '✓ SUBSCRIBED' : <><span>SUBSCRIBE</span> <ArrowRight color="#0a1f29" size={14} /></>}
                 </button>
               </form>
+              {newsletterError && <p className="jnews-error" role="alert">{newsletterError}</p>}
             </div>
           </article>
         </div>
@@ -521,7 +501,8 @@ function JournalLettersTransition() {
 }
 
 /* ===== PAGE ROOT ===== */
-export function JournalPage() {
+export function JournalPage({ initialArticles }) {
+  const articles = initialArticles?.length ? initialArticles : ARTICLES;
   const [filter, setFilter] = useState('all');
   const [selectedArticle, setSelectedArticle] = useState(null);
 
@@ -538,15 +519,15 @@ export function JournalPage() {
   useEffect(() => {
     const syncHash = () => {
       const id = window.location.hash.slice(1);
-      const article = ARTICLES.find((item) => item.id === id);
+      const article = articles.find((item) => item.id === id);
       if (article) setSelectedArticle(article);
     };
     syncHash();
     window.addEventListener('hashchange', syncHash);
     return () => window.removeEventListener('hashchange', syncHash);
-  }, []);
+  }, [articles]);
 
-  const [featured, ...rest] = ARTICLES;
+  const [featured, ...rest] = articles;
   const sorted = rest.filter((a) => filter === 'all' || a.cat === filter);
   return (
     <main className="journal-page">
@@ -573,14 +554,14 @@ export function JournalPage() {
         <div className="jload-foot">
           <span>
             {filter === 'all'
-              ? `ALL ${ARTICLES.length} ARTICLES`
+              ? `ALL ${articles.length} ARTICLES`
               : `${sorted.length} ${CATEGORIES.find((c) => c.id === filter)?.label.toUpperCase()}`}
           </span>
         </div>
       </section>
 
       <JournalLettersTransition />
-      {selectedArticle && <JournalReader article={selectedArticle} onClose={closeArticle} />}
+      {selectedArticle && <JournalReader article={selectedArticle} articles={articles} onClose={closeArticle} />}
     </main>
   );
 }
