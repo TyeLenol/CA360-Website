@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight } from '../shared/Icons';
 import { createSupabaseBrowserClient } from '../../lib/supabase/client';
+import { revalidatePublicContent } from '../../lib/studio/revalidate';
 import { EmptyState, ErrorState, LoadingState, normalizeSlug, StatusBadge, StudioPage, StudioPageHeader } from './StudioShared';
 
 const supabase = createSupabaseBrowserClient();
@@ -101,6 +102,7 @@ export function StudioMentors() {
     await supabase.from('mentor_specialties').delete().eq('mentor_id', mentor.id);
     const specialties = form.specialties.split(',').map((item) => item.trim()).filter(Boolean);
     if (specialties.length) await supabase.from('mentor_specialties').insert(specialties.map((specialty) => ({ mentor_id: mentor.id, specialty })));
+    void revalidatePublicContent();
     setMentors((current) => form.id ? current.map((item) => item.id === mentor.id ? mentor : item) : [mentor, ...current]);
     setSelectedId(mentor.id);
     setForm({ ...mentor, specialties: specialties.join(', ') });

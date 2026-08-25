@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowRight } from '../shared/Icons';
 import { createSupabaseBrowserClient } from '../../lib/supabase/client';
+import { revalidatePublicContent } from '../../lib/studio/revalidate';
 import { EmptyState, ErrorState, formatStudioDate, LoadingState, normalizeSlug, StatusBadge, StudioPage, StudioPageHeader } from './StudioShared';
 
 const supabase = createSupabaseBrowserClient();
@@ -103,6 +104,7 @@ export function StudioSessions() {
       return;
     }
     const session = result.data;
+    void revalidatePublicContent();
     setSessions((current) => form.id ? current.map((item) => item.id === session.id ? session : item) : [session, ...current]);
     setSelectedId(session.id);
     setForm({ ...session, starts_at: toInputDateTime(session.starts_at), ends_at: toInputDateTime(session.ends_at), capacity: session.capacity ?? '', duration_minutes: session.duration_minutes ?? '', attendee_count: session.attendee_count ?? '' });
